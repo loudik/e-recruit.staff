@@ -15,16 +15,16 @@
         <link rel="stylesheet" href="<?= base_url('assets/css/animate.css') ?>">
         <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
 
-        <title>Home Recruitment GIP</title>
+        <title>Home Recruitment</title>
     </head>
     <body>
-        <!-- <div class="pxp-preloader"><span>Loading...</span></div> -->
+        <div class="pxp-preloader"><span>Loading...</span></div>
 
         <header class="pxp-header fixed-top">
             <div class="pxp-container">
                 <div class="pxp-header-container">
                     <div class="pxp-logo">
-                        <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">j</span>obster</a>
+                        <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
                     </div>
                     <div class="pxp-nav-trigger navbar d-xl-none flex-fill">
                         <a role="button" data-bs-toggle="offcanvas" data-bs-target="#pxpMobileNav" aria-controls="pxpMobileNav">
@@ -44,38 +44,11 @@
                                     <ul class="navbar-nav justify-content-end flex-grow-1">
                                         <li class="nav-item dropdown">
                                             <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Home</a>
-                                            <ul class="dropdown-menu">
-                                                <li class="pxp-dropdown-header">Home Page Versions</li>
-                                                <li class="nav-item"><a href="index.html">Hero with Animated Cards</a></li>
-                                                <li class="nav-item"><a href="index-2.html">Center Image Rotator Hero</a></li>
-                                                <li class="nav-item"><a href="index-3.html">Hero with Illustration</a></li>
-                                                <li class="nav-item"><a href="index-4.html">Boxed Hero with Animation</a></li>
-                                                <li class="nav-item"><a href="index-5.html">Full Image Background Hero</a></li>
-                                                <li class="nav-item"><a href="index-6.html">Full Image with Top Search</a></li>
-                                                <li class="nav-item"><a href="index-7.html">Hero With Image Card</a></li>
-                                            </ul>
+
                                         </li>
                                         <li class="nav-item dropdown">
                                             <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
-                                            <ul class="dropdown-menu">
-                                                <li class="pxp-dropdown-header">Job Listings</li>
-                                                <li class="nav-item"><a href="jobs-list-1.html">Top Search with Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-2.html">Top Search with Small Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-3.html">Top Search with List</a></li>
-                                                <li class="nav-item"><a href="jobs-list-4.html">Left Search with Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-5.html">Left Search with Small Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-6.html">Left Search with List</a></li>
-                                                <li class="nav-item"><a href="jobs-list-7.html">No Sidebar with Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-8.html">No Sidebar with Small Cards</a></li>
-                                                <li class="nav-item"><a href="jobs-list-9.html">No Sidebar with List</a></li>
-                                                <li class="nav-item"><a href="jobs-list-10.html">Top Search with Card Details</a></li>
-                                                <li class="pxp-dropdown-header">Single Job</li>
-                                                <li class="nav-item"><a href="single-job-1.html">Wide Content</a></li>
-                                                <li class="nav-item"><a href="single-job-2.html">Right Side Panel</a></li>
-                                                <li class="nav-item"><a href="single-job-3.html">Center Boxed Content</a></li>
-                                            </ul>
                                         </li>
-                   
                                     </ul>
                                 </nav>
                             </div>
@@ -85,272 +58,9 @@
                         <ul>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Home</a>
-                                <ul class="dropdown-menu">
-                                    <li class="pxp-dropdown-body">
-                                        <div class="pxp-dropdown-layout">
-                                            <div class="pxp-dropdown-header">Home Page Versions</div>
-                                            <div class="row gx-5 pxp-dropdown-lists">
-                                                <div class="col-auto pxp-dropdown-list">
-                                                    <ul>
-                                                        <li>
-                                                            <a href="index.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-1-nav-icon@2x.png" alt="Hero with Animated Cards">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Hero with Animated Cards
-                                                                    <span>Home page version 1</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="index-2.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-2-nav-icon@2x.png" alt="Center Image Rotator Hero">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Center Image Rotator Hero
-                                                                    <span>Home page version 2</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="index-3.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-3-nav-icon@2x.png" alt="Hero with Illustration">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Hero with Illustration
-                                                                    <span>Home page version 3</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="index-4.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-4-nav-icon@2x.png" alt="Boxed Hero with Animation">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Boxed Hero with Animation
-                                                                    <span>Home page version 4</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-auto pxp-dropdown-list">
-                                                    <ul>
-                                                        <li>
-                                                            <a href="index-5.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-5-nav-icon@2x.png" alt="Full Image Background Hero">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Full Image Background Hero
-                                                                    <span>Home page version 5</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="index-6.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-6-nav-icon@2x.png" alt="Full Image with Top Search">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Full Image with Top Search
-                                                                    <span>Home page version 6</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="index-7.html" class="pxp-has-icon">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <img src="images/index-7-nav-icon@2x.png" alt="Hero With Image Card">
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Hero With Image Card
-                                                                    <span>Home page version 7</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
-                                <ul class="dropdown-menu">
-                                    <li class="pxp-dropdown-body">
-                                        <div class="pxp-dropdown-layout">
-                                            <div class="row gx-5 pxp-dropdown-lists">
-                                                <div class="col-auto pxp-dropdown-list">
-                                                    <div class="pxp-dropdown-header">Job Listings</div>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="jobs-list-1.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th-large"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Top Search with Cards
-                                                                    <span>Jobs listing version 1</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-2.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Top Search with Small Cards
-                                                                    <span>Jobs listing version 2</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-3.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th-list"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Top Search with List
-                                                                    <span>Jobs listing version 3</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-4.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-toggle-right"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Left Search with Cards
-                                                                    <span>Jobs listing version 4</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-5.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-list-ul"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Left Search with Small Cards
-                                                                    <span>Jobs listing version 5</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="pxp-dropdown-header mt-3">Single Job</div>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="single-job-1.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-align-justify"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Wide Content
-                                                                    <span>Single job version 1</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="single-job-2.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-dedent"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Right Side Panel
-                                                                    <span>Single job version 2</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="col-auto pxp-dropdown-list">
-                                                    <div class="pxp-dropdown-header">&nbsp;</div>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="jobs-list-6.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-indent"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Left Search with List
-                                                                    <span>Jobs listing version 6</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-7.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th-large"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    No Sidebar with Cards
-                                                                    <span>Jobs listing version 7</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-8.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    No Sidebar with Small Cards
-                                                                    <span>Jobs listing version 8</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-9.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-th-list"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    No Sidebar with List
-                                                                    <span>Jobs listing version 9</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="jobs-list-10.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-list-alt"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Top Search with Card Details
-                                                                    <span>Jobs listing version 10</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="pxp-dropdown-header mt-3">&nbsp;</div>
-                                                    <ul>
-                                                        
-                                                        
-                                                        <li>
-                                                            <a href="single-job-3.html" class="pxp-has-icon-small">
-                                                                <div class="pxp-dropdown-icon">
-                                                                    <span class="fa fa-align-center"></span>
-                                                                </div>
-                                                                <div class="pxp-dropdown-text">
-                                                                    Center Boxed Content
-                                                                    <span>Single job version 3</span>
-                                                                </div>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
                             </li>
                         </ul>
                     </nav>
@@ -368,8 +78,6 @@
                     <div class="row pxp-pl-80 align-items-center justify-content-between">
                         <div class="col-12 col-xl-6 col-xxl-5">
                             <h1>Find the perfect<br><span style="color: var(--pxpMainColor);">job</span> for you</h1>
-                            <div class="pxp-hero-subtitle mt-3 mt-lg-4">Search your career opportunity through <strong>12,800</strong> jobs</div>
-
                             <div class="pxp-hero-form pxp-hero-form-round mt-3 mt-lg-4">
                                 <form class="row gx-3 align-items-center" action="jobs-list-1.html">
                                     <div class="col-12 col-sm">
@@ -407,7 +115,7 @@
                         </div>
                         <div class="d-none d-xl-block col-xl-5 position-relative">
                             <div class="pxp-hero-cards-container pxp-animate-cards pxp-mouse-move" data-speed="160">
-                                <div class="pxp-hero-card pxp-cover pxp-cover-top" style="background-image: url(images/ph-big.jpg);"></div>
+                                <div class="pxp-hero-card pxp-cover pxp-cover-top" style="background-image: url('<?= base_url('assets/images/jobs1.jpg'); ?>');"></div>
                                 <div class="pxp-hero-card-dark"></div>
                                 <div class="pxp-hero-card-light"></div>
                             </div>
@@ -441,29 +149,10 @@
                 </div>
             </div>
 
-            <div class="pxp-hero-logos-carousel-container">
-                <div class="pxp-container">
-                    <div class="row pxp-pl-80">
-                        <div class="col-12 col-xl-6">
-                            <div class="pxp-hero-logos-carousel owl-carousel">
-                                <img src="images/hero-logo-1.svg" alt="Logo 1">
-                                <img src="images/hero-logo-2.svg" alt="Logo 2">
-                                <img src="images/hero-logo-3.svg" alt="Logo 3">
-                                <img src="images/hero-logo-4.svg" alt="Logo 4">
-                                <img src="images/hero-logo-5.svg" alt="Logo 5">
-                                <img src="images/hero-logo-6.svg" alt="Logo 6">
-                                <img src="images/hero-logo-7.svg" alt="Logo 7">
-                                <img src="images/hero-logo-1.svg" alt="Logo 8">
-                                <img src="images/hero-logo-2.svg" alt="Logo 9">
-                                <img src="images/hero-logo-3.svg" alt="Logo 10">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="pxp-hero-right-bg-card pxp-has-animation"></div>
         </section>
+
 
 
         <section class="mt-100">
@@ -483,15 +172,6 @@
                                         <input type="text" class="form-control" placeholder="Job Title or Keyword">
                                     </div>
                                 </div>
-
-                                <h3 class="mt-3 mt-lg-4">Location</h3>
-                                <div class="mt-2 mt-lg-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><span class="fa fa-globe"></span></span>
-                                        <input type="text" class="form-control" placeholder="Enter location">
-                                    </div>
-                                </div>
-
                                 <h3 class="mt-3 mt-lg-4">Category</h3>
                                 <div class="mt-2 mt-lg-3">
                                     <div class="input-group">
@@ -595,45 +275,6 @@
                                         <span class="badge rounded-pill">21</span>
                                     </label>
                                 </div>
-
-                                <h3 class="mt-3 mt-lg-4">Salary Range</h3>
-                                <div class="list-group mt-2 mt-lg-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center pxp-checked">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="" checked>
-                                            $700 - $1000
-                                        </span>
-                                        <span class="badge rounded-pill">34</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3 pxp-checked">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="" checked>
-                                            $1000 - $1200
-                                        </span>
-                                        <span class="badge rounded-pill">22</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            $1200 - $1400
-                                        </span>
-                                        <span class="badge rounded-pill">67</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            $1500 - $1800
-                                        </span>
-                                        <span class="badge rounded-pill">12</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            $2000 - $3000
-                                        </span>
-                                        <span class="badge rounded-pill">26</span>
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -652,8 +293,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <div>
-                          <?php foreach ($jobs as $job): ?>
+                        <?php foreach ($jobs as $job): ?>
                             <div class="pxp-jobs-card-3 pxp-has-border mb-4">
                               <div class="row align-items-center justify-content-between">
                                 <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
@@ -665,24 +307,22 @@
                                   </a>
                                   <div class="pxp-jobs-card-3-details">
                                     <a href="#" class="pxp-jobs-card-3-location">
-                                      <span class="fa fa-globe"></span> <?= esc($job['loc']) ?>
+                                      <span class="fa fa-globe"></span><?= esc($job['loc']) ?>
                                     </a>
-                                    <div class="pxp-jobs-card-3-type"><?= esc($job['type']) ?>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
-                                    <a href="#" class="pxp-jobs-card-3-category mb-2">
-                                      <div class="pxp-jobs-card-3-category-label"><?= esc($job['category']) ?>
-                                      </div>
-                                    </a>
-                                  </div>
-                                </div>    
-                                <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
-                                  <a href="<?= base_url('/getformregistration') ?>" class="btn rounded-pill pxp-card-btn">Apply</a>
+                                  <div class="pxp-jobs-card-3-type"><?= esc($job['type']) ?></div>
                                 </div>
                               </div>
+                              <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
+                                <a href="#" class="pxp-jobs-card-3-category mb-2">
+                                  <div class="pxp-jobs-card-3-category-label"><?= esc($job['category']) ?></div>
+                                </a>
+                              </div>
+                              <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
+                                <a href="<?= base_url('/getformregistration') ?>" class="btn rounded-pill pxp-card-btn">Apply</a>
+                              </div>
                             </div>
-                          <?php endforeach; ?>
+                          </div>
+                        <?php endforeach; ?>
                         </div>
 
 
@@ -707,11 +347,7 @@
             </div>
         </section>
 
-   
 
-
-
-     
 
         <footer class="pxp-main-footer mt-100">
             <div class="pxp-main-footer-top pt-100 pb-100" style="background-color: var(--pxpMainColorLight);">
@@ -786,11 +422,11 @@
                     </div>
                 </div>
             </div>
-            <div class="pxp-main-footer-bottom" style="background-color: var(--pxpSecondaryColor);">
+            <div class="pxp-main-footer-bottom" style="background-color: var(--pxpMainColorLight);">
                 <div class="pxp-container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-lg-auto">
-                            <div class="pxp-footer-copyright pxp-text-light">© 2021 Jobster. All Right Reserved.</div>
+                            <div class="pxp-footer-copyright pxp-text-light">© 2025 ANP. All Right Reserved.</div>
                         </div>
                         <div class="col-lg-auto">
                             <div class="pxp-footer-social mt-3 mt-lg-0">
@@ -815,28 +451,26 @@
                     </div>
                     <div class="modal-body">
                         <div class="pxp-user-modal-fig text-center">
-                            <img src="images/signin-fig.png" alt="Sign in">
+                            <img src="<?= base_url('assets/images/signin-fig.png')?>" alt="Sign in">
                         </div>
                         <h5 class="modal-title text-center mt-4" id="signinModal">Welcome back!</h5>
-                        <form class="mt-4">
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="pxp-signin-email" placeholder="Email address">
+                                <input type="email" class="form-control" id="email" placeholder="Email address">
                                 <label for="pxp-signin-email">Email address</label>
                                 <span class="fa fa-envelope-o"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="pxp-signin-password" placeholder="Password">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
                                 <label for="pxp-signin-password">Password</label>
                                 <span class="fa fa-lock"></span>
                             </div>
-                            <a href="#" class="btn rounded-pill pxp-modal-cta">Continue</a>
+                              <button type="submit" class="btn rounded-pill pxp-modal-cta w-100" onclick="fn_login()">Login</button>
                             <div class="mt-4 text-center pxp-modal-small">
                                 <a href="#" class="pxp-modal-link">Forgot password</a>
                             </div>
                             <div class="mt-4 text-center pxp-modal-small">
-                                New to Jobster? <a role="button" class="" data-bs-target="#pxp-signup-modal" data-bs-toggle="modal" data-bs-dismiss="modal">Create an account</a>
+                                New to Account? <a role="button" class="" data-bs-target="#pxp-signup-modal" data-bs-toggle="modal" data-bs-dismiss="modal">Create an account</a>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -864,7 +498,7 @@
                                 <label for="pxp-signup-password">Create password</label>
                                 <span class="fa fa-lock"></span>
                             </div>
-                            <button type="submit" class="btn rounded-pill pxp-modal-cta w-100" onclick="fn_login()">Login</button>
+                            <a href="#" class="btn rounded-pill pxp-modal-cta">Continue</a>
                             <div class="mt-4 text-center pxp-modal-small">
                                 Already have an account? <a role="button" class="" data-bs-target="#pxp-signin-modal" data-bs-toggle="modal">Sign in</a>
                             </div>
@@ -874,40 +508,44 @@
             </div>
         </div>
 
-      <script src="<?= base_url('aseets/js/jquery-3.4.1.min.js') ?>"></script>
-      <script src="<?= base_url('aseets/js/bootstrap.bundle.min.js') ?>"></script>
-      <script src="<?= base_url('aseets/js/owl.carousel.min.js') ?>"></script>
-      <script src="<?= base_url('aseets/js/nav.js') ?>"></script>
-      <script src="<?= base_url('aseets/js/main.js') ?>"></script>
+        <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
+      <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
+      <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
+      <script src="<?= base_url('assets/js/nav.js') ?>"></script>
+      <script src="<?= base_url('assets/js/main.js') ?>"></script>
 
       <script>
+          function fn_login ()
+        {
+          var email = ('#email').val();
+          var password = ('#password').val();
+          
+        }
 
-            $(document).ready(function() {
-                $('.pxp-hero-searches-carousel').owlCarousel({
-                    loop: true,
-                    margin: 0,
-                    nav: true,
-                    dots: false,
-                    autoplay: true,
-                    autoplayTimeout: 3000,
-                    autoplayHoverPause: true,
-                    responsiveClass: true,
-                    responsive: {
-                        0: {
-                            items: 1
-                        },
-                        600: {
-                            items: 2
-                        },
-                        1000: {
-                            items: 3
-                        }
-                    }
-                });
-            });
+    async function fn_login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
 
-
-      </script>
+      try {
+        const response = await fetch('admin/login', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('result').innerText = 'Login berhasil!';
+          window.location.href = '<?= base_url('admin/dashboard') ?>';
+        } else {
+          document.getElementById('result').innerText = data.message || 'Login gagal';
+        }
+      } catch (err) {
+        document.getElementById('result').innerText = 'Error: ' + err.message;
+      }
+    }
+  </script>
     </body>
 </html>

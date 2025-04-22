@@ -101,10 +101,31 @@ class Md_adminpanel extends Model
       return $this->db->table('tbl_managementjobs')->update($data, ['id' => $id]);
   }
 
-  public function fn_login($email){
-    $query = $this->db->query("SELECT * FROM tbl_password WHERE email = ? AND isdeleted = 0", [$email]);
-    return $query->getRowArray();
+  public function fn_login($email)
+  {
+      // Ambil dari tbl_employee berdasarkan email
+      $employee = $this->db->table('tbl_employee')
+          ->select('id as idemployee')
+          ->where('email', $email)
+          ->get()
+          ->getRowArray();
+  
+      if ($employee) {
+          // Cek apakah idemployee ada di tbl_password
+          $check = $this->db->table('tbl_password')
+              ->where('idemployee', $employee['idemployee'])
+              ->get()
+              ->getRowArray();
+  
+          if ($check) {
+              return $employee; // Login berhasil
+          }
+      }
+  
+      return null; // Login gagal
   }
+  
+
 
   
 
