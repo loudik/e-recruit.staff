@@ -60,7 +60,7 @@
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Home</a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs GIP</a>
+                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
                             </li>
                         </ul>
                     </nav>
