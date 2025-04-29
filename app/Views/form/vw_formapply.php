@@ -54,15 +54,15 @@
                                 <input type="text" id="fullname" name="fullname" class="form-control rounded-pill">
                             </div>
                         </div> -->
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Fullname</label>
                             <input type="text" id="fullname" name="fullname" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Graduation Year</label>
                             <input type="text" id="graduation" name="graduation" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <div class="mb-3">
                                 <label for="sexo" class="form-label">education Level</label>
                                 <select id="educationlevel" name="educationlevel" class="form-select rounded-pill">
