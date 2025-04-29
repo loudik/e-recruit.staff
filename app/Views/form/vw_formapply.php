@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <div class="mb-3">
                                 <label for="sexo" class="form-label">Languague Skills</label>
                                 <select id="languague" name="languague" class="form-select rounded-pill">
@@ -87,7 +87,7 @@
                         </div>
 
                         
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">GPA</label>
                             <input type="text" id="gpa" name="gpa" class="form-control rounded-pill">
                         </div>
@@ -96,15 +96,15 @@
                             <label for="email" class="form-label">Email</label>
                             <input type="text" id="email" name="email" class="form-control rounded-pill">
                         </div> -->
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="dob" class="form-label">Date of Birth</label>
                             <input type="date" id="dob" name="dob" class="form-control rounded-pill" value="<?= date('Y-m-d') ?>">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Place of Birth</label>
                             <input type="text" id="pob" name="pob" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <div class="mb-3">
                                 <label for="sexo" class="form-label">Sexo</label>
                                 <select id="sexo" name="sexo" class="form-select rounded-pill">
@@ -113,28 +113,28 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Address</label>
                             <input type="text" id="address" name="address" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Phone</label>
                             <input type="text" id="phone" name="phone" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Curriculum Vitae(CV)</label>
                             <input type="file" id="cv" name="cv" class="form-control rounded-pill">
                         </div>
 
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Diploma</label>
                             <input type="file" id="diploma" name="diploma" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Transkrip</label>
                             <input type="file" id="transcript" name="transcript" class="form-control rounded-pill">
                         </div>
-                        <div class="col-md-6 col-xxl-3">
+                        <div class="col-md-6 col-xxl-6">
                             <label for="pob" class="form-label">Cover Letter</label>
                             <input type="file" id="coverletter" name="coverletter" class="form-control rounded-pill">
                         </div>
