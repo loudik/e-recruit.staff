@@ -82,7 +82,7 @@
                                 <form class="row gx-3 align-items-center" action="jobs-list-1.html">
                                     <div class="col-12 col-sm">
                                         <div class="mb-3 mb-sm-0">
-                                            <input type="text" class="form-control" placeholder="Job Title or Keyword">
+                                            <input type="text" class="form-control" placeholder="Job Titless or Keyword">
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm pxp-has-left-border">
@@ -148,13 +148,8 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="pxp-hero-right-bg-card pxp-has-animation"></div>
         </section>
-
-
-
         <section class="mt-100">
             <div class="pxp-container">
                 <div class="row">
@@ -169,7 +164,7 @@
                                 <div class="mt-2 mt-lg-3">
                                     <div class="input-group">
                                         <span class="input-group-text"><span class="fa fa-search"></span></span>
-                                        <input type="text" class="form-control" placeholder="Job Title or Keyword">
+                                        <input type="text" class="form-control" placeholder="Job Titles or Keyword">
                                     </div>
                                 </div>
                                 <h3 class="mt-3 mt-lg-4">Category</h3>
