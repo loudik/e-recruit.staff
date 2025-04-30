@@ -41,13 +41,15 @@
             <p class="pxp-text-light">Please Complete All Required</p>
             <div class="row mt-4 mt-lg-5">
               <div class="col-xxl-6">
-                <div class="mb-3">
-                  <label for="pxp-company-job-title" class="form-label">Jobs</label>
-                  <input type="text" id="jobs" name="jobs" class="form-control rounded-pill"
-                  <?php foreach ($data['jobs'] as $job): ?>
-                      <option value="<?= esc($job['jobs']) ?>" readonly></option>
-                    <?php endforeach; ?>
-                </div>
+              <div class="mb-3">
+  <label for="jobs" class="form-label">Jobs</label>
+  <select id="jobs" name="jobs" class="form-select rounded-pill">
+    <?php foreach ($data['jobs'] as $job): ?>
+      <option value="<?= esc($job['id']) ?>"><?= esc($job['jobs']) ?></option>
+    <?php endforeach; ?>
+  </select>
+</div>
+
               </div>
               <div class="col-md-6 col-xxl-6">
                 <label for="pob" class="form-label">Fullname</label>
@@ -71,7 +73,7 @@
               <div class="col-md-6 col-xxl-6">
                 <div class="mb-3">
                   <label for="sexo" class="form-label">Languague Skills</label>
-                  <select id="languague" name="languague" class="form-select rounded-pill">
+                  <select id="language" name="languague" class="form-select rounded-pill">
                     <option value="Goog">Good</option>
                     <option value="Average">Average</option>
                     <option value="Bad">Bad</option>
@@ -179,59 +181,70 @@
         <script src="<?= base_url('assets/js/main.js') ?>"></script>
         <script>
 
+
             
-function fn_savedata() {
-    var formData = new FormData();
-    formData.append('jobs', $('#jobs').val());
-    formData.append('fullname', $('#fullname').val());
-    formData.append('dob', $('#dob').val());
-    formData.append('pob', $('#pob').val());
-    formData.append('sexo', $('#sexo').val());
-    formData.append('address', $('#address').val());
-    formData.append('phone', $('#phone').val());
-    formData.append('educationlevel', $('#educationlevel').val());
-    formData.append('graduation', $('#graduation').val());
-    formData.append('gpa', $('#gpa').val());
-    formData.append('language', $('#language').val());
-    formData.append('cv', $('#cv')[0].files[0]);
-    formData.append('diploma', $('#diploma')[0].files[0]); 
-    formData.append('transcript', $('#transcript')[0].files[0]);
-    formData.append('coverletter', $('#coverletter')[0].files[0]);
+      function fn_savedata() {
+          var formData = new FormData();
+          formData.append('jobs', $('#jobs').val());
+          formData.append('fullname', $('#fullname').val());
+          formData.append('dob', $('#dob').val());
+          formData.append('pob', $('#pob').val());
+          formData.append('sexo', $('#sexo').val());
+          formData.append('address', $('#address').val());
+          formData.append('phone', $('#phone').val());
+          formData.append('educationlevel', $('#educationlevel').val());
+          formData.append('graduation', $('#graduation').val());
+          formData.append('gpa', $('#gpa').val());
+          formData.append('language', $('#language').val());
 
-    if (!$('#fullname').val()) {
-        alert('Please enter your fullname!');
-        return;
-    }
-    if (!$('#dob').val()) {
-        alert('Please enter your date of birth!');
-        return;
-    }
-    if (!$('#pob').val()) {
-        alert('Please enter your place of birth!');
-        return;
-    }
+          if ($('#cv')[0].files.length > 0) {
+              formData.append('cv', $('#cv')[0].files[0]);
+          }
 
-    $.ajax({
-        url: '<?= base_url('submitdataregistration') ?>',
-        type: 'POST',
-        dataType: 'json',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            if (response.response === 'success') {
-                var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
-                myModal.show();
-            } else {
-                alert('Failed: ' + response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            alert('Error saving data: ' + xhr.status + ' - ' + error);
-        }
-    });
-}
+          if ($('#coverletter')[0].files.length > 0) {
+              formData.append('coverletter', $('#coverletter')[0].files[0]);
+          }
+          if ($('#diploma')[0].files.length > 0) {
+              formData.append('diploma', $('#diploma')[0].files[0]);
+          }
+          if ($('#transcript')[0].files.length > 0) {
+            formData.append('transcript', $('#transcript')[0].files[0]);
+          }
+
+          if (!$('#fullname').val()) {
+              alert('Please enter your fullname!');
+              return;
+          }
+          if (!$('#dob').val()) {
+              alert('Please enter your date of birth!');
+              return;
+          }
+          if (!$('#pob').val()) {
+              alert('Please enter your place of birth!');
+              return;
+          }
+
+          $.ajax({
+              url: '<?= base_url('submitdataregistration') ?>',
+              type: 'POST',
+              dataType: 'json',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(response) {
+                  if (response.response === 'success') {
+                      var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
+                      myModal.show();
+                  } else {
+                      alert('Failed: ' + response.message);
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.error(xhr.responseText);
+                  alert('Error saving data: ' + xhr.status + ' - ' + error);
+              }
+          });
+      }
 
 
     </script>
