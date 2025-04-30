@@ -9,7 +9,7 @@ $routes->get('/', 'Home::index');
 
 // FORM REGISTRATION
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');
-$routes->post('/submitdataregistration', 'Formapply::fn_submitdataregistration');
+$routes->post('submitdataregistration', 'Formapply::fn_submitdataregistration');
 
 
 //Admin

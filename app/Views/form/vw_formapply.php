@@ -183,7 +183,6 @@
           function fn_savedata() 
           {
             var formData = new FormData();
-            formData.append('jobs', $('#jobs').val());
             formData.append('fullname', $('#fullname').val());
             formData.append('email', $('#email').val());
             formData.append('dob', $('#dob').val());
@@ -205,10 +204,10 @@
                 alert('Please enter your fullname!');
                 return;
             }
-            if (!$('#email').val()) {
-                alert('Please enter your email!');
-                return;
-            }
+            // if (!$('#email').val()) {
+            //     alert('Please enter your email!');
+            //     return;
+            // }
             if (!$('#dob').val()) {
                 alert('Please enter your date of birth!');
                 return;

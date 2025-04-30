@@ -22,26 +22,25 @@ class Formapply extends BaseController
 
     public function fn_submitdataregistration()
     {
-        $jobs = $this->request->getGet('jobs');
-        $fullname = $this->request->getPost('fullname');
-        $email = $this->request->getPost('email');
-        $phone = $this->request->getPost('phone');
-        $address = $this->request->getPost('address');
-        $sexo = $this->request->getPost('sexo');
-        $dob = $this->request->getPost('dob');
-        $pob = $this->request->getPost('pob');
-        $educationlevel = $this->request->getPost('educationlevel');
-        $graduation = $this->request->getPost('graduation');
-        $gpa = $this->request->getPost('gpa');
-        $language = $this->request->getPost('language');
-        $application = $this->request->getPost('application');
-        $cv = $this->request->getFile('cv');
-        $coverletter = $this->request->getFile('coverletter');
-        $diploma = $this->request->getFile('diploma');
-        $transcript = $this->request->getFile('transcript');
+      $fullname = $this->request->getPost('fullname');
+      $email = $this->request->getPost('email');
+      $phone = $this->request->getPost('phone');
+      $address = $this->request->getPost('address');
+      $sexo = $this->request->getPost('sexo');
+      $dob = $this->request->getPost('dob');
+      $pob = $this->request->getPost('pob');
+      $educationlevel = $this->request->getPost('educationlevel');
+      $graduation = $this->request->getPost('graduation');
+      $gpa = $this->request->getPost('gpa');
+      $language = $this->request->getPost('language');
+      $application = $this->request->getPost('application');
+      $cv = $this->request->getFile('cv');
+      $coverletter = $this->request->getFile('coverletter');
+      $diploma = $this->request->getFile('diploma');
+      $transcript = $this->request->getFile('transcript');
 
-        $uploadPath = ROOTPATH . 'home/app/upload/recruitment';
-        $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+      $uploadPath = ROOTPATH . 'home/app/upload/recruitment';
+      $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
 
         if ($cv->isValid() && $coverletter->isValid() && $diploma->isValid() && $transcript->isValid()) {
             $cv->move($uploadPath, $cv->getRandomName());

@@ -7,12 +7,12 @@ use CodeIgniter\Model;
 
 class Md_formregistration extends Model 
 {
-  protected $table = 'tbl_jobapplications'; 
+  protected $table = 'tbl_candidates'; 
     protected $primaryKey = 'id'; 
     protected $allowedFields = [
-        'fullname', 'email', 'phone', 'address', 'sexo', 'dob', 'pob',
-        'educationlevel', 'graduation', 'gpa', 'language', 'application',
-        'cv', 'coverletter', 'diploma', 'transcript'
+        'jobs', 'fullname', 'dob', 'pob', 'sexo', 'address', 'phone',
+        'educationlevel', 'graduation', 'gpa', 'languague',
+        'cv', 'diploma', 'transcript', 'coverletter'
     ];
 
     public function fn_submit($fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
