@@ -74,7 +74,7 @@
                 <div class="mb-3">
                   <label for="sexo" class="form-label">Languague Skills</label>
                   <select id="language" name="languague" class="form-select rounded-pill">
-                    <option value="Goog">Good</option>
+                    <option value="Good">Good</option>
                     <option value="Average">Average</option>
                     <option value="Bad">Bad</option>
                     <option value="Very Bad">Very Bad</option>
