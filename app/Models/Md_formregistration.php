@@ -11,44 +11,61 @@ class Md_formregistration extends Model
     protected $primaryKey = 'id'; 
     protected $allowedFields = [
       'idjobs', 'application', 'fullname', 'dob', 'pob', 'sexo', 'address', 'phone',
-      'email', // ← tambahkan ini
       'educationlevel', 'graduation', 'gpa',
       'language', // ← tambahkan ini
+      'application',
       'cv', 'diploma', 'transcript', 'coverletter',
       'iby', 'idt' // ← tambahkan ini
   ];
   
 
-    public function fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $gpa, $language, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
-    {
-        $query = $this->db->query("SELECT id, jobs FROM tbl_managementjobs WHERE id = ? AND isdeleted = 0", [$jobs]);
-        $result = $query->getRowArray();
-    
-        if (!$result) return false;
-    
-        $data = [
-            'fullname' => $fullname,
-            'idjobs' => $result['id'],
-            'application' => $result['jobs'],
-            'email' => $email,
-            'phone' => $phone,
-            'address' => $address,
-            'sexo' => $sexo,
-            'dob' => $dob,
-            'pob' => $pob,
-            'educationlevel' => $educationlevel,
-            'gpa' => $gpa,
-            'language' => $language,
-            'cv' => $newCvName,
-            'coverletter' => $newCoverletterName,
-            'diploma' => $newDiplomaName,
-            'transcript' => $newTranscriptName,
-            'iby'=> 'system',
-            'idt' => date('Y-m-d H:i:s'),
-        ];
-    
-        return $this->insert($data);
-    }
+  public function fn_submit(
+    $jobs,
+    $fullname,
+    $phone,
+    $address,
+    $sexo,
+    $dob,
+    $pob,
+    $educationlevel,
+    $gpa,
+    $language,
+    $newCvName,
+    $newCoverletterName,
+    $newDiplomaName,
+    $newTranscriptName
+) {
+    $result = $this->db->table('tbl_managementjobs')
+        ->select('id, jobs')
+        ->where(['id' => $jobs, 'isdeleted' => 0])
+        ->get()
+        ->getRowArray();
+
+    if (!$result) return false;
+
+    $data = [
+        'fullname' => $fullname,
+        'idjobs' => $result['id'],
+        'application' => $result['jobs'],
+        'phone' => $phone,
+        'address' => $address,
+        'sexo' => $sexo,
+        'dob' => $dob,
+        'pob' => $pob,
+        'educationlevel' => $educationlevel,
+        'gpa' => $gpa,
+        'language' => $language,
+        'cv' => $newCvName,
+        'coverletter' => $newCoverletterName,
+        'diploma' => $newDiplomaName,
+        'transcript' => $newTranscriptName,
+        'iby' => 'system',
+        'idt' => date('Y-m-d H:i:s'),
+    ];
+
+    return $this->db->table('tbl_applicationjobs')->insert($data);
+}
+
     
 
   public function fn_getjobs()

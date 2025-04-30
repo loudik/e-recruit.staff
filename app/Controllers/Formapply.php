@@ -7,9 +7,11 @@ use App\Models\Md_formregistration;
 
 class Formapply extends BaseController
 {
-    public function __construct()
+  protected $Md_formregistration; 
+
+  public function __construct()
     {
-        $this->Md_formregistration = new Md_formregistration();
+      $this->Md_formregistration = new Md_formregistration(); 
     }
     public function fn_getdataregistration()
     {
@@ -21,65 +23,94 @@ class Formapply extends BaseController
     }
 
     public function fn_submitdataregistration()
-    {
-      $jobs = $this->request->getPost('jobs');
-      $fullname = $this->request->getPost('fullname');
-      $email = $this->request->getPost('email');
-      $phone = $this->request->getPost('phone');
-      $address = $this->request->getPost('address');
-      $sexo = $this->request->getPost('sexo');
-      $dob = $this->request->getPost('dob');
-      $pob = $this->request->getPost('pob');
-      $educationlevel = $this->request->getPost('educationlevel');
-      $graduation = $this->request->getPost('graduation');
-      $gpa = $this->request->getPost('gpa');
-      $language = $this->request->getPost('language');
-      $application = $this->request->getPost('application');
-      $cv = $this->request->getFile('cv');
-      $coverletter = $this->request->getFile('coverletter');
-      $diploma = $this->request->getFile('diploma');
-      $transcript = $this->request->getFile('transcript');
+{
 
+  header("Access-Control-Allow-Origin: *"); // Ganti * dengan asal domain jika perlu
+  header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+  header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+  // Tangani preflight OPTIONS request
+  if ($this->request->getMethod() === 'options') {
+      return $this->response->setStatusCode(200);
+  }
+    $jobs = $this->request->getPost('jobs');
+    $fullname = $this->request->getPost('fullname');
+    $phone = $this->request->getPost('phone');
+    $address = $this->request->getPost('address');
+    $sexo = $this->request->getPost('sexo');
+    $dob = $this->request->getPost('dob');
+    $pob = $this->request->getPost('pob');
+    $educationlevel = $this->request->getPost('educationlevel');
+    $graduation = $this->request->getPost('graduation');
+    $gpa = $this->request->getPost('gpa');
+    $language = $this->request->getPost('language');
+    $application = $this->request->getPost('application');
 
-      $uploadPath = WRITEPATH . 'uploads/formapplicant/' . date('Y-m-d') . '/';
-      $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+    // Files
+    $cv = $this->request->getFile('cv');
+    $coverletter = $this->request->getFile('coverletter');
+    $diploma = $this->request->getFile('diploma');
+    $transcript = $this->request->getFile('transcript');
 
-        if ($cv->isValid() && $coverletter->isValid() && $diploma->isValid() && $transcript->isValid()) {
-            $cv->move($uploadPath, $cv->getRandomName());
-            $coverletter->move($uploadPath, $coverletter->getRandomName());
-            $diploma->move($uploadPath, $diploma->getRandomName());
-            $transcript->move($uploadPath, $transcript->getRandomName());
-            
-            $newCvName = $cv->getName();
-            $newCoverletterName = $coverletter->getName();  
-            $newDiplomaName = $diploma->getName();
-            $newTranscriptName = $transcript->getName();
+    $uploadPath = WRITEPATH . 'uploads/formapplicant/';
+    $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
 
-            $addform =$this->Md_formregistration->fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
-            
-            if ($addform){
-              $data = [
-                  'response' => 'success',
-                  'message' => 'Data submitted successfully!',
-                  'data' => $addform
-              ];
-          } else {
-              log_message('error', 'Gagal submit data. Input: ' . json_encode($this->request->getPost()));
-              $data = [
-                  'response' => 'error',
-                  'message' => 'Failed to submit data!',
-              ];
-          }
-          
-        } else {
-          $data = [
-            'response' => 'error',
-            'message' => 'File upload failed!',
-            'data' => null
-          ];
-        }
-        return $this->response->setJSON($data);
-      
+    // Buat folder jika belum ada
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0755, true);
     }
+
+    // Validasi semua file
+    $files = compact('cv', 'coverletter', 'diploma', 'transcript');
+    $newFileNames = [];
+
+    foreach ($files as $key => $file) {
+        $ext = strtolower($file->getClientExtension());
+
+        if (!$file->isValid() || !in_array($ext, $allowedExtensions)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => "File '$key' is not valid or type is not allowed!",
+            ]);
+        }
+
+        $file->move($uploadPath, $file->getRandomName());
+        $newFileNames[$key] = $file->getName();
+    }
+
+    // Simpan ke DB via model
+    $addform = $this->Md_formregistration->fn_submit(
+        $jobs,
+        $fullname,
+        $phone,
+        $address,
+        $sexo,
+        $dob,
+        $pob,
+        $educationlevel,
+        $gpa,
+        $language,
+        $newFileNames['cv'],
+        $newFileNames['coverletter'],
+        $newFileNames['diploma'],
+        $newFileNames['transcript']
+    );
+
+    if ($addform) {
+        $data = [
+            'response' => 'success',
+            'message' => 'Data submitted successfully!',
+            'data' => $addform
+        ];
+    } else {
+        log_message('error', 'Gagal submit data. Input: ' . json_encode($this->request->getPost()));
+        $data = [
+            'response' => 'error',
+            'message' => 'Failed to submit data!',
+        ];
+    }
+
+    return $this->response->setJSON($data);
+}
+
 }

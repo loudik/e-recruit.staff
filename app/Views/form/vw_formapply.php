@@ -34,7 +34,7 @@
         
     </head>
     <body style="background-color: var(--pxpMainColorLight);">
-      <div class="pxp-preloader"><span>Loading...</span></div>
+      <!-- <div class="pxp-preloader"><span>Loading...</span></div> -->
         <div class="pxp-dashboard-content">
           <div class="pxp-dashboard-content-details">
             <h3>Form Of Candidate GIP</h3>
@@ -59,7 +59,7 @@
               </div>
               <div class="col-md-6 col-xxl-6">
                 <div class="mb-3">
-                  <label for="sexo" class="form-label">education Level</label>
+                  <label for="educationlevel" class="form-label">education Level</label>
                   <select id="educationlevel" name="educationlevel" class="form-select rounded-pill">
                     <option value="D3">D3</option>
                     <option value="S1">S1</option>
@@ -180,65 +180,59 @@
         <script>
 
             
-          function fn_savedata() 
-          {
-            var formData = new FormData();
-            formData.append('jobs', $('#jobs').val());
-            formData.append('fullname', $('#fullname').val());
-            formData.append('email', $('#email').val());
-            formData.append('dob', $('#dob').val());
-            formData.append('pob', $('#pob').val());
-            formData.append('sexo', $('#sexo').val());
-            formData.append('address', $('#address').val());
-            formData.append('phone', $('#phone').val());
-            formData.append('educationlevel', $('#educationlevel').val());
-            formData.append('graduation', $('#graduation').val());
-            formData.append('gpa', $('#gpa').val());
-            formData.append('languague', $('#languague').val());
-            formData.append('application', $('#application').val());
-            formData.append('cv', $('#cv')[0].files[0]);
-            formData.append('diploma', $('#diploma')[0].files[0]); 
-            formData.append('transcript', $('#transcript')[0].files[0]);
-            formData.append('coverletter', $('#coverletter')[0].files[0]);
+function fn_savedata() {
+    var formData = new FormData();
+    formData.append('jobs', $('#jobs').val());
+    formData.append('fullname', $('#fullname').val());
+    formData.append('dob', $('#dob').val());
+    formData.append('pob', $('#pob').val());
+    formData.append('sexo', $('#sexo').val());
+    formData.append('address', $('#address').val());
+    formData.append('phone', $('#phone').val());
+    formData.append('educationlevel', $('#educationlevel').val());
+    formData.append('graduation', $('#graduation').val());
+    formData.append('gpa', $('#gpa').val());
+    formData.append('language', $('#language').val());
+    formData.append('cv', $('#cv')[0].files[0]);
+    formData.append('diploma', $('#diploma')[0].files[0]); 
+    formData.append('transcript', $('#transcript')[0].files[0]);
+    formData.append('coverletter', $('#coverletter')[0].files[0]);
 
-            if (!$('#fullname').val()) {
-                alert('Please enter your fullname!');
-                return;
-            }
-            // if (!$('#email').val()) {
-            //     alert('Please enter your email!');
-            //     return;
-            // }
-            if (!$('#dob').val()) {
-                alert('Please enter your date of birth!');
-                return;
-            }
-            if (!$('#pob').val()) {
-                alert('Please enter your place of birth!');
-                return;
-            }
+    if (!$('#fullname').val()) {
+        alert('Please enter your fullname!');
+        return;
+    }
+    if (!$('#dob').val()) {
+        alert('Please enter your date of birth!');
+        return;
+    }
+    if (!$('#pob').val()) {
+        alert('Please enter your place of birth!');
+        return;
+    }
 
-            $.ajax({
-                url: '<?= base_url('submitdataregistration') ?>',
-                type: 'POST',
-                dataType: 'json',
-                data: formData,
-                processData: false, 
-                contentType: false, 
-                success: function(response) {
-                  if (response.status === 'success') {
-                  // Tampilkan modal login
-                  var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
-                  myModal.show();
-                  } else {
-                      alert('Failed: ' + response.message);
-                  }
-                },
-                error: function(xhr, status, error) {
-                    alert('Error saving data!');
-                }
-            });
-          }
+    $.ajax({
+        url: '<?= base_url('submitdataregistration') ?>',
+        type: 'POST',
+        dataType: 'json',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.response === 'success') {
+                var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
+                myModal.show();
+            } else {
+                alert('Failed: ' + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            alert('Error saving data: ' + xhr.status + ' - ' + error);
+        }
+    });
+}
+
 
     </script>
   </body>
