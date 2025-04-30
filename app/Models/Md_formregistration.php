@@ -24,11 +24,13 @@ class Md_formregistration extends Model
           return false; 
       }
   
-      $idunit = $result['id'];
-      $unitname = $result['unitname']; 
+      $idjobs = $result['id'];
+      $jobs = $result['jobs']; 
 
        $data = [
             'fullname' => $fullname,
+            'idjobs' => $idjobs,
+            'jobs' => $jobs,
             'email' => $email,
             'phone' => $phone,
             'address' => $address,
@@ -47,7 +49,7 @@ class Md_formregistration extends Model
             'iby'=> 'system',
             'idt' => date('Y-m-d H:i:s'),
         ];
-        return $this->insert($data);
+        return $this->insert(tbl_managementjobs, $data); // Simpan data ke tabel tbl_candidates
     }
 
 
