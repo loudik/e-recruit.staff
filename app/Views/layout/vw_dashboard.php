@@ -160,13 +160,6 @@
                                 <a role="button"><span class="fa fa-sliders"></span></a>
                             </div>
                             <div class="mt-4 mt-lg-0 d-lg-block pxp-list-side-filter-panel">
-                                <h3>Search by Keywords</h3>
-                                <div class="mt-2 mt-lg-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><span class="fa fa-search"></span></span>
-                                        <input type="text" class="form-control" placeholder="Job Titles or Keyword">
-                                    </div>
-                                </div>
                                 <h3 class="mt-3 mt-lg-4">Category</h3>
                                 <div class="mt-2 mt-lg-3">
                                     <div class="input-group">

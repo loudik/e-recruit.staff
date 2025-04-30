@@ -11,13 +11,17 @@ class Formapply extends BaseController
     }
     public function fn_getdataregistration()
     {
-     $id = $this->request->getGet('id');
-     $data = $this->Md_formregistration->fn_getdata($id);
+      $id = $this->request->getGet('id');
+      $data = $this->Md_formregistration->fn_getdata($id);
+      $data['jobs'] = $this->Md_formregistration->fn_getjobs();
+      var_dump($data['jobs']);
+      die();
       return view('form/vw_formapply', ['data' => $data]);
     }
 
     public function fn_submitdataregistration()
     {
+        $jobs = $this->request->getGet('jobs');
         $fullname = $this->request->getPost('fullname');
         $email = $this->request->getPost('email');
         $phone = $this->request->getPost('phone');
@@ -34,11 +38,8 @@ class Formapply extends BaseController
         $coverletter = $this->request->getFile('coverletter');
         $diploma = $this->request->getFile('diploma');
         $transcript = $this->request->getFile('transcript');
-        
+
         $uploadPath = ROOTPATH . 'home/app/upload/recruitment';
-
-        // var_dump($fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application);return false;
-
         $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
 
         if ($cv->isValid() && $coverletter->isValid() && $diploma->isValid() && $transcript->isValid()) {
@@ -51,8 +52,7 @@ class Formapply extends BaseController
             $newCoverletterName = $coverletter->getName();  
             $newDiplomaName = $diploma->getName();
             $newTranscriptName = $transcript->getName();
-
-            $addform =$this->Md_formregistration->fn_submit($fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
+            $addform =$this->Md_formregistration->fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
 
             if ($addform){
                 $data =[

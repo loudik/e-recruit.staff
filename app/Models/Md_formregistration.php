@@ -15,9 +15,10 @@ class Md_formregistration extends Model
         'cv', 'coverletter', 'diploma', 'transcript'
     ];
 
-    public function fn_submit($fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
+    public function fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
     {
        $data = [
+            // 'jobs' => $jobs,
             'fullname' => $fullname,
             'email' => $email,
             'phone' => $phone,
@@ -41,6 +42,17 @@ class Md_formregistration extends Model
     
 
 }
+
+public function fn_getjobs()
+{
+    return $this->db->table('tbl_managementjobs')
+        ->select('id, jobs')  // Added id in case you need it
+        ->orderBy('jobs', 'ASC')  // Added ordering
+        ->get()
+        ->getResultArray();  // Changed to get all results
+}
+
+
 
     public function fn_getdata($id)
     {
