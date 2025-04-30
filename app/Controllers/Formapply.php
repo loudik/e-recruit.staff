@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace App\Controllers;
 use App\Models\Md_formregistration;
 
@@ -11,10 +13,11 @@ class Formapply extends BaseController
     }
     public function fn_getdataregistration()
     {
-      $id = $this->request->getGet('id');
-      $data = $this->Md_formregistration->fn_getdata($id);
-      $data['jobs'] = $this->Md_formregistration->fn_getjobs();
+ 
+      $id=$this->request->getGet('id');
+      $data['jobs'] =  $this->Md_formregistration->fn_getjobs();
       return view('form/vw_formapply', ['data' => $data]);
+    
     }
 
     public function fn_submitdataregistration()

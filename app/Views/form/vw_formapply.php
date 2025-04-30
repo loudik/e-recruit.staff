@@ -44,7 +44,9 @@
                 <div class="mb-3">
                   <label for="pxp-company-job-title" class="form-label">Jobs</label>
                   <input type="text" id="jobs" name="jobs" class="form-control rounded-pill"
-                  value="<?= esc($data['jobs']['jobs'] ?? '') ?>" readonly>
+                  <?php foreach ($data['jobs'] as $job): ?>
+                      <option value="<?= esc($job['jobs']) ?>" readonly></option>
+                    <?php endforeach; ?>
                 </div>
               </div>
               <div class="col-md-6 col-xxl-6">
