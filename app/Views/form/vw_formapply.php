@@ -183,6 +183,7 @@
           function fn_savedata() 
           {
             var formData = new FormData();
+            formData.append('jobs', $('#jobs').val());
             formData.append('fullname', $('#fullname').val());
             formData.append('email', $('#email').val());
             formData.append('dob', $('#dob').val());

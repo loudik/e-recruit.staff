@@ -4,13 +4,13 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateTblJobapplications extends Migration
+class CreateTblApplicationjobs extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'id'               => ['type' => 'INT', 'auto_increment' => true, 'unsigned' => true],
-            'idjobs'           => ['type' => 'INT', 'constraint' =>11, 'null' => true],
+            'idjobs'           => ['type' => 'INT', 'constraint' => 11, 'null' => true],
             'fullname'         => ['type' => 'VARCHAR', 'constraint' => 100],
             'pob'              => ['type' => 'VARCHAR', 'constraint' => 50, 'null' => true],
             'dob'              => ['type' => 'DATE', 'null' => true],
@@ -41,13 +41,12 @@ class CreateTblJobapplications extends Migration
             'uby'              => ['type' => 'VARCHAR', 'constraint' => 100, 'null' => true],
             'udt'              => ['type' => 'DATETIME', 'null' => true],
         ]);
-
-        $this->forge->addKey('id', true); // primary key
-        $this->forge->createTable('tbl_jobapplications');
+        $this->forge->addKey('id', true);
+        $this->forge->createTable('tbl_applicationjobs');
     }
 
     public function down()
     {
-        $this->forge->dropTable('tbl_jobapplications');
+        $this->forge->dropTable('tbl_applicationjobs');
     }
 }

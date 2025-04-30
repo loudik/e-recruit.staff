@@ -15,8 +15,18 @@ class Md_formregistration extends Model
         'cv', 'diploma', 'transcript', 'coverletter'
     ];
 
-    public function fn_submit($fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
+    public function fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
     {
+      $query = $this->db->query("SELECT id, jobs FROM tbl_managementjobs WHERE id = ? AND isdeleted = 0", [$jobs]);
+      $result = $query->getRowArray();
+  
+      if (!$result) {
+          return false; 
+      }
+  
+      $idunit = $result['id'];
+      $unitname = $result['unitname']; 
+
        $data = [
             'fullname' => $fullname,
             'email' => $email,
@@ -38,19 +48,17 @@ class Md_formregistration extends Model
             'idt' => date('Y-m-d H:i:s'),
         ];
         return $this->insert($data);
-    
-
-}
+    }
 
 
-public function fn_getjobs()
-{
+  public function fn_getjobs()
+  {
     $query = $this->db->table('tbl_managementjobs')
         ->select('id, jobs') 
         ->orderBy('jobs', 'ASC') 
         ->get();
     return $query->getResultArray(); 
-}
+  }
 
 
     public function fn_getdata($id)

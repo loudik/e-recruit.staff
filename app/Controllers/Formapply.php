@@ -22,6 +22,7 @@ class Formapply extends BaseController
 
     public function fn_submitdataregistration()
     {
+      $jobs = $this->request->getPost('jobs');
       $fullname = $this->request->getPost('fullname');
       $email = $this->request->getPost('email');
       $phone = $this->request->getPost('phone');
@@ -39,7 +40,7 @@ class Formapply extends BaseController
       $diploma = $this->request->getFile('diploma');
       $transcript = $this->request->getFile('transcript');
 
-      $uploadPath = ROOTPATH . 'home/app/upload/recruitment';
+      $uploadPath = WRITEPATH . 'uploads/formapplicant/' . date('Y-m-d') . '/';
       $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
 
         if ($cv->isValid() && $coverletter->isValid() && $diploma->isValid() && $transcript->isValid()) {
@@ -55,23 +56,23 @@ class Formapply extends BaseController
             $addform =$this->Md_formregistration->fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
 
             if ($addform){
-                $data =[
-                    'response' => 'success',
-                    'message' => 'Data submitted successfully!',
-                    'data' => $addform
-                ];
+              $data =[
+                'response' => 'success',
+                'message' => 'Data submitted successfully!',
+                'data' => $addform
+              ];
             }else{
-                $data =[
-                    'response' => 'error',
-                    'message' => 'Failed to submit data!',
-                ];
+              $data =[
+                'response' => 'error',
+                'message' => 'Failed to submit data!',
+              ];
             }
         } else {
-            $data = [
-                'response' => 'error',
-                'message' => 'File upload failed!',
-                'data' => null
-            ];
+          $data = [
+            'response' => 'error',
+            'message' => 'File upload failed!',
+            'data' => null
+          ];
         }
         return $this->response->setJSON($data);
       
