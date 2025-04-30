@@ -7,30 +7,29 @@ use CodeIgniter\Model;
 
 class Md_formregistration extends Model 
 {
-  protected $table = 'tbl_candidates'; 
+  protected $table = 'tbl_applicationjobs'; 
     protected $primaryKey = 'id'; 
     protected $allowedFields = [
-        'jobs', 'fullname', 'dob', 'pob', 'sexo', 'address', 'phone',
-        'educationlevel', 'graduation', 'gpa', 'languague',
-        'cv', 'diploma', 'transcript', 'coverletter'
-    ];
+      'idjobs', 'application', 'fullname', 'dob', 'pob', 'sexo', 'address', 'phone',
+      'email', // ← tambahkan ini
+      'educationlevel', 'graduation', 'gpa',
+      'language', // ← tambahkan ini
+      'cv', 'diploma', 'transcript', 'coverletter',
+      'iby', 'idt' // ← tambahkan ini
+  ];
+  
 
-    public function fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application,$newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
+    public function fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $gpa, $language, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName)
     {
-      $query = $this->db->query("SELECT id, jobs FROM tbl_managementjobs WHERE id = ? AND isdeleted = 0", [$jobs]);
-      $result = $query->getRowArray();
-  
-      if (!$result) {
-          return false; 
-      }
-  
-      $idjobs = $result['id'];
-      $jobs = $result['jobs']; 
-
-       $data = [
+        $query = $this->db->query("SELECT id, jobs FROM tbl_managementjobs WHERE id = ? AND isdeleted = 0", [$jobs]);
+        $result = $query->getRowArray();
+    
+        if (!$result) return false;
+    
+        $data = [
             'fullname' => $fullname,
-            'idjobs' => $idjobs,
-            'jobs' => $jobs,
+            'idjobs' => $result['id'],
+            'application' => $result['jobs'],
             'email' => $email,
             'phone' => $phone,
             'address' => $address,
@@ -38,10 +37,8 @@ class Md_formregistration extends Model
             'dob' => $dob,
             'pob' => $pob,
             'educationlevel' => $educationlevel,
-            'graduation' => $graduation,
             'gpa' => $gpa,
             'language' => $language,
-            'application' => $application,
             'cv' => $newCvName,
             'coverletter' => $newCoverletterName,
             'diploma' => $newDiplomaName,
@@ -49,9 +46,10 @@ class Md_formregistration extends Model
             'iby'=> 'system',
             'idt' => date('Y-m-d H:i:s'),
         ];
-        return $this->insert(tbl_managementjobs, $data); // Simpan data ke tabel tbl_candidates
+    
+        return $this->insert($data);
     }
-
+    
 
   public function fn_getjobs()
   {

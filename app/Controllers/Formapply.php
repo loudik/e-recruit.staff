@@ -40,6 +40,8 @@ class Formapply extends BaseController
       $diploma = $this->request->getFile('diploma');
       $transcript = $this->request->getFile('transcript');
 
+
+
       $uploadPath = WRITEPATH . 'uploads/formapplicant/' . date('Y-m-d') . '/';
       $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
 
@@ -48,25 +50,28 @@ class Formapply extends BaseController
             $coverletter->move($uploadPath, $coverletter->getRandomName());
             $diploma->move($uploadPath, $diploma->getRandomName());
             $transcript->move($uploadPath, $transcript->getRandomName());
-
+            
             $newCvName = $cv->getName();
             $newCoverletterName = $coverletter->getName();  
             $newDiplomaName = $diploma->getName();
             $newTranscriptName = $transcript->getName();
-            $addform =$this->Md_formregistration->fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
 
+            $addform =$this->Md_formregistration->fn_submit($jobs,$fullname, $email, $phone, $address, $sexo, $dob, $pob, $educationlevel, $graduation, $gpa, $language, $application, $newCvName, $newCoverletterName, $newDiplomaName, $newTranscriptName);
+            
             if ($addform){
-              $data =[
-                'response' => 'success',
-                'message' => 'Data submitted successfully!',
-                'data' => $addform
+              $data = [
+                  'response' => 'success',
+                  'message' => 'Data submitted successfully!',
+                  'data' => $addform
               ];
-            }else{
-              $data =[
-                'response' => 'error',
-                'message' => 'Failed to submit data!',
+          } else {
+              log_message('error', 'Gagal submit data. Input: ' . json_encode($this->request->getPost()));
+              $data = [
+                  'response' => 'error',
+                  'message' => 'Failed to submit data!',
               ];
-            }
+          }
+          
         } else {
           $data = [
             'response' => 'error',
