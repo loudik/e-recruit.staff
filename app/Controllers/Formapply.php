@@ -14,8 +14,8 @@ class Formapply extends BaseController
       $id = $this->request->getGet('id');
       $data = $this->Md_formregistration->fn_getdata($id);
       $data['jobs'] = $this->Md_formregistration->fn_getjobs();
-      var_dump($data['jobs']);
-      die();
+
+      
       return view('form/vw_formapply', ['data' => $data]);
     }
 
