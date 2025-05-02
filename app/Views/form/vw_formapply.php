@@ -189,66 +189,109 @@
 
             
       function fn_savedata() {
-          var formData = new FormData();
-          formData.append('jobs', $('#jobs').val());
-          formData.append('fullname', $('#fullname').val());
-          formData.append('dob', $('#dob').val());
-          formData.append('pob', $('#pob').val());
-          formData.append('sexo', $('#sexo').val());
-          formData.append('address', $('#address').val());
-          formData.append('phone', $('#phone').val());
-          formData.append('educationlevel', $('#educationlevel').val());
-          formData.append('graduation', $('#graduation').val());
-          formData.append('gpa', $('#gpa').val());
-          formData.append('language', $('#language').val());
+        var formData = new FormData();
+        formData.append('jobs', $('#jobs').val());
+        formData.append('fullname', $('#fullname').val());
+        formData.append('dob', $('#dob').val());
+        formData.append('pob', $('#pob').val());
+        formData.append('sexo', $('#sexo').val());
+        formData.append('address', $('#address').val());
+        formData.append('phone', $('#phone').val());
+        formData.append('educationlevel', $('#educationlevel').val());
+        formData.append('graduation', $('#graduation').val());
+        formData.append('gpa', $('#gpa').val());
+        formData.append('language', $('#language').val());
 
-          if ($('#cv')[0].files.length > 0) {
-              formData.append('cv', $('#cv')[0].files[0]);
-          }
+        if ($('#cv')[0].files.length > 0) {
+            formData.append('cv', $('#cv')[0].files[0]);
+        }
 
-          if ($('#coverletter')[0].files.length > 0) {
-              formData.append('coverletter', $('#coverletter')[0].files[0]);
-          }
-          if ($('#diploma')[0].files.length > 0) {
-              formData.append('diploma', $('#diploma')[0].files[0]);
-          }
-          if ($('#transcript')[0].files.length > 0) {
-            formData.append('transcript', $('#transcript')[0].files[0]);
-          }
+        if ($('#coverletter')[0].files.length > 0) {
+            formData.append('coverletter', $('#coverletter')[0].files[0]);
+        }
+        if ($('#diploma')[0].files.length > 0) {
+            formData.append('diploma', $('#diploma')[0].files[0]);
+        }
+        if ($('#transcript')[0].files.length > 0) {
+          formData.append('transcript', $('#transcript')[0].files[0]);
+        }
 
-          if (!$('#fullname').val()) {
-              alert('Please enter your fullname!');
-              return;
-          }
-          if (!$('#dob').val()) {
-              alert('Please enter your date of birth!');
-              return;
-          }
-          if (!$('#pob').val()) {
-              alert('Please enter your place of birth!');
-              return;
-          }
+        if (!$('#fullname').val()) {
+            alert('Please enter your fullname!');
+            return;
+        }
+        if (!$('#dob').val()) {
+            alert('Please enter your date of birth!');
+            return;
+        }
+        if (!$('#pob').val()) {
+            alert('Please enter your place of birth!');
+            return;
+        }
 
-          $.ajax({
-              url: '<?= base_url('submitdataregistration') ?>',
-              type: 'POST',
-              dataType: 'json',
-              data: formData,
-              processData: false,
-              contentType: false,
-              success: function(response) {
-                  if (response.response === 'success') {
-                      var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
-                      myModal.show();
-                  } else {
-                      alert('Failed: ' + response.message);
-                  }
-              },
-              error: function(xhr, status, error) {
-                  console.error(xhr.responseText);
-                  alert('Error saving data: ' + xhr.status + ' - ' + error);
-              }
-          });
+        $.ajax({
+            url: '<?= base_url('submitdataregistration') ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.response === 'success') {
+                    var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
+                    myModal.show();
+                } else {
+                    alert('Failed: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Error saving data: ' + xhr.status + ' - ' + error);
+            }
+        });
+      }
+
+      function fn_comfirm() {
+        var email = $('#email').val();
+        $.ajax({
+            url: '<?= base_url('comfirmemail') ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: { email: email },
+            success: function(response) {
+                if (response.response === 'success') {
+                    var myModal = new bootstrap.Modal(document.getElementById('modalotp'));
+                    myModal.show();
+                } else {
+                    alert('Failed: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Error saving data: ' + xhr.status + ' - ' + error);
+            }
+        });
+      }
+
+      function fn_otp() {
+        var otp = $('#otp').val();
+        $.ajax({
+            url: '<?= base_url('comfirmotp') ?>',
+            type: 'POST',
+            dataType: 'json',
+            data: { otp: otp },
+            success: function(response) {
+                if (response.response === 'success') {
+                  alert('Success! Your data has been submitted.');
+                } else {
+                  alert('Failed: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+              console.error(xhr.responseText);
+              alert('Error saving data: ' + xhr.status + ' - ' + error);
+            }
+        });
       }
 
 
