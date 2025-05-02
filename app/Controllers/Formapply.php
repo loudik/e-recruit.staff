@@ -74,8 +74,10 @@ class Formapply extends BaseController
             ]);
         }
 
-        $file->move($uploadPath, $file->getRandomName());
-        $newFileNames[$key] = $file->getName();
+        $newFileNames = strtoupper($key) . '_' . date('YmdHis') . '.' . $ext;
+        $file->move($uploadPath, $newFileNames);
+        $newFileNames[$key] = $newFileNames; 
+
     }
 
     // Simpan ke DB via model

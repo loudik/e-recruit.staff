@@ -142,35 +142,40 @@
                 </div>
                 <div class="modal-body">
                   <div class="pxp-user-modal-fig text-center">
-                    <img src="images/signin-fig.png" alt="Sign in">
+                    <img src="<?= base_url('assets/images/signin-fig.png');?>" alt="Sign in">
                   </div>
                   <h5 class="modal-title text-center mt-4" id="signinModal">Welcome back!</h5>
                   <form class="mt-4">
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="pxp-signin-email" placeholder="Email address">
-                      <label for="pxp-signin-email">Email address</label>
+                      <input type="email" class="form-control" id="email" placeholder="Email address">
+                      <label for="email">Email address</label>
                       <span class="fa fa-envelope-o"></span>
                     </div>
-                    <div class="form-floating mb-3">
-                      <input type="password" class="form-control" id="pxp-signin-password" placeholder="Password">
-                      <label for="pxp-signin-password">Password</label>
-                      <span class="fa fa-lock"></span>
-                    </div>
-                    <a href="#" class="btn rounded-pill pxp-modal-cta">Continue</a>
-                    <div class="mt-4 text-center pxp-modal-small">
-                      <a href="#" class="pxp-modal-link">Forgot password</a>
-                    </div>
-                    <div class="mt-4 text-center pxp-modal-small">
-                      New to Jobster? <a role="button" class="" data-bs-target="#pxp-signup-modal" data-bs-toggle="modal" data-bs-dismiss="modal">Create an account</a>
+                    <div class="mt-2 mb-2 mt-lg-5 text-center">
+                      <button class="btn rounded-pill pxp-section-cta" onclick="fn_comfirm()">Comfirm</button>
                     </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <footer>
-            <div class="pxp-footer-copyright pxp-text-light">© 2021 Jobster. All Right Reserved.</div>
-          </footer>
+
+
+          <!-- Modal OTP -->
+        <div class="modal fade" id="modalotp" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-body text-center">
+                <h6 class="mb-3">Enter OTP Code</h6>
+                <input type="text" class="form-control text-center mb-3" id="otp" placeholder="123456">
+                <button type="button" class="btn btn-primary w-100" onclick="fn_otp()">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
         </div>
 
         <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
