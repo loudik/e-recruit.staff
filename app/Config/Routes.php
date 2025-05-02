@@ -10,6 +10,7 @@ $routes->get('/', 'Home::index');
 // FORM REGISTRATION
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');
 $routes->post('submitdataregistration', 'Formapply::fn_submitdataregistration');
+$routes->post('/comfirmemail', 'Formapply::fn_comfirmemail');
 
 
 //Admin
@@ -27,6 +28,8 @@ $routes->post('admin/managejobs/editjobs', 'Admin::fn_editJob');
 $routes->post('admin/managejobs/updatejobs', 'Admin::fn_updateJob');
 $routes->post('admin/managejobs/deleteJob', 'Admin::fn_deleteJob');
 $routes->post('admin/managejobs/previewjobs', 'Admin::fn_previewJob');
+
+
 
 $routes->post('admin/login', 'Admin::fn_login');
 

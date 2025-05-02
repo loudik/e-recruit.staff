@@ -25,7 +25,7 @@ class Formapply extends BaseController
     public function fn_submitdataregistration()
 {
 
-  header("Access-Control-Allow-Origin: *"); // Ganti * dengan asal domain jika perlu
+  header("Access-Control-Allow-Origin: *");
   header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
   header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -112,5 +112,30 @@ class Formapply extends BaseController
 
     return $this->response->setJSON($data);
 }
+
+  public function fn_comfirmemail()
+  {
+    $email = $this->request->getPost('email');
+
+    if ($email) {
+      session()->set('email', $email);
+      $otp = rand(100000, 999999);
+
+      $otpCmd = escapeshellcmd("/home/projectanp/projectCI4/mygolang/buildemail $otp $email");
+      $output = shell_exec($otpCmd);
+
+      return $this->response->setJSON([
+        'response' => 'success',
+        'message'  => 'OTP sent to email.',
+      ]);
+    }
+    return $this->response->setJSON([
+      'response' => 'error',
+      'message'  => 'Email is required.',
+    ]);
+  }
+
+
+
 
 }
