@@ -56,6 +56,10 @@
                 <input type="text" id="fullname" name="fullname" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" id="email" name="email" class="form-control rounded-pill">
+              </div>
+              <div class="col-md-6 col-xxl-6">
                 <label for="pob" class="form-label">Graduation Year</label>
                 <input type="text" id="graduation" name="graduation" class="form-control rounded-pill">
               </div>
@@ -132,7 +136,7 @@
               <button class="btn rounded-pill pxp-section-cta-o ms-3">Save Draft</button>
             </div>
           </div>
- 
+
           <!-- Modal Sign In -->
           <div class="modal fade pxp-user-modal" id="modalemail" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
@@ -142,17 +146,18 @@
                 </div>
                 <div class="modal-body">
                   <div class="pxp-user-modal-fig text-center">
-                    <img src="<?= base_url('assets/images/signin-fig.png');?>" alt="Sign in">
+                    <img src="<?= base_url('assets/images/signin-fig.png'); ?>" alt="Sign in">
                   </div>
-                  <h5 class="modal-title text-center mt-4" id="signinModal">Welcome back!</h5>
-                  <form class="mt-4">
+                  <h5 class="modal-title text-center mt-4" id="signinModal">Please Confirm Your OTP</h5>
+                  <!-- Perbaikan: Tambahkan onsubmit -->
+                  <form class="mt-4" onsubmit="return fn_comfirm(event)">
                     <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="email" placeholder="Email address">
-                      <label for="email">Email address</label>
+                      <input type="text" class="form-control" id="otp" placeholder="OTP" required>
+                      <label for="otp">Input OTP</label>
                       <span class="fa fa-envelope-o"></span>
                     </div>
                     <div class="mt-2 mb-2 mt-lg-5 text-center">
-                      <button class="btn rounded-pill pxp-section-cta" onclick="fn_comfirm()">Comfirm</button>
+                      <button type="submit" class="btn rounded-pill pxp-section-cta">Confirm</button>
                     </div>
                   </form>
                 </div>
@@ -160,19 +165,6 @@
             </div>
           </div>
 
-
-          <!-- Modal OTP -->
-        <div class="modal fade" id="modalotp" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body text-center">
-                <h6 class="mb-3">Enter OTP Code</h6>
-                <input type="text" class="form-control text-center mb-3" id="otp" placeholder="123456">
-                <button type="button" class="btn btn-primary w-100" onclick="fn_otp()">Confirm</button>
-              </div>
-            </div>
-          </div>
-        </div>
 
 
 
@@ -192,6 +184,7 @@
         var formData = new FormData();
         formData.append('jobs', $('#jobs').val());
         formData.append('fullname', $('#fullname').val());
+        formData.append('email', $('#email').val());
         formData.append('dob', $('#dob').val());
         formData.append('pob', $('#pob').val());
         formData.append('sexo', $('#sexo').val());
@@ -216,19 +209,6 @@
           formData.append('transcript', $('#transcript')[0].files[0]);
         }
 
-        if (!$('#fullname').val()) {
-            alert('Please enter your fullname!');
-            return;
-        }
-        if (!$('#dob').val()) {
-            alert('Please enter your date of birth!');
-            return;
-        }
-        if (!$('#pob').val()) {
-            alert('Please enter your place of birth!');
-            return;
-        }
-
         $.ajax({
             url: '<?= base_url('submitdataregistration') ?>',
             type: 'POST',
@@ -237,6 +217,7 @@
             processData: false,
             contentType: false,
             success: function(response) {
+              
                 if (response.response === 'success') {
                     var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
                     myModal.show();
@@ -251,50 +232,50 @@
         });
       }
 
-      function fn_comfirm() {
-        var email = $('#email').val();
-        $.ajax({
-            url: '<?= base_url('comfirmemail') ?>',
-            type: 'POST',
-            dataType: 'json',
-            data: { email: email },
-            success: function(response) {
-                if (response.response === 'success') {
-                    var myModal = new bootstrap.Modal(document.getElementById('modalotp'));
-                    myModal.show();
-                } else {
-                    alert('Failed: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                alert('Error saving data: ' + xhr.status + ' - ' + error);
-            }
-        });
-      }
+      function fn_comfirm(event) {
+        event.preventDefault(); // Cegah refresh form
 
-      function fn_otp() {
-        var otp = $('#otp').val();
+        var otp = $('#otp').val().trim();
+        if (!otp) {
+            alert('Please enter your OTP.');
+            return false;
+        }
+
+        var formData = new FormData();
+        formData.append('otp', otp);
+
         $.ajax({
             url: '<?= base_url('comfirmotp') ?>',
             type: 'POST',
             dataType: 'json',
-            data: { otp: otp },
+            data: formData,
+            processData: false,
+            contentType: false,
             success: function(response) {
                 if (response.response === 'success') {
-                  alert('Success! Your data has been submitted.');
+                  alert('Success: ' + response.message);
+                    setTimeout(() => {
+                        location.reload(); 
+                    }, 2000);
+                }else if (response.trxid === 'TRXID-RESET-SESSION') {
+                    alert('Error: ' + response.message);
+                    setTimeout(() => {
+                        location.reload(); 
+                    }, 2000);
+                    return;
                 } else {
-                  alert('Failed: ' + response.message);
+                    alert('Error: ' + response.message);
+                    return;
                 }
             },
             error: function(xhr, status, error) {
-              console.error(xhr.responseText);
-              alert('Error saving data: ' + xhr.status + ' - ' + error);
+                console.error(xhr.responseText);
+                alert('Error confirming OTP: ' + xhr.status + ' - ' + error);
             }
         });
-      }
 
-
+        return false;
+    }
     </script>
   </body>
 </html>

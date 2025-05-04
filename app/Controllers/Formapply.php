@@ -22,120 +22,188 @@ class Formapply extends BaseController
     
     }
 
-    public function fn_submitdataregistration()
-{
+  public function fn_submitdataregistration()
+  {
 
-  header("Access-Control-Allow-Origin: *");
-  header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-  header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
-  // Tangani preflight OPTIONS request
-  if ($this->request->getMethod() === 'options') {
-      return $this->response->setStatusCode(200);
-  }
-    $jobs = $this->request->getPost('jobs');
-    $fullname = $this->request->getPost('fullname');
-    $phone = $this->request->getPost('phone');
-    $address = $this->request->getPost('address');
-    $sexo = $this->request->getPost('sexo');
-    $dob = $this->request->getPost('dob');
-    $pob = $this->request->getPost('pob');
-    $educationlevel = $this->request->getPost('educationlevel');
-    $graduation = $this->request->getPost('graduation');
-    $gpa = $this->request->getPost('gpa');
-    $language = $this->request->getPost('language');
-    $application = $this->request->getPost('application');
-
-    // Files
-    $cv = $this->request->getFile('cv');
-    $coverletter = $this->request->getFile('coverletter');
-    $diploma = $this->request->getFile('diploma');
-    $transcript = $this->request->getFile('transcript');
-
-    $uploadPath = WRITEPATH . 'uploads/formapplicant/';
-    $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
-
-    // Buat folder jika belum ada
-    if (!is_dir($uploadPath)) {
-        mkdir($uploadPath, 0755, true);
-    }
-
-    // Validasi semua file
-    $files = compact('cv', 'coverletter', 'diploma', 'transcript');
-    $newFileNames = [];
-
-    foreach ($files as $key => $file) {
-        $ext = strtolower($file->getClientExtension());
-
-        if (!$file->isValid() || !in_array($ext, $allowedExtensions)) {
+      $fields = [
+        'jobs' => $this->request->getPost('jobs'),
+        'fullname' => $this->request->getPost('fullname'),
+        'email' => $this->request->getPost('email'),
+        'phone' => $this->request->getPost('phone'),
+        'address' => $this->request->getPost('address'),
+        'sexo' => $this->request->getPost('sexo'),
+        'dob' => $this->request->getPost('dob'),
+        'pob' => $this->request->getPost('pob'),
+        'educationlevel' => $this->request->getPost('educationlevel'),
+        'graduation' => $this->request->getPost('graduation'),
+        'gpa' => $this->request->getPost('gpa'),
+        'language' => $this->request->getPost('language'),
+        'otp' => rand(100000, 999999),
+        'trxid' => rand(100000000000, 999999999999)
+        
+    ];
+    
+    foreach ($fields as $field => $value) {
+        if (empty($value)) {
             return $this->response->setJSON([
                 'response' => 'error',
-                'message' => "File '$key' is not valid or type is not allowed!",
+                'message' => ucfirst($field) . ' is required!',
             ]);
         }
-
-        $file->move($uploadPath, $file->getRandomName());
-        $newFileNames[$key] = $file->getName();
     }
+    
+      if (!filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
+          return $this->response->setJSON([
+              'response' => 'error',
+              'message' => 'Invalid email format!',
+          ]);
+      }
 
-    // Simpan ke DB via model
-    $addform = $this->Md_formregistration->fn_submit(
-        $jobs,
-        $fullname,
-        $phone,
-        $address,
-        $sexo,
-        $dob,
-        $pob,
-        $educationlevel,
-        $gpa,
-        $language,
-        $newFileNames['cv'],
-        $newFileNames['coverletter'],
-        $newFileNames['diploma'],
-        $newFileNames['transcript']
-    );
+      if (!preg_match('/^[0-9]{10,15}$/', $fields['phone'])) {
+          return $this->response->setJSON([
+              'response' => 'error',
+              'message' => 'Invalid phone number format!',
+          ]);
+      }
+      if (!preg_match('/^[0-9]{1,2}(\.[0-9]{1,2})?$/', $fields['gpa'])) {
+          return $this->response->setJSON([
+              'response' => 'error',
+              'message' => 'Invalid GPA format!',
+          ]);
+      }
 
-    if ($addform) {
-        $data = [
-            'response' => 'success',
-            'message' => 'Data submitted successfully!',
-            'data' => $addform
-        ];
-    } else {
-        log_message('error', 'Gagal submit data. Input: ' . json_encode($this->request->getPost()));
-        $data = [
-            'response' => 'error',
-            'message' => 'Failed to submit data!',
-        ];
-    }
+      // Files
+      $cv = $this->request->getFile('cv');
+      $coverletter = $this->request->getFile('coverletter');
+      $diploma = $this->request->getFile('diploma');
+      $transcript = $this->request->getFile('transcript');
 
-    return $this->response->setJSON($data);
-}
+      $uploadPath = WRITEPATH . 'uploads/formapplicant/';
+      if (!is_dir($uploadPath)) {
+          mkdir($uploadPath, 0755, true);
+      }
+      
+      $prefix = $this->remSpace($fields['fullname']);
+      
+      $cvUpload = $this->uploadFile($cv, $prefix . '_cv', $uploadPath);
+      if (isset($cvUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $cvUpload['error']]);
+      
+      $coverUpload = $this->uploadFile($coverletter, $prefix . '_cover', $uploadPath);
+      if (isset($coverUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $coverUpload['error']]);
+      
+      $diplomaUpload = $this->uploadFile($diploma, $prefix . '_diploma', $uploadPath);
+      if (isset($diplomaUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $diplomaUpload['error']]);
+      
+      $transcriptUpload = $this->uploadFile($transcript, $prefix . '_transcript', $uploadPath);
+      if (isset($transcriptUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $transcriptUpload['error']]);
+      
+      $fields['cv'] = $cvUpload['filename'];
+      $fields['coverletter'] = $coverUpload['filename'];
+      $fields['diploma'] = $diplomaUpload['filename'];
+      $fields['transcript'] = $transcriptUpload['filename'];
 
-  public function fn_comfirmemail()
-  {
-    $email = $this->request->getPost('email');
+      // Simpan ke DB via model
+      $addform = $this->Md_formregistration->fn_submit($fields);
 
-    if ($email) {
-      session()->set('email', $email);
-      $otp = rand(100000, 999999);
-
-      $otpCmd = escapeshellcmd("/home/projectanp/projectCI4/mygolang/buildemail $otp $email");
-      $output = shell_exec($otpCmd);
-
-      return $this->response->setJSON([
-        'response' => 'success',
-        'message'  => 'OTP sent to email.',
-      ]);
-    }
-    return $this->response->setJSON([
-      'response' => 'error',
-      'message'  => 'Email is required.',
-    ]);
+      if ($addform) {
+          $checkemail = $this->fn_comfirmemail($fields['otp'], $fields['email']);
+          if($checkemail) {
+              $this->createSessionOTP($fields);
+              log_message('info', 'Data submitted successfully. Input: ' . json_encode($this->request->getPost()));
+              $data = [
+                  'response' => 'success',
+                  'message' => 'Data submitted successfully!',
+              ];
+          } else {
+              log_message('error', 'Failed to send email. Input: ' . json_encode($this->request->getPost()));
+              $data = [
+                  'response' => 'error',
+                  'message' => 'Failed to send confirmation email!',
+              ];
+          }
+      } else {
+          log_message('error', 'Gagal submit data. Input: ' . json_encode($this->request->getPost()));
+          $data = [
+              'response' => 'error',
+              'message' => 'Failed to submit data!',
+          ];
+      }
+      return $this->response->setJSON($data);
   }
 
+  public function fn_comfirmemail($otp, $email)
+  {
+      $url = "http://localhost:9999/send-otp?otp={$otp}&email=" . urlencode($email);
+      
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, [
+          "Authorization: Bearer BearerMySecretToken123", 
+          "Accept: application/json"
+      ]);
 
+      $response = curl_exec($ch);
+      $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $curlError = curl_error($ch);
+      $curldata = curl_close($ch);
 
+      if ($response === false || $httpcode !== 200) {
+          log_message('error', 'Failed to send OTP. Curl Error: ' . $curlError . '. HTTP Code: ' . $httpcode . '. Response: ' . $response);
+          return false;
+      }
 
+      $json = json_decode($response, true);
+      if (isset($json['status']) && $json['status'] === 'ok') {
+          return true;
+      }
+
+      return true; 
+  }
+
+  public function fn_comfirmotp()
+  {
+      $otp = $this->request->getPost('otp');
+      $sessiontrxid = session()->get('trxid');
+      $checkDBuser = $this->Md_formregistration->fn_getdatabytrxid($sessiontrxid);
+      // var_dump($sessiontrxid);return;
+
+      if ($checkDBuser) {
+        $dbOTP = $checkDBuser['otp'];
+        if ($otp != $dbOTP) {
+          if ($checkDBuser['authcount'] >= 3) {
+            if (session()->has('trxid')) {
+                session()->remove('trxid');
+            }
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'OTP confirmation failed! Account locked.',
+                'trxid' => "TRXID-RESET-SESSION",
+            ]);
+          }else{
+            $authCount = $checkDBuser['authcount'] + 1;
+            $this->Md_formregistration->fn_updateCount($checkDBuser['trxid'], ['authcount' => $authCount]);
+            
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'Invalid OTP!',
+            ]);
+          }
+        }else{
+            $this->Md_formregistration->fn_updateStatus($checkDBuser['trxid'], ['isstatus' => 1]);
+            if (session()->has('trxid')) {
+                session()->remove('trxid');
+            }
+            return $this->response->setJSON([
+              'response' => 'success',
+              'message' => 'OTP confirmed successfully!',
+          ]);
+        } 
+      } else {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'User undefined!',
+        ]);
+      }
+  }
 }

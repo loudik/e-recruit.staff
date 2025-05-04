@@ -11,6 +11,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');
 $routes->post('submitdataregistration', 'Formapply::fn_submitdataregistration');
 $routes->post('/comfirmemail', 'Formapply::fn_comfirmemail');
+$routes->post('/comfirmotp', 'Formapply::fn_comfirmotp');
 
 
 //Admin
