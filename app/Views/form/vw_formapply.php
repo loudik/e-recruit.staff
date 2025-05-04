@@ -52,7 +52,7 @@
 
               </div>
               <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Fullname</label>
+                <label for="pob" class="form-label">Fullnames</label>
                 <input type="text" id="fullname" name="fullname" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
