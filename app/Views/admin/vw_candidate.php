@@ -325,6 +325,7 @@
 
               function fn_view(id) {
                 $('#editcandidateModal').modal('show');
+                const basePath = "<?= base_url('file/view/') ?>";
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
                   type: "POST",
@@ -332,16 +333,15 @@
                   dataType: "json",
                   success: function (data) {
                     if (data.response === 'success') {
-                      const basePath = "<?= base_url('file/view/') ?>";
-         
+                      console.log("CV path:", basePath + data.data.cv);
 
-                      $('#cv_preview').attr('src', basePath + data.data.cv);
+                    
+                      // $('#cv_preview').attr('src', basePath + data.data.cv);
+                      $('#cv_preview').attr('src', basePath + encodeURIComponent(data.data.cv));
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
 
-
-                      // $('#jobid').val(data.data.id);
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);
                       $('#email').val(data.data.email);

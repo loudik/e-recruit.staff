@@ -72,7 +72,7 @@ class Admin extends BaseController
         }
     }
 
-    public function viewFile($filename)
+    public function viewFile($filename = null)
     {
         $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
         if (!file_exists($path)) {
