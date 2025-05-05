@@ -41,15 +41,14 @@
             <p class="pxp-text-light">Please Complete All Required</p>
             <div class="row mt-4 mt-lg-5">
               <div class="col-xxl-6">
-              <div class="mb-3">
-              <label for="jobs" class="form-label">Jobs</label>
-              <select id="jobs" name="jobs" class="form-select rounded-pill">
-                <?php foreach ($data['jobs'] as $job): ?>
-                  <option value="<?= esc($job['id']) ?>"><?= esc($job['jobs']) ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-
+                <div class="mb-3">
+                  <label for="jobs" class="form-label">Jobs</label>
+                    <select id="jobs" name="jobs" class="form-select rounded-pill">
+                    <?php foreach ($data['jobs'] as $job): ?>
+                      <option value="<?= esc($job['id']) ?>"><?= esc($job['jobs']) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
               </div>
               <div class="col-md-6 col-xxl-6">
                 <label for="pob" class="form-label">Fullnames</label>

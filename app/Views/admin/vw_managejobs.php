@@ -94,7 +94,6 @@
                         <table class="table table-hover align-middle" id="tblmanagejobs">
                             <thead>
                                 <tr>
-                                    <th class="pxp-is-checkbox" style="width: 1%;"></th>
                                     <th style="width: 35%;">Job</th>
                                     <th style="width: 30%;">Category</th>
                                     <th style="width: 12%;">Type</th>
@@ -107,7 +106,6 @@
                             <tbody> 
                                 <?php foreach($jobs as $job): ?>
                                     <tr>
-                                        <td class="pxp-is-checkbox"><input type="checkbox" class="form-check-input"></td>
                                         <td><a href="#" class="pxp-table-link"><?= $job['jobs'] ?></a></td>
                                         <td><?= $job['category'] ?></td>
                                         <td><?= $job['type'] ?></td>

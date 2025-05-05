@@ -13,7 +13,7 @@ const (
 	smtpHost  = "smtp.gmail.com"
 	smtpPort  = "587"
 	from      = "loudikmarkai@gmail.com"
-	password  = "aufd iudg ksjf rlki" // Gunakan App Password Gmail
+	password  = "aufd iudg ksjf rlki"
 )
 
 func sendOTPEmail(toEmail, otpCode string) error {

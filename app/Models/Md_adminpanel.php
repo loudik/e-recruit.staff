@@ -124,6 +124,27 @@ class Md_adminpanel extends Model
   
       return null; // Login gagal
   }
+
+  public function fn_getcandidate()
+  {
+    $query = $this->db->query("SELECT * FROM tbl_applicationjobs WHERE isdeleted = 0 and isstatus = 1 ORDER BY id DESC");
+    return $query->getResultArray();
+  }
+
+  public function fn_viewcandidate($id)
+  {
+    $query = $this->db->query("SELECT * FROM tbl_applicationjobs WHERE id = ? AND isdeleted = 0", [$id]);
+    return $query->getRowArray();
+  }
+
+  public function fn_deletecandidate($id)
+  {
+      $data = [
+        'isdeleted' => 1,
+        'uby' => '30580',
+        'udt' => date('Y-m-d H:i:s')];
+      return $this->db->table('tbl_applicationjobs')->update($data, ['id' => $id]);
+  }
   
 
 

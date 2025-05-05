@@ -36,9 +36,81 @@ class Admin extends BaseController
 
     public function fn_getcandidate()
     {         
-      $data['title'] = 'Candidate';
-      return view('admin/vw_candidate', $data);
+      return view('admin/vw_candidate');
     }
+
+    public function getcandidate()
+    {
+        $candidates = $this->Md_adminpanel->fn_getcandidate();
+        if (!empty($candidates)) {
+            return $this->response->setJSON([
+                'response' => 'success',
+                'data' => $candidates
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'No candidates found.'
+            ]);
+        }
+    }
+
+    public function fn_viewcandidate()
+    {
+        $id = $this->request->getPost('id');
+        $data = $this->Md_adminpanel->fn_viewcandidate($id);
+        if ($data) {
+            return $this->response->setJSON([
+                'response' => 'success',
+                'data' => $data
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Candidate not found.'
+            ]);
+        }
+    }
+
+    public function viewFile($filename)
+    {
+        $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
+        if (!file_exists($path)) {
+            return $this->response->setStatusCode(404)->setBody('File not found');
+        }
+        // var_dump($path); return;
+        $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
+        $path = str_replace('\\', '/', $path); // Normalize the path for Windows compatibility
+
+        if (!file_exists($path)) {
+            return $this->response->setStatusCode(404)->setBody('File not found');
+        }
+
+        $mime = mime_content_type($path);
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+            ->setBody(file_get_contents($path));
+    }
+
+
+    public function fn_deletecandidate()
+    {
+        $id = $this->request->getPost('id');
+        $result = $this->Md_adminpanel->fn_deletecandidate($id);
+        if ($result) {
+            return $this->response->setJSON([
+                'response' => 'success',
+                'message'  => 'Candidate deleted successfully.'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Failed to delete candidate.'
+            ]);
+        }
+    }
+
 
     public function fn_getchangepw()
     {         
