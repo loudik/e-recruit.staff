@@ -72,18 +72,19 @@ class Admin extends BaseController
         }
     }
 
-    public function viewFile($filename = null)
+    public function viewFile($id, $type)
     {
-        $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
-        if (!file_exists($path)) {
-            return $this->response->setStatusCode(404)->setBody('File not found');
+
+        $filename = $this->Md_adminpanel->getCandidateDocumentFilename($id, $type);
+        echo $filename;
+        if (!$filename) {
+            throw PageNotFoundException::forPageNotFound("Data tidak ditemukan atau tipe dokumen tidak valid.");
         }
-        // var_dump($path); return;
+
         $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
-        $path = str_replace('\\', '/', $path); // Normalize the path for Windows compatibility
 
         if (!file_exists($path)) {
-            return $this->response->setStatusCode(404)->setBody('File not found');
+            throw PageNotFoundException::forPageNotFound("File tidak ditemukan di path: $filename");
         }
 
         $mime = mime_content_type($path);

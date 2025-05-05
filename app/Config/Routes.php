@@ -21,7 +21,7 @@ $routes->get('/admin/newjobs', 'Admin::fn_getnewjobs');
 $routes->get('/admin/candidate', 'Admin::fn_getcandidate');
 $routes->get('/admin/candidate/getcandidate', 'Admin::getcandidate');
 $routes->post('/admin/candidate/view', 'Admin::fn_viewcandidate');
-$routes->get('file/view/(:any)', 'Admin::viewFile/$1');
+$routes->get('file/view/(:num)/(:segment)', 'Admin::viewFile/$1/$2');
 $routes->post('/admin/candidate/deletecandidate', 'Admin::fn_deletecandidate');
 $routes->get('/admin/changepw', 'Admin::fn_getchangepw');
 $routes->get('/admin/profile', 'Admin::fn_getprofile');

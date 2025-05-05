@@ -125,6 +125,22 @@ class Md_adminpanel extends Model
       return null; // Login gagal
   }
 
+  public function getCandidateDocumentFilename($id, $type)
+    {
+        $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
+
+        if (!in_array($type, $allowedTypes)) {
+            return false; // atau throw error
+        }
+
+        $candidate = $this->find($id);
+        if (!$candidate) {
+            return false;
+        }
+
+        return $candidate[$type] ?? false;
+    }
+
   public function fn_getcandidate()
   {
     $query = $this->db->query("SELECT * FROM tbl_applicationjobs WHERE isdeleted = 0 and isstatus = 1 ORDER BY id DESC");

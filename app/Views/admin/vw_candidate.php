@@ -326,6 +326,7 @@
               function fn_view(id) {
                 $('#editcandidateModal').modal('show');
                 const basePath = "<?= base_url('file/view/') ?>";
+                
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
                   type: "POST",
@@ -334,13 +335,15 @@
                   success: function (data) {
                     if (data.response === 'success') {
                       console.log("CV path:", basePath + data.data.cv);
+                      
+                   
 
-                    
-                      // $('#cv_preview').attr('src', basePath + data.data.cv);
-                      $('#cv_preview').attr('src', basePath + encodeURIComponent(data.data.cv));
-                      $('#diploma_preview').attr('src', basePath + data.data.diploma);
-                      $('#transcript_preview').attr('src', basePath + data.data.transcript);
-                      $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
+                      // misal ID-nya dari data.data.id
+                      $('#cv_preview').attr('src', basePath + data.data.id + '/cv');
+                      $('#diploma_preview').attr('src', basePath + data.data.id + '/diploma');
+                      $('#transcript_preview').attr('src', basePath + data.data.id + '/transcript');
+                      $('#coverletter_preview').attr('src', basePath + data.data.id + '/coverletter');
+
 
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);
