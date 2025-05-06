@@ -59,6 +59,7 @@ class Admin extends BaseController
     {
       $id = $this->request->getPost('id');
       $files = $this->Md_adminpanel->getCandidateDocuments($id);
+      
       if (!$files || !is_array($files)) {return $this->response->setJSON(['response' => 'error','message' => 'No files found.','debug' => $files]);
       }
       $documents = [
@@ -67,12 +68,14 @@ class Admin extends BaseController
         'transcript' => $files['transcript'] ?? null,
         'coverletter' => $files['coverletter'] ?? null
       ];
+
+ // Debugging line
       foreach ($documents as $key => $filename) {
           if ($filename) {
               $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+              // var_dump($filePath); return;
               if (file_exists($filePath)) {
-                 $documents[$key] = base_url('file/viewbyfilename/' . $filename);
-                //  var_dump($documents[$key]);return;
+                $documents[$key] = $filename;
               } else {
                 $documents[$key] = 'File not found';
               }

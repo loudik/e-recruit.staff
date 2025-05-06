@@ -335,7 +335,7 @@
                   success: function (data) {
                    
                     if (data.response === 'success') {      
-                      $('#cv_preview').attr('src', basePath + data.data.cv);             
+                      $('#cv_preview').attr('src', basePath + data.data.cv);       
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
 
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
