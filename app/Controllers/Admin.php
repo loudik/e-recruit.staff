@@ -57,59 +57,49 @@ class Admin extends BaseController
 
     public function fn_viewcandidate()
     {
-        $id = $this->request->getPost('id');
-        $data = $this->Md_adminpanel->fn_viewcandidate($id);
-        if ($data) {
-            return $this->response->setJSON([
-                'response' => 'success',
-                'data' => $data
-            ]);
-        } else {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message'  => 'Candidate not found.'
-            ]);
-        }
+      $id = $this->request->getPost('id');
+      $files = $this->Md_adminpanel->getCandidateDocuments($id);
+      if (!$files || !is_array($files)) {return $this->response->setJSON(['response' => 'error','message' => 'No files found.','debug' => $files]);
+      }
+      $documents = [
+        'cv' => $files['cv'] ?? null,
+        'diploma' => $files['diploma'] ?? null,
+        'transcript' => $files['transcript'] ?? null,
+        'coverletter' => $files['coverletter'] ?? null
+      ];
+      foreach ($documents as $key => $filename) {
+          if ($filename) {
+              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+              if (file_exists($filePath)) {
+                 $documents[$key] = base_url('file/viewbyfilename/' . $filename);
+                //  var_dump($documents[$key]);return;
+              } else {
+                $documents[$key] = 'File not found';
+              }
+          } else {
+            $documents[$key] = 'Not registered';
+          }
+      }
+      return $this->response->setJSON([
+          'response' => 'success',
+          'data' => $documents
+      ]);
     }
-
-    public function viewfile($id = null, $type = null)
+    public function previewCandidateFile($filename = null)
     {
-        if (!$id || !$type) {
-            return $this->response->setJSON([
-              'response' => 'error',
-              'message'  => 'Missing ID or document type.'
-            ]);
-        }
-        var_dump($id, $type); return;
-        $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
-        if (!in_array($type, $allowedTypes)) {
-            return $this->response->setJSON([
-              'response' => 'error',
-              'message'  => 'Invalid document type.'
-            ]);
-        }
-        $filename = $this->Md_adminpanel->getCandidateDocumentFilename($id, $type);
+      if (!$filename) {return $this->response->setStatusCode(400)->setBody('Missing filename');}
+      $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+      if (!file_exists($filePath)) {
+        return $this->response->setStatusCode(404)->setBody('File not found');
+      }
+      $mime = mime_content_type($filePath);
 
-        var_dump($filename); return;
-        if (!$filename) {
-            return $this->response->setJSON([
-              'response' => 'error',
-              'message'  => 'File not registered in database.'
-            ]);
-        }
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-        if (!file_exists($filePath)) {
-            return $this->response->setJSON([
-              'response' => 'error',
-              'message'  => 'File not found on server.'
-            ]);
-        }
-        $mime = mime_content_type($filePath);
-        return $this->response
-            ->setHeader('Content-Type', $mime)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-            ->setBody(file_get_contents($filePath));
+      return $this->response
+          ->setHeader('Content-Type', $mime)
+          ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+          ->setBody(file_get_contents($filePath));
     }
+
 
 
     public function fn_deletecandidate()

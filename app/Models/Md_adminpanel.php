@@ -126,26 +126,29 @@ class Md_adminpanel extends Model
       return null; // Login gagal
   }
 
-  public function getCandidateDocumentFilename($id, $type)
-  {
-    $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
-    if (!in_array($type, $allowedTypes)) {
-      return false;
-    }
+ 
 
-    $candidate = $this->asArray()
-                      ->where('id', $id)
-                      ->first();
 
-    if (!$candidate || !isset($candidate[$type])) {
-      return false;
-    }
 
-    return $candidate[$type];
+
+
+
+public function getCandidateDocuments($id)
+{
+    return $this->db
+        ->table('tbl_applicationjobs') 
+        ->select('id, cv, diploma, transcript, coverletter, application, fullname, email, graduation, educationlevel, language, gpa, dob, pob, address, phone, sexo')
+        ->where('id', $id)
+        ->where('isdeleted', 0) 
+        ->get()
+        ->getRowArray(); 
 }
 
 
   
+
+  
+
 
 
   public function fn_getcandidate()
