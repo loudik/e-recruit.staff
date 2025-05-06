@@ -126,18 +126,25 @@ class Md_adminpanel extends Model
       return null; // Login gagal
   }
 
-  public function findFileRecordByFilename($filename)
-  {
-    return $this->db->table('tbl_applicationjobs')
-    ->groupStart()
-        ->where('cv', $filename)
-        ->orWhere('diploma', $filename)
-        ->orWhere('transcript', $filename)
-        ->orWhere('coverletter', $filename)
-    ->groupEnd()
-    ->get()
-    ->getRow();
-  }
+  public function getCandidateDocumentFilename($id, $type)
+{
+    $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
+    if (!in_array($type, $allowedTypes)) {
+        return false;
+    }
+
+    $builder = $this->db->table('tbl_applicationjobs');
+    $builder->select($type);
+    $builder->where('id', $id);
+    $query = $builder->get()->getRow();
+
+    if (!$query) {
+        return false;
+    }
+
+    return $query->$type ?? false;
+}
+
   
 
 

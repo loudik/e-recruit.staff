@@ -72,40 +72,48 @@ class Admin extends BaseController
         }
     }
 
-    public function viewFile($filename = null)
+    public function viewfile($id = null, $type = null)
     {
+        if (!$id || !$type) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'Missing ID or document type.'
+            ]);
+        }
+
+        $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
+        if (!in_array($type, $allowedTypes)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'Invalid document type.'
+            ]);
+        }
+
+        
+        $filename = $this->Md_adminpanel->getCandidateDocumentFilename($id, $type);
+
         if (!$filename) {
             return $this->response->setJSON([
                 'response' => 'error',
-                'message'  => 'No filename provided.'
+                'message' => 'File not registered in database.'
             ]);
         }
 
-        $fileRecord = $this->Md_adminpanel->findFileRecordByFilename($filename);
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
 
-
-        if ($fileRecord) {
-            $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-
-            if (file_exists($filePath)) {
-                $mime = mime_content_type($filePath);
-
-                return $this->response
-                    ->setHeader('Content-Type', $mime)
-                    ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-                    ->setBody(file_get_contents($filePath));
-            } else {
-                return $this->response->setJSON([
-                    'response' => 'error',
-                    'message'  => 'File not found on disk.'
-                ]);
-            }
-        } else {
+        if (!file_exists($filePath)) {
             return $this->response->setJSON([
                 'response' => 'error',
-                'message'  => 'File not registered in database.'
+                'message' => 'File not found on server.'
             ]);
         }
+
+        $mime = mime_content_type($filePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+            ->setBody(file_get_contents($filePath));
     }
 
 
