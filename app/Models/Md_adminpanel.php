@@ -145,6 +145,13 @@ public function getCandidateDocuments($id)
 }
 
 
+public function getCandidateDetail($id)
+{
+    return $this->db->table('tbl_applicationjobs')->where('id', $id)->get()->getRowArray();
+}
+
+
+
   
 
   

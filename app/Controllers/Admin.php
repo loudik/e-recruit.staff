@@ -56,38 +56,63 @@ class Admin extends BaseController
     }
 
     public function fn_viewcandidate()
-    {
-      $id = $this->request->getPost('id');
-      $files = $this->Md_adminpanel->getCandidateDocuments($id);
-      
-      if (!$files || !is_array($files)) {return $this->response->setJSON(['response' => 'error','message' => 'No files found.','debug' => $files]);
-      }
-      $documents = [
+{
+    $id = $this->request->getPost('id');
+    // Retrieve both files and candidate data
+    $files = $this->Md_adminpanel->getCandidateDocuments($id);
+    $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+
+    // Check if candidate data exists
+    if (!$candidate || !is_array($candidate)) {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'No candidate found.',
+            'debug' => $candidate
+        ]);
+    }
+
+    // Check if file data exists
+    if (!$files || !is_array($files)) {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'No files found.',
+            'debug' => $files
+        ]);
+    }
+
+    // Process documents and add file paths
+    $documents = [
         'cv' => $files['cv'] ?? null,
         'diploma' => $files['diploma'] ?? null,
         'transcript' => $files['transcript'] ?? null,
         'coverletter' => $files['coverletter'] ?? null
-      ];
+    ];
 
- // Debugging line
-      foreach ($documents as $key => $filename) {
-          if ($filename) {
-              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-              // var_dump($filePath); return;
-              if (file_exists($filePath)) {
-                $documents[$key] = $filename;
-              } else {
-                $documents[$key] = 'File not found';
-              }
+    foreach ($documents as $key => $filename) {
+      if ($filename) {
+          $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+          if (file_exists($filePath)) {
+            
+              // $documents[$key] = base_url('uploads/formapplicant/' . $filename);
+              $documents[$key] = $filename;
+              // var_dump($documents[$key]);return;
           } else {
-            $documents[$key] = 'Not registered';
+              $documents[$key] = null; 
           }
+      } else {
+          $documents[$key] = null;
       }
-      return $this->response->setJSON([
-          'response' => 'success',
-          'data' => $documents
-      ]);
-    }
+  }
+  
+
+    // Return the candidate data along with document URLs
+    return $this->response->setJSON([
+        'response' => 'success',
+        'data' => array_merge($candidate, $documents)
+    ]);
+}
+
+
     public function previewCandidateFile($filename = null)
     {
       if (!$filename) {return $this->response->setStatusCode(400)->setBody('Missing filename');}

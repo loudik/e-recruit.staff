@@ -333,17 +333,14 @@
                   data: { id: id },
                   dataType: "json",
                   success: function (data) {
-                   
+                    console.log(data.data.fullname);
                     if (data.response === 'success') {      
-                      $('#cv_preview').attr('src', basePath + data.data.cv);       
-                      $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
-
+                      console.log(data.data.cv);
+                      $('#cv_preview').attr('src', basePath + data.data.cv);
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
-
-
-
-
+                      $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
+          
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);
                       $('#email').val(data.data.email);

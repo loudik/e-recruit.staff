@@ -21,7 +21,8 @@ $routes->get('/admin/newjobs', 'Admin::fn_getnewjobs');
 $routes->get('/admin/candidate', 'Admin::fn_getcandidate');
 $routes->get('/admin/candidate/getcandidate', 'Admin::getcandidate');
 $routes->post('/admin/candidate/view', 'Admin::fn_viewcandidate');
-$routes->get('/file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
+$routes->get('file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
+
 
 
 
