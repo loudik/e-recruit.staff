@@ -338,8 +338,7 @@
                       
                    
 
-                      // misal ID-nya dari data.data.id
-                      $('#cv_preview').attr('src', basePath + data.data.id + '/cv');
+                      $('#cv_preview').attr('src', basePath + data.data.cv);
                       $('#diploma_preview').attr('src', basePath + data.data.id + '/diploma');
                       $('#transcript_preview').attr('src', basePath + data.data.id + '/transcript');
                       $('#coverletter_preview').attr('src', basePath + data.data.id + '/coverletter');

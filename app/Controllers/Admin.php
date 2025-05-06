@@ -72,27 +72,42 @@ class Admin extends BaseController
         }
     }
 
-    public function viewFile($id, $type)
+    public function viewFile($filename = null)
     {
-
-        $filename = $this->Md_adminpanel->getCandidateDocumentFilename($id, $type);
-        echo $filename;
         if (!$filename) {
-            throw PageNotFoundException::forPageNotFound("Data tidak ditemukan atau tipe dokumen tidak valid.");
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'No filename provided.'
+            ]);
         }
 
-        $path = WRITEPATH . 'uploads/formapplicant/' . $filename;
+        $fileRecord = $this->Md_adminpanel->findFileRecordByFilename($filename);
 
-        if (!file_exists($path)) {
-            throw PageNotFoundException::forPageNotFound("File tidak ditemukan di path: $filename");
+
+        if ($fileRecord) {
+            $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+
+            if (file_exists($filePath)) {
+                $mime = mime_content_type($filePath);
+
+                return $this->response
+                    ->setHeader('Content-Type', $mime)
+                    ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+                    ->setBody(file_get_contents($filePath));
+            } else {
+                return $this->response->setJSON([
+                    'response' => 'error',
+                    'message'  => 'File not found on disk.'
+                ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'File not registered in database.'
+            ]);
         }
-
-        $mime = mime_content_type($path);
-        return $this->response
-            ->setHeader('Content-Type', $mime)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-            ->setBody(file_get_contents($path));
     }
+
 
 
     public function fn_deletecandidate()

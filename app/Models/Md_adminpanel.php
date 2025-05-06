@@ -7,8 +7,9 @@ use CodeIgniter\Model;
 
 class Md_adminpanel extends Model 
 {
-  protected $table = 'tbl_unit'; 
+  protected $table = 'tbl_applicationjobs'; 
   protected $primaryKey = 'id'; 
+
 
   public function fn_getcategory()
   {
@@ -125,21 +126,20 @@ class Md_adminpanel extends Model
       return null; // Login gagal
   }
 
-  public function getCandidateDocumentFilename($id, $type)
-    {
-        $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
+  public function findFileRecordByFilename($filename)
+  {
+    return $this->db->table('tbl_applicationjobs')
+    ->groupStart()
+        ->where('cv', $filename)
+        ->orWhere('diploma', $filename)
+        ->orWhere('transcript', $filename)
+        ->orWhere('coverletter', $filename)
+    ->groupEnd()
+    ->get()
+    ->getRow();
+  }
+  
 
-        if (!in_array($type, $allowedTypes)) {
-            return false; // atau throw error
-        }
-
-        $candidate = $this->find($id);
-        if (!$candidate) {
-            return false;
-        }
-
-        return $candidate[$type] ?? false;
-    }
 
   public function fn_getcandidate()
   {
