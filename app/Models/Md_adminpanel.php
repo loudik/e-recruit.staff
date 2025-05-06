@@ -127,23 +127,23 @@ class Md_adminpanel extends Model
   }
 
   public function getCandidateDocumentFilename($id, $type)
-{
+  {
     $allowedTypes = ['cv', 'diploma', 'transcript', 'coverletter'];
     if (!in_array($type, $allowedTypes)) {
-        return false;
+      return false;
     }
 
-    $builder = $this->db->table('tbl_applicationjobs');
-    $builder->select($type);
-    $builder->where('id', $id);
-    $query = $builder->get()->getRow();
+    $candidate = $this->asArray()
+                      ->where('id', $id)
+                      ->first();
 
-    if (!$query) {
-        return false;
+    if (!$candidate || !isset($candidate[$type])) {
+      return false;
     }
 
-    return $query->$type ?? false;
+    return $candidate[$type];
 }
+
 
   
 

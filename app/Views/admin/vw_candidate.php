@@ -338,10 +338,10 @@
                       
                    
 
-                      $('#cv_preview').attr('src', `${basePath}/${id}/cv`);
-                      $('#diploma_preview').attr('src', `${basePath}/${id}/diploma`);
-                      $('#transcript_preview').attr('src', `${basePath}/${id}/transcript`);
-                      $('#coverletter_preview').attr('src', `${basePath}/${id}/coverletter`);
+                      $('#cv_preview').attr('src', `${basePath}/${data.data.id}/cv`);
+$('#diploma_preview').attr('src', `${basePath}/${data.data.id}/diploma`);
+$('#transcript_preview').attr('src', `${basePath}/${data.data.id}/transcript`);
+$('#coverletter_preview').attr('src', `${basePath}/${data.data.id}/coverletter`);
 
 
                       $('#jobs').val(data.data.application);
