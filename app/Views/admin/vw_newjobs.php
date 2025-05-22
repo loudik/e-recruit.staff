@@ -26,35 +26,33 @@
                                 <ul class="navbar-nav justify-content-end flex-grow-1">
                                     <li class="pxp-dropdown-header">Admin tools</li>
                                     <li class="nav-item"><a href="<?= base_Url('admin/dashboard')?>"><span class="fa fa-home"></span>Dashboard</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/profile') ?>l"><span class="fa fa-pencil"></span>Edit Profile</a></li>
+                                    <!-- <li class="nav-item"><a href="</?= base_url('admin/profile') ?>l"><span class="fa fa-pencil"></span>Edit Profile</a></li> -->
                                     <li class="nav-item"><a href="<?= base_url('admin/newjobs')?>"><span class="fa fa-file-text-o"></span>New Job Offer</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs')?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate')?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li>
+                                    <!-- <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li> -->
            
-                                    <li class="nav-item">
-                                        <a href="company-dashboard-notifications.html" class="d-flex justify-content-between align-items-center">
-                                            <div><span class="fa fa-bell-o"></span>Notifications</div>
-                                            <span class="badge rounded-pill">5</span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
                 </div>
                 <nav class="pxp-user-nav pxp-on-light">
-                    <a href="company-dashboard-new-job.html" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
+                    <a href="<?= base_url('admin/newjobs') ?>" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
                  
                     <div class="dropdown pxp-user-nav-dropdown">
-                        <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <div class="pxp-user-nav-avatar pxp-cover" style="background-image: url(images/company-logo-1.png);"></div>
-                            <div class="pxp-user-nav-name d-none d-md-block">Artistre Studio</div>
-                        </a>
+                        
+                         <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
+                          <div class="pxp-user-nav-avatar pxp-cover" 
+                              style="background-image: url('<?= esc(session()->get('user_avatar') ?? base_url('assets/images/customer-4.png')) ?>');">
+                          </div>
+                          <div class="pxp-user-nav-name d-none d-md-block">
+                              <?= esc(session()->get('name') ?? 'Guest User') ?>
+                          </div>
+                      </a>
+                        
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="company-dashboard.html">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-profile.html">Edit profile</a></li>
-                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                           <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Logout</a></li>
                         </ul>
                     </div>
                 </nav>

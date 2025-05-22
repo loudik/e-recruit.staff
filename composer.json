@@ -14,7 +14,9 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "laminas/laminas-escaper": "^2.14",
-        "psr/log": "^3.0"
+        "league/oauth2-client": "^2.8",
+        "psr/log": "^3.0",
+        "thenetworg/oauth2-azure": "^2.2"
     },
     "require-dev": {
         "codeigniter/phpstan-codeigniter": "1.x-dev",
@@ -88,9 +90,7 @@
         "post-update-cmd": [
             "CodeIgniter\\ComposerScripts::postUpdate"
         ],
-        "post-autoload-dump": [
-            "@composer update --working-dir=utils --ignore-platform-req=php"
-        ],
+        "post-autoload-dump": [],
         "analyze": [
             "Composer\\Config::disableProcessTimeout",
             "@phpstan:check",

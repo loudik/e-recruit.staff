@@ -41,6 +41,8 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         APP_NAMESPACE => APPPATH,
+        'League\\OAuth2\\Client\\'     => APPPATH . 'Libraries/OAuth/client/',
+        'TheNetworg\\OAuth2\\Client\\' => APPPATH . 'Libraries/OAuth/azure/',
     ];
 
     /**

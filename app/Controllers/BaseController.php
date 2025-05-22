@@ -57,6 +57,19 @@ abstract class BaseController extends Controller
        $this->session = service('session');
     }
 
+    public function generateShortUniqueID($length = 16)
+    {
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $chars[random_int(0, strlen($chars) - 1)];
+        }
+        return $result;
+    }
+
+
+
+
 
     public function createSessionOTP($userData) 
     {

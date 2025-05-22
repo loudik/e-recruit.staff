@@ -16,10 +16,103 @@ class Admin extends BaseController
     }
 
     public function fn_getdashboard()
-    {         
-          $data['title'] = 'Dashboard';
+    {   
+        $range = $this->request->getGet('range') ?? 7;
+        $data['title'] = 'Dashboard Admin Panel';
+        $data['candidates'] = $this->Md_adminpanel->fn_getall();
+        $data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
+        $data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
+        $data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
+        $data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
+        $data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
+        $data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
+
+        $growthPercent = 0;
+        $isGrowthUp = false;
+        if ($data['applicationsBeforeCount'] > 0) {
+            $growthPercent = (($data['applicationsCount'] - $data['applicationsBeforeCount']) / $data['applicationsBeforeCount']) * 100;
+            $isGrowthUp = $data['applicationsCount'] > $data['applicationsBeforeCount'];
+        }
+
+        $data['growthPercent'] = round($growthPercent, 1);
+        $data['isGrowthUp'] = $isGrowthUp;
+        $data['selectedDays'] = $range;
+
         return view('admin/vw_dashboard', $data);
     }
+
+
+
+
+    public function getApplicationChartData()
+    {
+        $days = $this->request->getGet('range') ?? 7;
+        $rawData = $this->Md_adminpanel->getChartData($days);
+        $groupedData = [];
+        foreach ($rawData as $row) {
+            $groupedData[$row['date']] = (int) $row['count'];
+        }
+        $labels = [];
+        $data = [];
+
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-{$i} days"));
+            $labels[] = date('M d', strtotime($date));
+            $data[] = $groupedData[$date] ?? 0;
+        }
+
+        return $this->response->setJSON([
+            'labels' => $labels,
+            'data' => $data
+        ]);
+    }
+
+
+    public function getGenderStats()
+    {
+        $days = $this->request->getGet('range') ?? 7;
+        $results = $this->Md_adminpanel->getGenderStats($days);
+        if (empty($results)) {
+            $results = $this->Md_adminpanel->getGenderStats(); // Tanpa parameter = semua
+        }
+
+        $data = [
+            'labels' => [],
+            'values' => [],
+        ];
+
+        foreach ($results as $row) {
+            $genderLabel = ucfirst(strtolower($row['sexo']));
+            $data['labels'][] = $genderLabel;
+            $data['values'][] = (int) $row['total'];
+        }
+
+        return $this->response->setJSON($data);
+    }
+
+    public function fn_action()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
+        }
+
+        $requestData = $this->request->getJSON(true);
+        $ids = $requestData['ids'] ?? [];
+        $action = $requestData['action'] ?? '';
+
+        if (empty($ids) || !in_array($action, ['approve', 'reject', 'delete'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid input']);
+        }
+
+        $success = $thi->Md_adminpanel->fn_updateaction($ids, $action);
+
+        return $this->response->setJSON([
+            'status' => $success ? 'success' : 'error',
+            'message' => $success ? 'Bulk action completed' : 'Failed to process action'
+        ]);
+    }
+
+
     public function fn_getnewjobs()
     {         
       $data['title'] = 'New Jobs';
@@ -30,9 +123,63 @@ class Admin extends BaseController
     public function fn_getmanagejobs()
     {         
       $data['title'] = 'Manage Jobs';
-      $data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
+    //   $data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
       return view('admin/vw_managejobs', $data);
     }
+
+    public function fn_getmanagedata()
+    {
+
+         $result = $this->Md_adminpanel->fn_getmanagedata();
+        if (!empty($result)) {
+          return $this->response->setJSON([
+            'response' => 'success',
+            'data' => $result
+        ]);
+        } else {
+          return $this->response->setJSON([
+            'response' => 'error',
+            'message'  => 'No candidates found.'
+          ]);
+        }
+    }
+
+
+
+   public function updateJobStatus()
+    {
+        $id = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        if (!$id || $status === null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid request'
+            ])->setStatusCode(400);
+        }
+        $updated = $this->Md_adminpanel->updateStatus($id, $status);
+
+        return $this->response->setJSON([
+            'success' => $updated,
+            'message' => $updated ? 'Status updated successfully' : 'Gagal update status'
+        ])->setStatusCode(200);
+    }
+
+
+
+
+
+     public function fn_searchjobs()
+    {
+        $keyword = $this->request->getGet('q') ?? '';
+        $data = $this->Md_adminpanel->searchManageJobs($keyword);
+
+        return $this->response->setJSON([
+            'response' => 'success',
+            'data' => $data
+        ]);
+    }
+
 
     public function fn_getcandidate()
     {         
@@ -41,16 +188,53 @@ class Admin extends BaseController
 
     public function getcandidate()
     {
-        $candidates = $this->Md_adminpanel->fn_getcandidate();
-        if (!empty($candidates)) {
+      $candidates = $this->Md_adminpanel->fn_getcandidate();
+      if (!empty($candidates)) {
+        return $this->response->setJSON([
+          'response' => 'success',
+          'data' => $candidates
+      ]);
+      } else {
+        return $this->response->setJSON([
+          'response' => 'error',
+          'message'  => 'No candidates found.'
+        ]);
+      }
+    }
+
+    public function fn_approvecandidate()
+    {
+        $id = $this->request->getPost('id');
+        $result = $this->Md_adminpanel->fn_approvecandidate($id);
+
+        if ($result) {
             return $this->response->setJSON([
                 'response' => 'success',
-                'data' => $candidates
+                'message'  => 'Candidate approved successfully.'
             ]);
         } else {
             return $this->response->setJSON([
                 'response' => 'error',
-                'message'  => 'No candidates found.'
+                'message'  => 'Failed to approve candidate.'
+            ]);
+        }
+    }
+
+    public function fn_rejectcandidate()
+    {
+        $id = $this->request->getPost('id');
+        $reason = $this->request->getPost('reason');
+        $result = $this->Md_adminpanel->fn_rejectcandidate($id, $reason);
+
+        if ($result) {
+            return $this->response->setJSON([
+                'response' => 'success',
+                'message'  => 'Candidate rejected successfully.'
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Failed to reject candidate.'
             ]);
         }
     }
@@ -58,7 +242,6 @@ class Admin extends BaseController
     public function fn_viewcandidate()
 {
     $id = $this->request->getPost('id');
-    // Retrieve both files and candidate data
     $files = $this->Md_adminpanel->getCandidateDocuments($id);
     $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
@@ -92,8 +275,6 @@ class Admin extends BaseController
       if ($filename) {
           $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
           if (file_exists($filePath)) {
-            
-              // $documents[$key] = base_url('uploads/formapplicant/' . $filename);
               $documents[$key] = $filename;
               // var_dump($documents[$key]);return;
           } else {
@@ -115,17 +296,20 @@ class Admin extends BaseController
 
     public function previewCandidateFile($filename = null)
     {
-      if (!$filename) {return $this->response->setStatusCode(400)->setBody('Missing filename');}
+      if (!$filename) {
+        return $this->response->setStatusCode(400)->setBody('Missing filename');
+      }
       $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
       if (!file_exists($filePath)) {
-        return $this->response->setStatusCode(404)->setBody('File not found');
+          return $this->response->setStatusCode(404)->setBody('File not found');
       }
       $mime = mime_content_type($filePath);
-
+      // Mengirimkan file ke browser
       return $this->response
           ->setHeader('Content-Type', $mime)
           ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
           ->setBody(file_get_contents($filePath));
+
     }
 
 
@@ -175,6 +359,7 @@ class Admin extends BaseController
         $applydate = $this->request->getPost('applydate');
         $dateexpire = $this->request->getPost('dateexpire');
 
+
         $addjobs = $this->Md_adminpanel->fn_addnewjobs(
             $jobs,
             $location,
@@ -185,7 +370,8 @@ class Admin extends BaseController
             $type,
             $applicants,
             $applydate,
-            $dateexpire
+            $dateexpire,
+            $this->generateShortUniqueID(30)
         );
 
         // Kirim respons JSON
@@ -297,33 +483,7 @@ class Admin extends BaseController
       }
   }
 
-  public function fn_login(){
-      $email = $this->request->getPost('email');
-      $password = $this->request->getPost('password');
-  
-      // Validasi input
-      if (empty($email) || empty($password)) {
-          return $this->response->setJSON([
-            'response' => 'error',
-            'message' => 'Username and password are required!',
-          ], 400);
-      }
-  
-      $result = $this->Md_adminpanel->fn_login($email);
-  
-      if ($result) {
-          return $this->response->setJSON([
-              'response' => 'success',
-              'message' => 'Login successful!',
-              'data' => $result,
-          ]);
-      } else {
-          return $this->response->setJSON([
-              'response' => 'error',
-              'message' => 'Invalid username or password!',
-          ], 401);
-      }
-  }
+
   
   
     

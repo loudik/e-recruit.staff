@@ -12,11 +12,11 @@ class Md_formregistration extends Model
     protected $primaryKey = 'trxid';
     protected $useAutoIncrement = false;
     protected $allowedFields = [
-      'idjobs', 'application', 'fullname', 'dob', 'pob', 'sexo', 'address', 'phone','email','trxid',
+      'idjobs', 'application', 'fullname','sexo', 'address', 'phone','email','trxid',
       'educationlevel', 'graduation', 'gpa',
       'language','authcount', // ← tambahkan ini
-      'application',
-      'cv', 'diploma', 'transcript', 'coverletter',
+      'application','idtrx',
+      'personalid','cv', 'diploma', 'transcript', 'coverletter',
       'iby', 'idt' // ← tambahkan ini
   ];
   
@@ -74,12 +74,13 @@ class Md_formregistration extends Model
         'email' => $fields['email'],
         'address' => $fields['address'],
         'sexo' => $fields['sexo'],
-        'dob' => $fields['dob'],
-        'pob' => $fields['pob'],
+        // 'dob' => $fields['dob'],
+        // 'pob' => $fields['pob'],
         'otp' => $fields['otp'],
         'educationlevel' => $fields['educationlevel'],
         'gpa' => $fields['gpa'],
         'language' => $fields['language'],
+        'personalid' => $fields['personalid'],
         'cv' => $fields['cv'],
         'coverletter' => $fields['coverletter'],
         'diploma' => $fields['diploma'],
@@ -93,13 +94,13 @@ class Md_formregistration extends Model
 
     
 
-  public function fn_getjobs()
+  public function fn_getjobs($idtrx)
   {
-    $query = $this->db->table('tbl_managementjobs')
-        ->select('id, jobs') 
-        ->orderBy('jobs', 'ASC') 
-        ->get();
-    return $query->getResultArray(); 
+     return $this->db->table('tbl_managementjobs')
+        ->select('idtrx, jobs')
+        ->where('idtrx', $idtrx)
+        ->get()
+        ->getRowArray();  
   }
 
 

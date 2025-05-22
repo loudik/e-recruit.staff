@@ -35,19 +35,19 @@
                         <div class="offcanvas offcanvas-start pxp-nav-mobile-container" tabindex="-1" id="pxpMobileNav">
                             <div class="offcanvas-header">
                                 <div class="pxp-logo">
-                                    <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">j</span>obster</a>
+                                    <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
                                 </div>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                             </div>
                             <div class="offcanvas-body">
                                 <nav class="pxp-nav-mobile">
-                                    <ul class="navbar-nav justify-content-end flex-grow-1">
+                                    <ul class="navbar-nav justify-content-end flex-grow-1>
                                         <li class="nav-item dropdown">
                                             <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Home</a>
 
                                         </li>
                                         <li class="nav-item dropdown">
-                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
+                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#job-1">Find Jobs</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -60,14 +60,12 @@
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Home</a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
+                                <a href="#job-1" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
                             </li>
                         </ul>
                     </nav>
                     <nav class="pxp-user-nav d-none d-sm-flex">
-                        <a href="company-dashboard-new-job.html" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
-                        <a class="btn rounded-pill pxp-user-nav-trigger pxp-on-light" data-bs-toggle="modal" href="#pxp-signin-modal" role="button">Sign in</a>
-                    </nav>
+                      </nav>
                 </div>
             </div>
         </header>
@@ -79,15 +77,10 @@
                         <div class="col-12 col-xl-6 col-xxl-5">
                             <h1>Finds the perfect<br><span style="color: var(--pxpMainColor);">job</span> for you</h1>
                             <div class="pxp-hero-form pxp-hero-form-round mt-3 mt-lg-4">
-                                <form class="row gx-3 align-items-center" action="jobs-list-1.html">
+                                <form class="row gx-3 align-items-center" method="get" action="<?= base_url('/') ?>">
                                     <div class="col-12 col-sm">
                                         <div class="mb-3 mb-sm-0">
-                                            <input type="text" class="form-control" placeholder="Job Titless or Keyword">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm pxp-has-left-border">
-                                        <div class="mb-3 mb-sm-0">
-                                            <input type="text" class="form-control" placeholder="Location">
+                                            <input type="text" class="form-control" name="q" placeholder="Job title or keyword">
                                         </div>
                                     </div>
                                     <div class="col-12 col-sm-auto">
@@ -97,20 +90,14 @@
                             </div>
 
                             <div class="pxp-hero-searches-container">
-                                <div class="pxp-hero-searches-label">Popular Searches</div>
+                              <div class="pxp-hero-searches-label">Popular Searches</div>
                                 <div class="pxp-hero-searches">
-                                    <div class="pxp-hero-searches-items">
-                                        <a href="jobs-list-1.html">Work from home</a>
-                                        <a href="jobs-list-1.html">Part-time</a>
-                                        <a href="jobs-list-1.html">Administration</a>
-                                        <a href="jobs-list-1.html">Finance</a>
-                                        <a href="jobs-list-1.html">Retail</a>
-                                        <a href="jobs-list-1.html">IT</a>
-                                        <a href="jobs-list-1.html">Engineering</a>
-                                        <a href="jobs-list-1.html">Sales</a>
-                                        <a href="jobs-list-1.html">Manufacturing</a>
-                                    </div>
-                                </div>
+                                  <div class="pxp-hero-searches-items">
+                                      <?php foreach ($popular_keywords as $keyword): ?>
+                                          <a href="<?= base_url('/') ?>?q=<?= urlencode($keyword) ?>"><?= esc($keyword) ?></a>
+                                      <?php endforeach; ?>
+                                  </div>
+                              </div>
                             </div>
                         </div>
                         <div class="d-none d-xl-block col-xl-5 position-relative">
@@ -122,26 +109,17 @@
 
                             <div class="pxp-hero-card-info-container pxp-mouse-move" data-speed="60">
                                 <div class="pxp-hero-card-info pxp-animate-bounce">
-                                    <div class="pxp-hero-card-info-item">
-                                        <div class="pxp-hero-card-info-item-number">286<span>job offers</span></div>
-                                        <div class="pxp-hero-card-info-item-description">in Business Development</div>
-                                    </div>
-                                    <div class="pxp-hero-card-info-item">
-                                        <div class="pxp-hero-card-info-item-number">154<span>job offers</span></div>
-                                        <div class="pxp-hero-card-info-item-description">in Marketing & Communication</div>
-                                    </div>
-                                    <div class="pxp-hero-card-info-item">
-                                        <div class="pxp-hero-card-info-item-number">319<span>job offers</span></div>
-                                        <div class="pxp-hero-card-info-item-description">in Human Resources</div>
-                                    </div>
-                                    <div class="pxp-hero-card-info-item">
-                                        <div class="pxp-hero-card-info-item-number">120<span>job offers</span></div>
-                                        <div class="pxp-hero-card-info-item-description">in Project Management</div>
-                                    </div>
-                                    <div class="pxp-hero-card-info-item">
-                                        <div class="pxp-hero-card-info-item-number">176<span>job offers</span></div>
-                                        <div class="pxp-hero-card-info-item-description">in Customer Service</div>
-                                    </div>
+                                    <?php foreach ($jobCategories as $cat): ?>
+                                        <div class="pxp-hero-card-info-item">
+                                            <div class="pxp-hero-card-info-item-number">
+                                                <?= esc($cat['count']) ?><span>job offers</span>
+                                            </div>
+                                            <div class="pxp-hero-card-info-item-description">
+                                                in <?= esc($cat['category']) ?>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+
                                 </div>
                             </div>
                         </div>
@@ -161,23 +139,20 @@
                             </div>
                             <div class="mt-4 mt-lg-0 d-lg-block pxp-list-side-filter-panel">
                                 <h3 class="mt-3 mt-lg-4">Category</h3>
-                                <div class="mt-2 mt-lg-3">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><span class="fa fa-folder-o"></span></span>
-                                        <select class="form-select">
-                                            <option selected="">All categories</option>
-                                            <option>Business Development</option>
-                                            <option>Construction</option>
-                                            <option>Customer Service</option>
-                                            <option>Finance</option>
-                                            <option>Healthcare</option>
-                                            <option>Human Resources</option>
-                                            <option>Marketing &amp; Communication</option>
-                                            <option>Project Management</option>
-                                            <option>Software Engineering</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                  <div class="mt-2 mt-lg-3">
+                                      <div class="input-group">
+                                          <span class="input-group-text"><span class="fa fa-folder-o"></span></span>
+                                          <select class="form-select" name="category">
+                                              <option value="">All categories</option>
+                                              <?php foreach ($categories as $cat): ?>
+                                                  <option value="<?= esc($cat['category']) ?>">
+                                                      <?= esc($cat['category']) ?>
+                                                  </option>
+                                              <?php endforeach; ?>
+                                          </select>
+                                      </div>
+                                  </div>
+
 
                                 <h3 class="mt-3 mt-lg-4">Type of Employment</h3>
                                 <div class="list-group mt-2 mt-lg-3">
@@ -195,20 +170,20 @@
                                         </span>
                                         <span class="badge rounded-pill">34</span>
                                     </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Remote
-                                        </span>
-                                        <span class="badge rounded-pill">24</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Internship
-                                        </span>
-                                        <span class="badge rounded-pill">27</span>
-                                    </label>
+                                    <?php if (!empty($jobTypes)): ?>
+                                        <?php foreach ($jobTypes as $job): ?>
+                                            <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
+                                            <span class="d-flex">
+                                                <input class="form-check-input me-2" type="checkbox" name="job_types[]" value="<?= esc($job['type']) ?>">
+                                                <?= esc($job['type']) ?>
+                                            </span>
+                                            <span class="badge rounded-pill"><?= esc($job['count']) ?></span>
+                                            </label>
+                                          <?php endforeach; ?>
+                                        <?php else: ?>
+                                        <p>No job types found.</p>
+                                        <?php endif; ?>
+
                                     <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
                                         <span class="d-flex">
                                             <input class="form-check-input me-2" type="checkbox" value="">
@@ -227,42 +202,26 @@
 
                                 <h3 class="mt-3 mt-lg-4">Experience Level</h3>
                                 <div class="list-group mt-2 mt-lg-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            No Experience
-                                        </span>
-                                        <span class="badge rounded-pill">98</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3 pxp-checked">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="" checked>
-                                            Entry-Level
-                                        </span>
-                                        <span class="badge rounded-pill">44</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3 pxp-checked">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="" checked>
-                                            Mid-Level
-                                        </span>
-                                        <span class="badge rounded-pill">35</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Senior-Level
-                                        </span>
-                                        <span class="badge rounded-pill">45</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Manager / Executive
-                                        </span>
-                                        <span class="badge rounded-pill">21</span>
-                                    </label>
+                                    <?php foreach ($Levels as $level): ?>
+                                        <?php
+                                            $labelText = esc($level['level']);
+                                            $count = esc($level['count']);
+                                            $isChecked = in_array($labelText, ($_GET['experience'] ?? [])); 
+                                        ?>
+                                        <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3 <?= $isChecked ? 'pxp-checked' : '' ?>">
+                                            <span class="d-flex">
+                                                <input class="form-check-input me-2"
+                                                    type="checkbox"
+                                                    name="experience[]"
+                                                    value="<?= $labelText ?>"
+                                                    <?= $isChecked ? 'checked' : '' ?>>
+                                                <?= $labelText ?>
+                                            </span>
+                                            <span class="badge rounded-pill"><?= $count ?></span>
+                                        </label>
+                                    <?php endforeach; ?>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -270,66 +229,60 @@
                         <div class="pxp-jobs-list-top mt-4 mt-lg-0">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
-                                    <h2><span class="pxp-text-light">Showing</span> 8,536 <span class="pxp-text-light">jobs</span></h2>
-                                </div>
-                                <div class="col-auto">
-                                    <select class="form-select">
-                                        <option value="0" selected>Most relevant</option>
-                                        <option value="1">Newest</option>
-                                        <option value="2">Oldest</option>
+                                    <select name="sort" class="form-select" onchange="this.form.submit()">
+                                        <option value="0" <?= $sort == '0' ? 'selected' : '' ?>>Most relevant</option>
+                                        <option value="1" <?= $sort == '1' ? 'selected' : '' ?>>Newest</option>
+                                        <option value="2" <?= $sort == '2' ? 'selected' : '' ?>>Oldest</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div>
+                      <div  id="job-1" scrool-behavior="smooth">
+                            
                         <?php foreach ($jobs as $job): ?>
-                            <div class="pxp-jobs-card-3 pxp-has-border mb-4">
+                          <div class="pxp-jobs-card-3 pxp-has-border mb-4">
                               <div class="row align-items-center justify-content-between">
-                                <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
-                                  <a href="#" class="pxp-jobs-card-3-company-logo" style="background-image: url('<?= base_url('assets/images/customer-1.png'); ?>');"></a>
-                                </div>
-                                <div class="col-sm-9 col-md-10 col-lg-9 col-xl-10 col-xxl-4">
-                                  <a href="<?= base_url('job/' . $job['id']) ?>" class="pxp-jobs-card-3-title mt-3 mt-sm-0">
-                                    <?= esc($job['jobs']) ?>
-                                  </a>
-                                  <div class="pxp-jobs-card-3-details">
-                                    <a href="#" class="pxp-jobs-card-3-location">
-                                      <span class="fa fa-globe"></span><?= esc($job['loc']) ?>
-                                    </a>
-                                  <div class="pxp-jobs-card-3-type"><?= esc($job['type']) ?></div>
-                                </div>
+                                  <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
+                                      <a href="#" class="pxp-jobs-card-3-company-logo" style="background-image: url('<?= base_url('assets/images/customer-1.png'); ?>');"></a>
+                                  </div>
+
+                                  <div class="col-sm-9 col-md-10 col-lg-9 col-xl-10 col-xxl-4">
+                                      <a href="<?= base_url('job/' . esc($job['id'])) ?>" class="pxp-jobs-card-3-title mt-3 mt-sm-0">
+                                          <?= esc($job['jobs']) ?>
+                                      </a>
+                                      <div class="pxp-jobs-card-3-details mt-2">
+                                          <a href="#" class="pxp-jobs-card-3-location">
+                                              <span class="fa fa-globe"></span> <?= esc($job['loc']) ?>
+                                          </a>
+                                          <div class="pxp-jobs-card-3-type"><?= esc($job['type']) ?></div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
+                                      <a href="#" class="pxp-jobs-card-3-category mb-2">
+                                          <div class="pxp-jobs-card-3-category-label"><?= esc($job['category']) ?></div>
+                                      </a>
+                                  </div>
+
+                                  <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
+                                      <a href="<?= base_url('/getformregistration?id=' . esc($job['idtrx'])) ?>" class="btn rounded-pill pxp-card-btn">Apply</a>
+                                  </div>
                               </div>
-                              <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
-                                <a href="#" class="pxp-jobs-card-3-category mb-2">
-                                  <div class="pxp-jobs-card-3-category-label"><?= esc($job['category']) ?></div>
-                                </a>
-                              </div>
-                              <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
-                                <a href="<?= base_url('/getformregistration') ?>" class="btn rounded-pill pxp-card-btn">Apply</a>
-                              </div>
-                            </div>
                           </div>
                         <?php endforeach; ?>
                         </div>
+                       <div class="row mt-4 mt-lg-5 justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <nav class="mt-3 mt-sm-0" aria-label="Jobs list pagination">
+                            <ul class="pagination pxp-pagination" id="pagination">
 
-
-                        <div class="row mt-4 mt-lg-5 justify-content-between align-items-center">
-                            <div class="col-auto">
-                                <nav class="mt-3 mt-sm-0" aria-label="Jobs list pagination">
-                                    <ul class="pagination pxp-pagination">
-                                        <li class="page-item active" aria-current="page">
-                                            <span class="page-link">1</span>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="col-auto">
-                                <a href="#" class="btn rounded-pill pxp-section-cta mt-3 mt-sm-0">Show me more<span class="fa fa-angle-right"></span></a>
-                            </div>
+                            </ul>
+                            </nav>
                         </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -343,7 +296,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-xl-5 col-xxl-4 mb-4">
                             <div class="pxp-footer-logo">
-                                <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">j</span>obster</a>
+                                <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
                             </div>
                             <div class="pxp-footer-section mt-3 mt-md-4">
                                 <h3>Call us</h3>
@@ -367,7 +320,6 @@
                                             <li><a href="candidate-dashboard.html">Candidate Dashboard</a></li>
                                             <li><a href="candidate-dashboard-applications.html">My Applications</a></li>
                                             <li><a href="candidate-dashboard-fav-jobs.html">Favourite Jobs</a></li>
-                                            <li><a href="candidate-dashboard-inbox.html">My inbox</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -383,28 +335,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xl-4 col-xxl-3 mb-4">
-                                    <div class="pxp-footer-section">
-                                        <h3>About Us</h3>
-                                        <ul class="pxp-footer-list">
-                                            <li><a href="about-us.html">About Us</a></li>
-                                            <li><a href="pricing.html">Pricing</a></li>
-                                            <li><a href="blog-list-1.html">Blog</a></li>
-                                            <li><a href="blog-list-1.html">Contact Us</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4 col-xxl-3 mb-4">
-                                    <div class="pxp-footer-section">
-                                        <h3>Helpful Resources</h3>
-                                        <ul class="pxp-footer-list">
-                                            <li><a href="faqs.html">FAQs</a></li>
-                                            <li><a href="sign-in.html">Sign In</a></li>
-                                            <li><a href="sign-up.html">Sign Up</a></li>
-                                            <li><a href="404.html">404 Page</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -496,44 +427,102 @@
             </div>
         </div>
 
-        <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
+    <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
       <script src="<?= base_url('assets/js/nav.js') ?>"></script>
       <script src="<?= base_url('assets/js/main.js') ?>"></script>
 
       <script>
-          function fn_login ()
-        {
-          var email = ('#email').val();
-          var password = ('#password').val();
-          
-        }
 
-    async function fn_login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
 
-      const formData = new FormData();
-      formData.append('email', email);
-      formData.append('password', password);
-
-      try {
-        const response = await fetch('admin/login', {
-          method: 'POST',
-          body: formData,
+        $('a[href^="#"]').on('click', function (e) {
+          e.preventDefault();
+          $('html, body').animate({
+            scrollTop: $($(this).attr('href')).offset().top
+          }, 500);
         });
-        const data = await response.json();
-        if (response.ok) {
-          document.getElementById('result').innerText = 'Login berhasil!';
-          window.location.href = '<?= base_url('admin/dashboard') ?>';
-        } else {
-          document.getElementById('result').innerText = data.message || 'Login gagal';
-        }
-      } catch (err) {
-        document.getElementById('result').innerText = 'Error: ' + err.message;
-      }
+
+
+
+    let currentPage = 1;
+    const perPage = 3;
+
+    function loadJobs(page = 1) {
+        fetch(`/jobs/pages?page=${page}`)
+            .then(res => res.json())
+            .then(data => {
+                currentPage = page;
+
+                const jobsList = document.getElementById('job-1');
+                jobsList.innerHTML = ''; 
+
+                data.jobs.forEach(job => {
+                    const jobCard = `
+                        <div class="pxp-jobs-card-3 pxp-has-border mb-4">
+                            <div class="row align-items-center justify-content-between">
+                                <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
+                                    <a href="#" class="pxp-jobs-card-3-company-logo" style="background-image: url('/assets/images/customer-1.png');"></a>
+                                </div>
+                                <div class="col-sm-9 col-md-10 col-lg-9 col-xl-10 col-xxl-4">
+                                    <a href="/job/${job.idtrx}" class="pxp-jobs-card-3-title mt-3 mt-sm-0">
+                                        ${job.jobs}
+                                    </a>
+                                    <div class="pxp-jobs-card-3-details">
+                                        <a href="#" class="pxp-jobs-card-3-location">
+                                            <span class="fa fa-globe"></span>${job.loc}
+                                        </a>
+                                        <div class="pxp-jobs-card-3-type">${job.type}</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
+                                    <a href="#" class="pxp-jobs-card-3-category mb-2">
+                                        <div class="pxp-jobs-card-3-category-label">${job.category}</div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
+                                    <a href="/getformregistration?idtrx=${job.idtrx}" class="btn rounded-pill pxp-card-btn">Apply</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    jobsList.insertAdjacentHTML('beforeend', jobCard);
+                });
+
+                updatePagination(currentPage, data.total);
+            });
     }
-  </script>
+
+        function updatePagination(currentPage, total) {
+            console.log('Membuat pagination untuk total:', total); // 👈 debug log
+
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const perPage = 3;
+            const totalPages = Math.ceil(total / perPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = 'page-item' + (i === currentPage ? ' active' : '');
+                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                li.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    loadJobs(i);
+                });
+                pagination.appendChild(li);
+            }
+        }
+
+
+        // Panggil pertama kali
+        document.addEventListener('DOMContentLoaded', () => {
+            loadJobs(1);
+        });
+
+
+
+
+      </script>
     </body>
 </html>

@@ -1,8 +1,27 @@
 
 
 <?= view('layoutAdmin/header.php'); ?>
-        <?= view('layoutAdmin/sidebar.php'); ?>
-        <?= view('layoutAdmin/navbar.php'); ?>
+      <?= view('layoutAdmin/sidebar.php'); ?>
+      <?= view('layoutAdmin/navbar.php'); ?>
+      <style>
+       /* .fixed-canvas {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        max-width: 230px;
+        aspect-ratio: 1 / 1;
+        height: auto !important;
+        box-sizing: border-box;
+      }
+
+      .card {
+        max-width: 100%; */
+      /* } */
+
+
+
+      </style>
     </div>
     <div class="pxp-dashboard-content">
             <div class="pxp-dashboard-content-header">
@@ -24,56 +43,36 @@
                                 <ul class="navbar-nav justify-content-end flex-grow-1">
                                     <li class="pxp-dropdown-header">Admin tools</li>
                                     <li class="pxp-active"><a href="<?= base_url('admin/dashboard') ?>"><span class="fa fa-home"></span>Dashboard</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/profile') ?>"><span class="fa fa-pencil"></span>Edit Profile</a></li>
+                                    <!-- <li class="nav-item"><a href="</?= base_url('admin/profile') ?>"><span class="fa fa-pencil"></span>Edit Profile</a></li> -->
                                     <li class="nav-item"><a href="<?= base_url('admin/newjobs')?>"><span class="fa fa-file-text-o"></span>New Job Offer</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs')?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate')?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li>
-                                    <li class="pxp-dropdown-header mt-4">Insights</li>
+                                    <!-- <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li> -->
                                     <li class="nav-item">
                                         <a href="company-dashboard-inbox.html" class="d-flex justify-content-between align-items-center">
                                             <div><span class="fa fa-envelope-o"></span>Inbox</div>
                                             <span class="badge rounded-pill">14</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="company-dashboard-notifications.html" class="d-flex justify-content-between align-items-center">
-                                            <div><span class="fa fa-bell-o"></span>Notifications</div>
-                                            <span class="badge rounded-pill">5</span>
-                                        </a>
-                                    </li>
+                                
                                 </ul>
                             </nav>
                         </div>
                     </div>
                 </div>
                 <nav class="pxp-user-nav pxp-on-light">
-                    <a href="company-dashboard-new-job.html" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
-                    <div class="dropdown pxp-user-nav-dropdown pxp-user-notifications">
-                        <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="fa fa-bell-o"></span>
-                            <div class="pxp-user-notifications-counter">5</div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Scott Goodwin</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">20m</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Alayna Becker</strong> sent you a message. <span class="pxp-is-time">1h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Erika Tillman</strong> applied for <strong>Team Leader</strong>. <span class="pxp-is-time">2h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Scott Goodwin</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">5h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Alayna Becker</strong> sent you a message. <span class="pxp-is-time">1d</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Erika Tillman</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">3d</span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item pxp-link" href="company-dashboard-notifications.html">Read All</a></li>
-                        </ul>
-                    </div>
+                    <a href="<?= base_url('admin/newjobs') ?>" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
                     <div class="dropdown pxp-user-nav-dropdown">
                         <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <div class="pxp-user-nav-avatar pxp-cover" style="background-image: url(images/company-logo-1.png);"></div>
-                            <div class="pxp-user-nav-name d-none d-md-block">Artistre Studio</div>
-                        </a>
+                          <div class="pxp-user-nav-avatar pxp-cover" 
+                              style="background-image: url('<?= esc(session()->get('user_avatar') ?? base_url('assets/images/customer-4.png')) ?>');">
+                          </div>
+                          <div class="pxp-user-nav-name d-none d-md-block">
+                              <?= esc(session()->get('name') ?? 'Guest User') ?>
+                          </div>
+                      </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="company-dashboard.html">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-profile.html">Edit profile</a></li>
-                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                            <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Logout</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -81,8 +80,7 @@
 
             <div class="pxp-dashboard-content-details">
                 <h1>Dashboard</h1>
-                <p class="pxp-text-light">Welcome to Jobster!</p>
-
+                <p class="pxp-text-light">Welcome to ANP!</p>
                 <div class="row mt-4 mt-lg-5 align-items-center">
                     <div class="col-sm-6 col-xxl-3">
                         <div class="pxp-dashboard-stats-card bg-primary bg-opacity-10 mb-3 mb-xxl-0">
@@ -90,7 +88,7 @@
                                 <span class="fa fa-file-text-o"></span>
                             </div>
                             <div class="pxp-dashboard-stats-card-info">
-                                <div class="pxp-dashboard-stats-card-info-number">13</div>
+                                <div class="pxp-dashboard-stats-card-info-number"><?= esc($jobs) ?></div>
                                 <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Jobs posted</div>
                             </div>
                         </div>
@@ -101,7 +99,7 @@
                                 <span class="fa fa-user-circle-o"></span>
                             </div>
                             <div class="pxp-dashboard-stats-card-info">
-                                <div class="pxp-dashboard-stats-card-info-number">312</div>
+                                <div class="pxp-dashboard-stats-card-info-number"><?= esc($applications) ?></div>
                                 <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Applications</div>
                             </div>
                         </div>
@@ -112,8 +110,8 @@
                                 <span class="fa fa-envelope-o"></span>
                             </div>
                             <div class="pxp-dashboard-stats-card-info">
-                                <div class="pxp-dashboard-stats-card-info-number">14</div>
-                                <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Unread messages</div>
+                                <div class="pxp-dashboard-stats-card-info-number"><?= esc($candidateapprove) ?></div>
+                                <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Successful Applicants</div>
                             </div>
                         </div>
                     </div>
@@ -123,8 +121,8 @@
                                 <span class="fa fa-bell-o"></span>
                             </div>
                             <div class="pxp-dashboard-stats-card-info">
-                                <div class="pxp-dashboard-stats-card-info-number">5</div>
-                                <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Notifications</div>
+                                <div class="pxp-dashboard-stats-card-info-number"><?= esc($candidatesreject) ?></div>
+                                <div class="pxp-dashboard-stats-card-info-text pxp-text-light">Rejected Candidates</div>
                             </div>
                         </div>
                     </div>
@@ -132,339 +130,170 @@
 
                 <div class="row mt-4 mt-lg-5">
                     <div class="col-xl-6">
-                        <h2>Company Profile Visits</h2>
-                        <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
-                            <div class="row justify-content-between align-content-center mb-4">
-                                <div class="col-auto">
-                                    <span class="pxp-dashboard-chart-value">154</span><span class="pxp-dashboard-chart-percent text-success"><span class="fa fa-long-arrow-up"></span> 34%</span><span class="pxp-dashboard-chart-vs">vs last 7 days</span>
-                                </div>
-                                <div class="col-auto">
-                                    <select class="form-select">
-                                        <option value="-7 days">Last 7 days</option>
-                                        <option value="-30 days">Last 30 days</option>
-                                        <option value="-60 days">Last 60 days</option>
-                                        <option value="-90 days">Last 90 days</option>
-                                        <option value="-12 months">Last 12 months</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <canvas id="pxp-company-dashboard-visits-chart"></canvas>
+                      <h2>Job Applications Activity</h2>
+                      <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
+                          <div class="row justify-content-between align-content-center mb-4">
+                              <div class="col-auto">
+                                  <span class="pxp-dashboard-chart-value"><?= esc($applicationsCount) ?></span>
+                                  <span class="pxp-dashboard-chart-percent <?= $isGrowthUp ? 'text-success' : 'text-danger' ?>">
+                                    <span class="fa <?= $isGrowthUp ? 'fa-long-arrow-up' : 'fa-long-arrow-down' ?>"></span>
+                                    <?= esc(abs($growthPercent)) ?>%
+                                  </span>
+                                  <span class="pxp-dashboard-chart-vs">vs last <?= esc($selectedDays) ?> days</span>
+                              </div>
+                              <div class="col-auto">
+                                  <form method="get">
+                                      <select class="form-select" name="range" id="rangeSelector">
+                                        <option value="7" <?= $selectedDays == 7 ? 'selected' : '' ?>>Last 7 days</option>
+                                        <option value="30" <?= $selectedDays == 30 ? 'selected' : '' ?>>Last 30 days</option>
+                                        <option value="60" <?= $selectedDays == 60 ? 'selected' : '' ?>>Last 60 days</option>
+                                        <option value="90" <?= $selectedDays == 90 ? 'selected' : '' ?>>Last 90 days</option>
+                                        <option value="365" <?= $selectedDays == 365 ? 'selected' : '' ?>>Last 12 months</option>
+                                      </select>
+                                  </form>
+                              </div>
+                          </div>
+                          <canvas id="applicationChart" height="240px"></canvas>
+                      </div>
+                  </div>
+
+                   <div class="col-xl-6">
+                    <h2>Gender</h2>
+                    <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
+                      <div class="row justify-content-between align-content-center mb-4">
+                        <div class="col-auto">
+                          <span class="pxp-dashboard-chart-vs">Total by gender</span>
                         </div>
+                      </div>
+
+
+                      <canvas id="genderDonutChart" width= "100%" height="auto"></canvas>
                     </div>
-                    <div class="col-xl-6">
-                        <h2 class="mt-4 mt-lg-5 mt-xl-0">Applications</h2>
-                        <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
-                            <div class="row justify-content-between align-content-center mb-4">
-                                <div class="col-auto">
-                                    <span class="pxp-dashboard-chart-value">280</span><span class="pxp-dashboard-chart-percent text-success"><span class="fa fa-long-arrow-up"></span> 56%</span><span class="pxp-dashboard-chart-vs">vs last 7 days</span>
-                                </div>
-                                <div class="col-auto">
-                                    <select class="form-select">
-                                        <option value="-7 days">Last 7 days</option>
-                                        <option value="-30 days">Last 30 days</option>
-                                        <option value="-60 days">Last 60 days</option>
-                                        <option value="-90 days">Last 90 days</option>
-                                        <option value="-12 months">Last 12 months</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <canvas id="pxp-company-dashboard-app-chart"></canvas>
-                        </div>
-                    </div>
+                  </div>
                 </div>
 
-                <div class="row mt-4 mt-lg-5">
-                    <div class="col-xxl-6">
-                        <h2>Recent Notifications</h2>
-                        <div class="pxp-dashboard-notifications">
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Scott Goodwin</a> applied for <a href="single-job-1.html">Software Engineer</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">20m ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-envelope-o"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Kenneth Spiers</a> sent you a message.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">1h ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Rebecca Eason</a> applied for <a href="single-job-1.html">Team Leader</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">3h ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Scott Goodwin</a> applied for <a href="single-job-1.html">Software Engineer</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">1d ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-envelope-o"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Scott Goodwin</a> sent you a message.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">2d ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Kenneth Spiers</a> applied for <a href="single-job-1.html">Team Leader</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">2d ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Rebecca Eason</a> applied for <a href="single-job-1.html">Software Engineer</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">3d ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-envelope-o"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Alayna Becker</a> sent you a message.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">1w ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Kenneth Spiers</a> applied for <a href="single-job-1.html">Team Leader</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">1w ago</div>
-                            </div>
-                            <div class="pxp-dashboard-notifications-item mb-3">
-                                <div class="pxp-dashboard-notifications-item-left">
-                                    <div class="pxp-dashboard-notifications-item-type"><span class="fa fa-briefcase"></span></div>
-                                    <div class="pxp-dashboard-notifications-item-message">
-                                        <a href="single-candidate-1.html">Rebecca Eason</a> applied for <a href="single-job-1.html">Software Engineer</a>.
-                                    </div>
-                                </div>
-                                <div class="pxp-dashboard-notifications-item-right">1mo ago</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xxl-6">
-                        <h2 class="mt-4 mt-lg-5 mt-xxl-0">Recent Messages</h2>
-                        <div class="pxp-company-dashboard-messages">
-                            <div class="pxp-company-dashboard-messages-item mb-3">
-                                <div class="pxp-company-dashboard-messages-item-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div>
-                                <div class="pxp-company-dashboard-messages-item-details ms-3">
-                                    <div class="pxp-company-dashboard-messages-item-name">Scott Goodwin</div>
-                                    <div class="pxp-company-dashboard-messages-item-date pxp-text-light">Oct 6, 2021 at 8:04 pm</div>
-                                    <p class="mt-1 mb-0">Lorem Ipsum is also known as: Greeked text, blind text, placeholder text, dummy content, filler text, lipsum, and mock-content.</p>
-                                </div>
-                            </div>
-                            <div class="pxp-company-dashboard-messages-item mb-3">
-                                <div class="pxp-company-dashboard-messages-item-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div>
-                                <div class="pxp-company-dashboard-messages-item-details ms-3">
-                                    <div class="pxp-company-dashboard-messages-item-name">Kenneth Spiers</div>
-                                    <div class="pxp-company-dashboard-messages-item-date pxp-text-light">Oct 6, 2021 at 8:04 pm</div>
-                                    <p class="mt-1 mb-0">In publishing and graphic design, lorem ipsum is a filler text or greeking commonly used to demonstrate the textual elements of a graphic document or visual presentation.</p>
-                                </div>
-                            </div>
-                            <div class="pxp-company-dashboard-messages-item mb-3">
-                                <div class="pxp-company-dashboard-messages-item-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div>
-                                <div class="pxp-company-dashboard-messages-item-details ms-3">
-                                    <div class="pxp-company-dashboard-messages-item-name">Rebecca Eason</div>
-                                    <div class="pxp-company-dashboard-messages-item-date pxp-text-light">Oct 6, 2021 at 8:04 pm</div>
-                                    <p class="mt-1 mb-0">Replacing meaningful content with placeholder text allows designers to design the form of the content before the content itself has been produced.</p>
-                                </div>
-                            </div>
-                            <div class="pxp-company-dashboard-messages-item mb-3">
-                                <div class="pxp-company-dashboard-messages-item-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div>
-                                <div class="pxp-company-dashboard-messages-item-details ms-3">
-                                    <div class="pxp-company-dashboard-messages-item-name">Susanne Weil</div>
-                                    <div class="pxp-company-dashboard-messages-item-date pxp-text-light">Oct 6, 2021 at 8:04 pm</div>
-                                    <p class="mt-1 mb-0">Lorem Ipsum is also known as: Greeked text, blind text, placeholder text, dummy content, filler text, lipsum, and mock-content.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 mt-lg-5">
-                    <h2>Recent Candidates</h2>
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Scott Goodwin</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">UI Designer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>London, UK</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Kenneth Spiers</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Software Developer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>San Francisco, CA</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Rebecca Eason</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Marketing Expert</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>Los Angeles, CA</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Susanne Weil</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Architect</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>Paris, France</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Scott Goodwin</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">UI Designer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>London, UK</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Kenneth Spiers</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Software Developer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>San Francisco, CA</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Rebecca Eason</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Marketing Expert</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>Los Angeles, CA</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Susanne Weil</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Architect</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>Paris, France</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Scott Goodwin</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">UI Designer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>London, UK</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width: 3%;"><div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(images/ph-small.jpg);"></div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name">Kenneth Spiers</div></td>
-                                <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title">Software Developer</div></td>
-                                <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span>San Francisco, CA</div></td>
-                                <td>
-                                    <div class="pxp-dashboard-table-options">
-                                        <ul class="list-unstyled">
-                                            <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                            <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                            <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+              <div class="mt-4 mt-lg-5">
+                  <h2>Recent Candidates</h2>
+                  <div class="table-responsive">
+                      <table class="table align-middle">
+                          <?php foreach ($candidates as $candidate): ?>
+                          <tr>
+                              <td style="width: 3%;">
+                                  <div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(<?= esc($candidate['avatar'] ?? 'images/ph-small.jpg') ?>);"></div>
+                              </td>
+                              <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name"><?= esc($candidate['fullname']) ?></div></td>
+                              <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title"><?= esc($candidate['application']) ?></div></td>
+                              <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span> <?= esc($candidate['email']) ?></div></td>
+                              <td>
+                                  <div class="pxp-dashboard-table-options">
+                                      <ul class="list-unstyled">
+                                          <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
+                                          <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
+                                          <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
+                                      </ul>
+                                  </div>
+                              </td>
+                          </tr>
+                          <?php endforeach; ?>
+                      </table>
+                  </div>
+              </div>
             </div>
 
             <?= view('layoutAdmin/footer.php'); ?>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+
+                document.addEventListener('DOMContentLoaded', function () {
+                const selectedRange = <?= json_encode($selectedDays ?? 7) ?>;
+
+                const chartCtx = document.getElementById('applicationChart').getContext('2d');
+                const genderCtx = document.getElementById('genderDonutChart').getContext('2d');
+                let applicationChart, genderChart;
+
+                function loadChartData(range) {
+                    fetch(`/admin/dashboard/getApplicationChartData?range=${range}`)
+                        .then(res => res.json())
+                        .then(result => {
+                            if (applicationChart) applicationChart.destroy();
+                            applicationChart = new Chart(chartCtx, {
+                                type: 'line',
+                                data: {
+                                    labels: result.labels,
+                                    datasets: [{
+                                        label: 'Applications',
+                                        data: result.data,
+                                        borderWidth: 2,
+                                        borderColor: 'rgba(75,192,192,1)',
+                                        tension: 0.3,
+                                        fill: false
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    // maintainAspectRatio: false,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            precision: 0
+                                        }
+                                    }
+                                }
+                            });
+                        });
+                }
+
+                function loadGenderData(range = 30) {
+                    fetch(`/admin/dashboard/getGenderStats?range=${range}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.labels.length || !data.values.length) {
+                                document.getElementById('genderDonutChart').style.display = 'none';
+                                return;
+                            }
+                            document.getElementById('genderDonutChart').style.display = 'block';
+
+                            if (genderChart) genderChart.destroy();
+                            genderChart = new Chart(genderCtx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: data.labels,
+                                    datasets: [{
+                                        data: data.values,
+                                        backgroundColor: ['#9ea855', '#a8bdd4'],
+                                        borderWidth: 1,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    cutout: '60%',
+                                    // maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { position: 'bottom' }
+                                    }
+                                }
+                            });
+                        });
+                }
+
+                // Inisialisasi awal
+                loadChartData(selectedRange);
+                loadGenderData(selectedRange);
+
+                // Trigger dari satu dropdown
+                const selector = document.getElementById('rangeSelector');
+                if (selector) {
+                    selector.value = selectedRange;
+                    selector.addEventListener('change', function () {
+                        const range = this.value;
+                        loadChartData(range);
+                        loadGenderData(range);
+                    });
+                }
+            });
+
+
+
+
+            </script>

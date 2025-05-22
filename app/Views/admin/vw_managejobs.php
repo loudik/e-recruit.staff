@@ -23,22 +23,16 @@
                                 <ul class="navbar-nav justify-content-end flex-grow-1">
                                     <li class="pxp-dropdown-header">Admin tools</li>
                                     <li class="nav-item"><a href="<?= base_url('admin/dashboard')?>"><span class="fa fa-home"></span>Dashboard</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/profile')?>"><span class="fa fa-pencil"></span>Edit Profile</a></li>
+                                    <!-- <li class="nav-item"><a href="</?= base_url('admin/profile')?>"><span class="fa fa-pencil"></span>Edit Profile</a></li> -->
                                     <li class="nav-item"><a href="<?= base_url('admin/newjobs')?>"><span class="fa fa-file-text-o"></span>New Job Offer</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs')?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate')?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li>
+                                    <!-- <li class="nav-item"><a href="<?= base_url('admin/changepw')?>"><span class="fa fa-lock"></span>Change Password</a></li> -->
                                     <li class="pxp-dropdown-header mt-4">Insights</li>
                                     <li class="nav-item">
                                         <a href="company-dashboard-inbox.html" class="d-flex justify-content-between align-items-center">
                                             <div><span class="fa fa-envelope-o"></span>Inbox</div>
                                             <span class="badge rounded-pill">14</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="company-dashboard-notifications.html" class="d-flex justify-content-between align-items-center">
-                                            <div><span class="fa fa-bell-o"></span>Notifications</div>
-                                            <span class="badge rounded-pill">5</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -47,17 +41,18 @@
                     </div>
                 </div>
                 <nav class="pxp-user-nav pxp-on-light">
-                    <a href="company-dashboard-new-job.html" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
-
+                    <a href="<?= base_url('admin/newjobs') ?>" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
                     <div class="dropdown pxp-user-nav-dropdown">
-                        <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <div class="pxp-user-nav-avatar pxp-cover" style="background-image: url(images/company-logo-1.png);"></div>
-                            <div class="pxp-user-nav-name d-none d-md-block">Artistre Studio</div>
-                        </a>
+                         <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
+                          <div class="pxp-user-nav-avatar pxp-cover" 
+                              style="background-image: url('<?= esc(session()->get('user_avatar') ?? base_url('assets/images/customer-4.png')) ?>');">
+                          </div>
+                          <div class="pxp-user-nav-name d-none d-md-block">
+                              <?= esc(session()->get('name') ?? 'Guest User') ?>
+                          </div>
+                      </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="company-dashboard.html">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-profile.html">Edit profile</a></li>
-                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                            <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Logout</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -84,7 +79,7 @@
                                 <div class="pxp-company-dashboard-jobs-search-search-form">
                                     <div class="input-group">
                                         <span class="input-group-text"><span class="fa fa-search"></span></span>
-                                        <input type="text" class="form-control" placeholder="Search jobs...">
+                                        <input type="text" class="form-control" id="searchInput" placeholder="Search jobs...">
                                     </div>
                                 </div>
                             </div>
@@ -100,43 +95,11 @@
                                     <th style="width: 15%;">Applications</th>
                                     <th style="width: 15%;">Status</th>
                                     <th style="width: 30%;">Action</th>
-                                    <!-- <th>&nbsp;</th> -->
                                 </tr>
                             </thead>
                             <tbody> 
-                                <?php foreach($jobs as $job): ?>
-                                    <tr>
-                                        <td><a href="#" class="pxp-table-link"><?= $job['jobs'] ?></a></td>
-                                        <td><?= $job['category'] ?></td>
-                                        <td><?= $job['type'] ?></td>
-                                        <td><?= $job['applicants'] ?></td>
-                                        <td><span class="pxp-status pxp-status-active">Active</span></td>
-                                        <td style="white-space: nowrap;">
-                                            <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_editJob('<?= $job['id']; ?>')"><span class="fa fa-pencil"></span> </button>
-                                            <!-- <button title="Preview" class="btn btn-sm btn-info" onclick="fn_previewJob('<?= $job['id']; ?>')"><span class="fa fa-eye"></span> </button> -->
-                                            <button  title="Delete" class="btn btn-sm btn-danger" onclick="fn_deleteJob('<?= $job['id']; ?>')"><span class="fa fa-trash-o"></span> </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                                
                             </tbody>
                         </table>
-
-                        <div class="row mt-4 mt-lg-5 justify-content-between align-items-center">
-                            <div class="col-auto">
-                                <nav class="mt-3 mt-sm-0" aria-label="Jobs list pagination">
-                                    <ul class="pagination pxp-pagination">
-                                        <li class="page-item active" aria-current="page">
-                                            <span class="page-link">1</span>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="col-auto">
-                                <a href="#" class="btn rounded-pill pxp-section-cta mt-3 mt-sm-0">Show me more<span class="fa fa-angle-right"></span></a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -154,7 +117,7 @@
                                 <div class="row mt-4 mt-lg-5">
                                     <div class="col-xxl-6">
                                         <div class="mb-3">
-                                          <input type="hidden" id="jobid" name="jobid" value="<?= $job['id']; ?>" />
+                                            <input type="hidden" id="jobid" name="jobid"  />
                                             <label for="jobs" class="form-label">Job title</label>
                                             <input type="text" id="jobs" name="jobs" class="form-control" placeholder="Edit title">
                                         </div>
@@ -229,8 +192,8 @@
                                     </div>
 
                                     <div class="mt-4 mt-lg-5">
-                                      <button type="button" class="btn rounded-pill pxp-section-cta" onclick="fn_publish()">Update Job</button>
-                                      <button type="button" class="btn rounded-pill pxp-section-cta-o ms-3" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                      <button type="button" class="btn rounded-pill pxp-section-cta" onclick="fn_publish()">Update</button>
+                                      <button type="button" class="btn rounded-pill pxp-section-cta bg-danger" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
 
                                     </div>
                                 </div>
@@ -280,16 +243,119 @@
    
 
             <?= view('layoutAdmin/footer.php'); ?>
+               <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+            <!-- Buttons extension CSS -->
+            <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+            <!-- DataTables Buttons Bootstrap5 CSS -->
+            <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet" />
+            <!-- DataTables -->
+            <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+            <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
 
              <script type="text/javascript"> 
+             let table; 
               
+                $(document).ready(function(){
+                fn_getmanagejobs();
+              })
 
-                $(document).ready(function() {
-                    $('#tblmanagejobs').DataTable({
-                        "processing": true,
-                        "serverSide": true
-                    });
+              function fn_getmanagejobs(){
+                $.ajax({
+                    url:"<?= base_Url('admin/managejobs/getmanagedata')?>",
+                    type:"GET",
+                    dataType:"json",
+                    success: function (data){
+                        if(data.response === 'success'){
+                            if ($.fn.DataTable.isDataTable('#tblmanagejobs')) {
+                                $('#tblmanagejobs').DataTable().clear().destroy();
+                            }
+                        let table = $('#tblmanagejobs').DataTable({
+                        dom: 'Bfrtip',
+                        responsive: true,
+                        searching: false,
+                        paging: true,
+                      
+                        data: data.data,
+                        columnDefs: [{ defaultContent: "-", targets: "_all" }],
+                        columns: [
+                            { data: 'jobs' },
+                            { data: 'category' },
+                            { data: 'type' },
+                            { data: 'applicants' },
+                            {
+                                data: 'status',
+                                orderable: false,
+                                render: function (data, type, row) {
+                                    const isActive = data == 0;
+                                    const label = isActive ? 'Active' : 'Inactive';
+                                    const btnClass = isActive ? 'btn-success' : 'btn-danger';
+                                    const nextStatus = isActive ? 1 : 0;
+
+                                    return `
+                                    <button class="btn btn-sm ${btnClass} btn-toggle-status"
+                                            data-id="${row.id}" data-status="${nextStatus}">
+                                        ${label}
+                                    </button>`;
+                                }
+                                },
+
+
+
+
+                            {
+                                render: function (data, type, row) {
+                                return `
+                                    <div style="white-space: nowrap;">
+                                    <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_editJob(${row.id})">
+                                        <span class="fa fa-eye"></span>
+                                    </button>
+                                    <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deleteJob(${row.id})">
+                                        <span class="fa fa-trash-o"></span>
+                                    </button>
+                                    </div>
+                                `;
+                                }
+                            }
+                        ]
+
+                      });
+                      
+                    } else {
+                      alert('No data found');
+                    }
+                  },
+                  error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                        }
+                    
+                })
+              }
+
+               $('#searchInput').off('keyup').on('keyup', function () {
+                const keyword = this.value.trim();
+
+                $.ajax({
+                    url: `<?= base_url('admin/managejobs/searchjobs') ?>`,
+                    type: "GET",
+                    dataType: "json",
+                    data: { q: keyword },
+                    success: function (data) {
+                        if (data.response === 'success') {
+                            table.clear().rows.add(data.data).draw();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Search AJAX Error:', error);
+                    }
                 });
+            });
+
+            
+
 
                 function fn_editJob(id) {
                     $('#editJobModal').modal('show');
@@ -349,7 +415,6 @@
 
 
                 function fn_publish(){
-
                     let id = $('#jobid').val();
                     // console.log(id);
                     let jobs = $('#jobs').val();
@@ -420,6 +485,37 @@
                       });
                   }
               }
+
+              $(document).on('click', '.btn-toggle-status', function () {
+                var $button = $(this);
+                var id = $button.data('id');
+                var status = $button.data('status');
+
+                $.ajax({
+                    url: '/admin/managejobs/updatestatus',
+                    type: 'POST',
+                    data: { id: id, status: status }, // form-style data
+                    success: function (response) {
+                        console.log('SUCCESS callback:', response); // <--- tambahkan ini
+                        if (response.success) {
+                            alert(response.message || 'Berhasil update status');
+                            location.reload();
+                        } else {
+                            alert(response.message || 'Gagal update status');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('ERROR callback:', xhr.responseText); // <--- debug ini
+                        alert('Terjadi kesalahan saat update status');
+                    }
+
+                    });
+
+            });
+
+
+
+
 
 
                 

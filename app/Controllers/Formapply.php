@@ -16,9 +16,15 @@ class Formapply extends BaseController
     public function fn_getdataregistration()
     {
  
-      $id=$this->request->getGet('id');
-      $data['jobs'] =  $this->Md_formregistration->fn_getjobs();
-      return view('form/vw_formapply', ['data' => $data]);
+      $idtrx=$this->request->getGet('idtrx');
+      $job = $this->Md_formregistration->fn_getjobs($idtrx);
+      if (!$job) {
+        return redirect()->to('');
+      }else{
+
+        $data['job'] = $job;
+        return view('form/vw_formapply', $data);
+      }
     
     }
 
@@ -32,8 +38,6 @@ class Formapply extends BaseController
         'phone' => $this->request->getPost('phone'),
         'address' => $this->request->getPost('address'),
         'sexo' => $this->request->getPost('sexo'),
-        'dob' => $this->request->getPost('dob'),
-        'pob' => $this->request->getPost('pob'),
         'educationlevel' => $this->request->getPost('educationlevel'),
         'graduation' => $this->request->getPost('graduation'),
         'gpa' => $this->request->getPost('gpa'),
@@ -46,33 +50,34 @@ class Formapply extends BaseController
     foreach ($fields as $field => $value) {
         if (empty($value)) {
             return $this->response->setJSON([
-                'response' => 'error',
-                'message' => ucfirst($field) . ' is required!',
+              'response' => 'error',
+              'message' => ucfirst($field) . ' is required!',
             ]);
         }
     }
     
       if (!filter_var($fields['email'], FILTER_VALIDATE_EMAIL)) {
           return $this->response->setJSON([
-              'response' => 'error',
-              'message' => 'Invalid email format!',
+            'response' => 'error',
+            'message' => 'Invalid email format!',
           ]);
       }
 
       if (!preg_match('/^[0-9]{10,15}$/', $fields['phone'])) {
           return $this->response->setJSON([
-              'response' => 'error',
-              'message' => 'Invalid phone number format!',
+            'response' => 'error',
+            'message' => 'Invalid phone number format!',
           ]);
       }
       if (!preg_match('/^[0-9]{1,2}(\.[0-9]{1,2})?$/', $fields['gpa'])) {
           return $this->response->setJSON([
-              'response' => 'error',
-              'message' => 'Invalid GPA format!',
+            'response' => 'error',
+            'message' => 'Invalid GPA format!',
           ]);
       }
 
       // Files
+      $personalid = $this->request->getFile('personalid');
       $cv = $this->request->getFile('cv');
       $coverletter = $this->request->getFile('coverletter');
       $diploma = $this->request->getFile('diploma');
@@ -85,6 +90,9 @@ class Formapply extends BaseController
       
       $prefix = $this->remSpace($fields['fullname']);
       
+      $personalidUpload = $this->uploadFile($personalid, $prefix . '_personalid', $uploadPath);
+      if (isset($personalidUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $personalidUpload['error']]);
+
       $cvUpload = $this->uploadFile($cv, $prefix . '_cv', $uploadPath);
       if (isset($cvUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $cvUpload['error']]);
       
@@ -97,6 +105,7 @@ class Formapply extends BaseController
       $transcriptUpload = $this->uploadFile($transcript, $prefix . '_transcript', $uploadPath);
       if (isset($transcriptUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $transcriptUpload['error']]);
       
+      $fields['personalid'] = $personalidUpload['filename'];
       $fields['cv'] = $cvUpload['filename'];
       $fields['coverletter'] = $coverUpload['filename'];
       $fields['diploma'] = $diplomaUpload['filename'];
@@ -111,14 +120,14 @@ class Formapply extends BaseController
               $this->createSessionOTP($fields);
               log_message('info', 'Data submitted successfully. Input: ' . json_encode($this->request->getPost()));
               $data = [
-                  'response' => 'success',
-                  'message' => 'Data submitted successfully!',
+                'response' => 'success',
+                'message' => 'Data submitted successfully!',
               ];
           } else {
               log_message('error', 'Failed to send email. Input: ' . json_encode($this->request->getPost()));
               $data = [
-                  'response' => 'error',
-                  'message' => 'Failed to send confirmation email!',
+                'response' => 'error',
+                'message' => 'Failed to send confirmation email!',
               ];
           }
       } else {

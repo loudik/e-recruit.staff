@@ -16,6 +16,12 @@
         <title>Form Recruitment GIP</title>
         <style>
 
+          body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+
+
         .pxp-dashboard-content {
           width: 100%;
           max-width: 850px;
@@ -29,12 +35,9 @@
           margin: 0 auto; 
           padding: 40px;
         }
-
         </style>
-        
     </head>
     <body style="background-color: var(--pxpMainColorLight);">
-      <!-- <div class="pxp-preloader"><span>Loading...</span></div> -->
         <div class="pxp-dashboard-content">
           <div class="pxp-dashboard-content-details">
             <h3>Form Of Candidate GIP</h3>
@@ -43,11 +46,8 @@
               <div class="col-xxl-6">
                 <div class="mb-3">
                   <label for="jobs" class="form-label">Jobs</label>
-                    <select id="jobs" name="jobs" class="form-select rounded-pill">
-                    <?php foreach ($data['jobs'] as $job): ?>
-                      <option value="<?= esc($job['id']) ?>"><?= esc($job['jobs']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
+                    <input type="hidden" id="job_id" name="jobs" value="<?= esc($job['idtrx']) ?>">
+                    <input type="text" id="job_name" class="form-control rounded-pill" value="<?= esc($job['jobs']) ?>" readonly>
                 </div>
               </div>
               <div class="col-md-6 col-xxl-6">
@@ -60,7 +60,9 @@
               </div>
               <div class="col-md-6 col-xxl-6">
                 <label for="pob" class="form-label">Graduation Year</label>
-                <input type="text" id="graduation" name="graduation" class="form-control rounded-pill">
+                <select id="graduation" name="graduation" class="form-select rounded-pill">
+                    
+                  </select>
               </div>
               <div class="col-md-6 col-xxl-6">
                 <div class="mb-3">
@@ -75,7 +77,7 @@
               </div>
               <div class="col-md-6 col-xxl-6">
                 <div class="mb-3">
-                  <label for="sexo" class="form-label">Languague Skills</label>
+                  <label for="sexo" class="form-label">Languague English Level</label>
                   <select id="language" name="languague" class="form-select rounded-pill">
                     <option value="Good">Good</option>
                     <option value="Average">Average</option>
@@ -88,14 +90,6 @@
                 <label for="pob" class="form-label">GPA</label>
                 <input type="text" id="gpa" name="gpa" class="form-control rounded-pill">
               </div>                        
-              <div class="col-md-6 col-xxl-6">
-                <label for="dob" class="form-label">Date of Birth</label>
-                <input type="date" id="dob" name="dob" class="form-control rounded-pill" value="<?= date('Y-m-d') ?>">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Place of Birth</label>
-                <input type="text" id="pob" name="pob" class="form-control rounded-pill">
-              </div>
               <div class="col-md-6 col-xxl-6">
                 <div class="mb-3">
                   <label for="sexo" class="form-label">Sexo</label>
@@ -114,19 +108,23 @@
                 <input type="text" id="phone" name="phone" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Curriculum Vitae(CV)</label>
+                <label for="personalid" class="form-label">Personal ID <small class="text-muted">(e.g., Passport or National ID)</small></label>
+                <input type="file" id="personalid" name="personalid" class="form-control rounded-pill">
+              </div>
+              <div class="col-md-6 col-xxl-6">
+                <label for="pob" class="form-label">Curriculum Vitae(CV)<small class="text-muted">(must be in English)</small></label>
                 <input type="file" id="cv" name="cv" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Diploma</label>
+                <label for="pob" class="form-label">Diploma<small class="text-muted">(must be in English)</small></label>
                 <input type="file" id="diploma" name="diploma" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Transkrip</label>
+                <label for="pob" class="form-label">Transkrip<small class="text-muted">(must be in English)</small></label>
                 <input type="file" id="transcript" name="transcript" class="form-control rounded-pill">
               </div>
               <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Cover Letter</label>
+                <label for="coverletter" class="form-label">Cover Letter <small class="text-muted">(must be in English)</small></label>
                 <input type="file" id="coverletter" name="coverletter" class="form-control rounded-pill">
               </div>
             </div>
@@ -148,7 +146,6 @@
                     <img src="<?= base_url('assets/images/signin-fig.png'); ?>" alt="Sign in">
                   </div>
                   <h5 class="modal-title text-center mt-4" id="signinModal">Please Confirm Your OTP</h5>
-                  <!-- Perbaikan: Tambahkan onsubmit -->
                   <form class="mt-4" onsubmit="return fn_comfirm(event)">
                     <div class="form-floating mb-3">
                       <input type="text" class="form-control" id="otp" placeholder="OTP" required>
@@ -163,10 +160,6 @@
               </div>
             </div>
           </div>
-
-
-
-
         </div>
 
         <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
@@ -177,15 +170,25 @@
         <script src="<?= base_url('assets/js/main.js') ?>"></script>
         <script>
 
+        const select = document.getElementById('graduation');
+        const currentYear = new Date().getFullYear();
+        const startYear = 2000;
+
+        for (let year = currentYear; year >= startYear; year--) {
+          const option = document.createElement('option');
+          option.value = year;
+          option.textContent = year;
+          select.appendChild(option);
+        }
+
 
             
       function fn_savedata() {
         var formData = new FormData();
-        formData.append('jobs', $('#jobs').val());
+        // formData.append('jobs', $('#jobs').val());
+        formData.append('jobs', $('#job_id').val());
         formData.append('fullname', $('#fullname').val());
         formData.append('email', $('#email').val());
-        formData.append('dob', $('#dob').val());
-        formData.append('pob', $('#pob').val());
         formData.append('sexo', $('#sexo').val());
         formData.append('address', $('#address').val());
         formData.append('phone', $('#phone').val());
@@ -194,6 +197,9 @@
         formData.append('gpa', $('#gpa').val());
         formData.append('language', $('#language').val());
 
+        if ($('#personalid')[0].files.length > 0) {
+            formData.append('personalid', $('#personalid')[0].files[0]);
+        }
         if ($('#cv')[0].files.length > 0) {
             formData.append('cv', $('#cv')[0].files[0]);
         }
@@ -232,7 +238,7 @@
       }
 
       function fn_comfirm(event) {
-        event.preventDefault(); // Cegah refresh form
+        event.preventDefault();
 
         var otp = $('#otp').val().trim();
         if (!otp) {

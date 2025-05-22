@@ -52,27 +52,16 @@
                 </div>
                 <nav class="pxp-user-nav pxp-on-light">
                     <a href="company-dashboard-new-job.html" class="btn rounded-pill pxp-nav-btn">Post a Job</a>
-                    <div class="dropdown pxp-user-nav-dropdown pxp-user-notifications">
-                        <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="fa fa-bell-o"></span>
-                            <div class="pxp-user-notifications-counter">5</div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Scott Goodwin</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">20m</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Alayna Becker</strong> sent you a message. <span class="pxp-is-time">1h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Erika Tillman</strong> applied for <strong>Team Leader</strong>. <span class="pxp-is-time">2h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Scott Goodwin</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">5h</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Alayna Becker</strong> sent you a message. <span class="pxp-is-time">1d</span></a></li>
-                            <li><a class="dropdown-item" href="company-dashboard-notifications.html"><strong>Erika Tillman</strong> applied for <strong>Software Engineer</strong>. <span class="pxp-is-time">3d</span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item pxp-link" href="company-dashboard-notifications.html">Read All</a></li>
-                        </ul>
-                    </div>
+                    
                     <div class="dropdown pxp-user-nav-dropdown">
-                        <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            <div class="pxp-user-nav-avatar pxp-cover" style="background-image: url(images/company-logo-1.png);"></div>
-                            <div class="pxp-user-nav-name d-none d-md-block">Artistre Studio</div>
-                        </a>
+                         <a role="button" class="dropdown-toggle" data-bs-toggle="dropdown">
+                          <div class="pxp-user-nav-avatar pxp-cover" 
+                              style="background-image: url('<?= esc(session()->get('user_avatar') ?? base_url('assets/images/customer-4.png')) ?>');">
+                          </div>
+                          <div class="pxp-user-nav-name d-none d-md-block">
+                              <?= esc(session()->get('user_name') ?? 'Guest User') ?>
+                          </div>
+                      </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="company-dashboard.html">Dashboard</a></li>
                             <li><a class="dropdown-item" href="company-dashboard-profile.html">Edit profile</a></li>
