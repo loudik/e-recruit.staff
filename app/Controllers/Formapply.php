@@ -91,8 +91,7 @@ class Formapply extends BaseController
       
       $prefix = $this->remSpace($fields['fullname']);
       
-      $personalidUpload = $this->uploadFile($personalid, $prefix . '_personalid', $uploadPath);
-      if (isset($personalidUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $personalidUpload['error']]);
+    
 
       $cvUpload = $this->uploadFile($cv, $prefix . '_cv', $uploadPath);
       if (isset($cvUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $cvUpload['error']]);
@@ -105,6 +104,9 @@ class Formapply extends BaseController
       
       $transcriptUpload = $this->uploadFile($transcript, $prefix . '_transcript', $uploadPath);
       if (isset($transcriptUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $transcriptUpload['error']]);
+
+      $personalidUpload = $this->uploadFile($personalid, $prefix . '_personalid', $uploadPath);
+      if (isset($personalidUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $personalidUpload['error']]);
       
       $fields['personalid'] = $personalidUpload['filename'];
       $fields['cv'] = $cvUpload['filename'];
@@ -140,6 +142,49 @@ class Formapply extends BaseController
       }
       return $this->response->setJSON($data);
   }
+
+
+  public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 10)
+{
+    if (!$file || !$file->isValid()) {
+        log_message('error', 'Upload invalid: ' . ($file ? $file->getErrorString() : 'No file'));
+        return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
+    }
+
+    if (!is_writable($uploadPath)) {
+        log_message('error', 'Upload path not writable: ' . $uploadPath);
+        return ['error' => 'Upload path is not writable: ' . $uploadPath];
+    }
+
+    // Validasi ekstensi
+    $ext = strtolower($file->getClientExtension());
+    if (!in_array($ext, $allowedExtensions)) {
+        return ['error' => 'Invalid file extension: ' . $ext];
+    }
+
+    // Validasi ukuran
+    $maxBytes = $maxSizeMB * 1024 * 1024;
+    if ($file->getSize() > $maxBytes) {
+        return ['error' => 'File exceeds size limit of ' . $maxSizeMB . 'MB'];
+    }
+
+    $filename = $prefix . '_' . uniqid() . '.' . $ext;
+
+    log_message('debug', 'Temp: ' . $file->getTempName());
+    log_message('debug', 'Destination: ' . $uploadPath . $filename);
+
+    try {
+        $file->move($uploadPath, $filename);
+    } catch (\Exception $e) {
+        log_message('error', 'Move failed: ' . $e->getMessage());
+        return ['error' => 'Failed to move file: ' . $e->getMessage()];
+    }
+
+    return ['filename' => $filename];
+}
+
+
+
 
   public function fn_comfirmemail($otp, $email)
   {
