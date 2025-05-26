@@ -5,6 +5,7 @@ use App\Models\Md_adminpanel;
 
 class Admin extends BaseController
 {
+    protected $Md_adminpanel; 
     public function __construct()
     {
         $this->Md_adminpanel = new Md_adminpanel();

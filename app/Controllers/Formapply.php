@@ -144,7 +144,7 @@ class Formapply extends BaseController
   }
 
 
-  public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 10)
+  public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
 {
     if (!$file || !$file->isValid()) {
         return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
