@@ -7,6 +7,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+        <!-- Toastr CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
         <link rel="stylesheet" href="<?php echo base_url('assets/css/font-awesome.min.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.carousel.min.css') ?>">
@@ -46,8 +48,9 @@
               <div class="col-xxl-6">
                 <div class="mb-3">
                   <label for="jobs" class="form-label">Jobs</label>
-                    <input type="hidden" id="job_id" name="jobs" value="<?= esc($job['idtrx']) ?>">
-                    <input type="text" id="job_name" class="form-control rounded-pill" value="<?= esc($job['jobs']) ?>" readonly>
+                    <input type="hidden" id="job_id" value="<?= esc($job['id']) ?>"> 
+                    <input type="hidden" id="trxid" value="<?= esc($job['idtrx']) ?>"> 
+                    <input type="text" id="jobs" class="form-control rounded-pill" value="<?= esc($job['jobs']) ?>" readonly>
                 </div>
               </div>
               <div class="col-md-6 col-xxl-6">
@@ -129,10 +132,23 @@
               </div>
             </div>
             <div class="mt-4 mt-lg-5">
-              <button class="btn rounded-pill pxp-section-cta" onclick="fn_savedata()">Submit Data</button>
-              <button class="btn rounded-pill pxp-section-cta-o ms-3">Save Draft</button>
+              <button class="btn btn-sm rounded-pill pxp-section-cta" onclick="fn_savedata()" >submit</button>
+              <button type="button" class="btn btn-sm rounded-pill pxp-section-cta bg-danger" onclick="fn_cancel()">Cancel</button>
             </div>
           </div>
+
+
+          <div class="modal fade" id="modalLoading" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-transparent border-0 shadow-none text-center">
+              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <div class="mt-3 text-white fw-bold">Please wait...</div>
+            </div>
+          </div>
+        </div>
+
 
           <!-- Modal Sign In -->
           <div class="modal fade pxp-user-modal" id="modalemail" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
@@ -161,7 +177,8 @@
             </div>
           </div>
         </div>
-
+        <!-- Toastr JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
         <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
@@ -169,7 +186,6 @@
         <script src="<?= base_url('assets/js/Chart.min.js') ?>"></script>
         <script src="<?= base_url('assets/js/main.js') ?>"></script>
         <script>
-
         const select = document.getElementById('graduation');
         const currentYear = new Date().getFullYear();
         const startYear = 2000;
@@ -182,11 +198,23 @@
         }
 
 
+        function fn_cancel() {
+            window.history.back(); // kembali ke halaman sebelumnya
+            // atau redirect langsung:
+            // window.location.href = "<?= base_url('/') ?>";
+        }
+
+
+
             
       function fn_savedata() {
+        const loadingModal = new bootstrap.Modal(document.getElementById('modalLoading'));
+        loadingModal.show();
+
         var formData = new FormData();
         // formData.append('jobs', $('#jobs').val());
-        formData.append('jobs', $('#job_id').val());
+        formData.append('jobs', $('#job_id').val());     // ini adalah job ID sebenarnya
+        formData.append('trxid', $('#trxid').val()); 
         formData.append('fullname', $('#fullname').val());
         formData.append('email', $('#email').val());
         formData.append('sexo', $('#sexo').val());
@@ -222,7 +250,7 @@
             processData: false,
             contentType: false,
             success: function(response) {
-              
+            
                 if (response.response === 'success') {
                     var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
                     myModal.show();

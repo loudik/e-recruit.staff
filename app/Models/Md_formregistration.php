@@ -14,10 +14,10 @@ class Md_formregistration extends Model
     protected $allowedFields = [
       'idjobs', 'application', 'fullname','sexo', 'address', 'phone','email','trxid',
       'educationlevel', 'graduation', 'gpa',
-      'language','authcount', // ← tambahkan ini
+      'language','authcount',
       'application','idtrx',
       'personalid','cv', 'diploma', 'transcript', 'coverletter',
-      'iby', 'idt' // ← tambahkan ini
+      'iby', 'idt' 
   ];
   
     public function fn_getdatabytrxid($trxid) 
@@ -56,7 +56,8 @@ class Md_formregistration extends Model
 
 
 
-  public function fn_submit($fields) {
+  public function fn_submit($fields) 
+  {
     $result = $this->db->table('tbl_managementjobs')
         ->select('id, jobs')
         ->where(['id' => $fields['jobs'], 'isdeleted' => 0])
@@ -74,7 +75,7 @@ class Md_formregistration extends Model
         'email' => $fields['email'],
         'address' => $fields['address'],
         'sexo' => $fields['sexo'],
-        // 'dob' => $fields['dob'],
+        'graduation' => $fields['graduation'],
         // 'pob' => $fields['pob'],
         'otp' => $fields['otp'],
         'educationlevel' => $fields['educationlevel'],
@@ -90,14 +91,14 @@ class Md_formregistration extends Model
     ];
 
     return $this->db->table('tbl_applicationjobs')->insert($data);
-}
+  }
 
     
 
   public function fn_getjobs($idtrx)
   {
      return $this->db->table('tbl_managementjobs')
-        ->select('idtrx, jobs')
+        ->select('id,idtrx, jobs')
         ->where('idtrx', $idtrx)
         ->get()
         ->getRowArray();  

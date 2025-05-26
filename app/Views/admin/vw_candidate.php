@@ -140,20 +140,12 @@
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="languague" class="form-label">Languague Skills</label>
-                                <input type="text" id="languague" name="languague" class="form-control rounded-pill" disabled>
+                                <input type="text" id="language" name="language" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">GPA</label>
                                 <input type="text" id="gpa" name="gpa" class="form-control rounded-pill" disabled>
                               </div>                        
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="dob" class="form-label">Date of Birth</label>
-                                <input type="text" id="dob" name="dob" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">Place of Birth</label>
-                                <input type="text" id="pob" name="pob" class="form-control rounded-pill" disabled>
-                              </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="sexo" class="form-label">Sexo</label>
                                 <input type="text" id="sexo" name="sexo" class="form-control rounded-pill" disabled>
@@ -165,6 +157,10 @@
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Phone</label>
                                 <input type="text" id="phone" name="phone" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-xxl-12 mt-4 mb-4">
+                                <label class="form-label fw-bold">Personal ID</label>
+                                <iframe id="personalid_previde" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-12 mt-4 mb-4">
                                 <label class="form-label fw-bold">Curriculum Vitae (CV)</label>
@@ -307,8 +303,6 @@
                           }
                         ]
                       });
-
-                      // Hubungkan input pencarian ke kolom nama
                       $('#searchInput').off('keyup').on('keyup', function () {
                         table.column(0).search(this.value).draw();
                       });
@@ -339,7 +333,7 @@
 
               function fn_view(id) {
                 $('#editcandidateModal').modal('show');
-                const basePath = "<?= base_url('file/viewbyfilename/') ?>";
+                const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
 
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
@@ -347,6 +341,7 @@
                   data: { id: id },
                   dataType: "json",
                   success: function (data) {
+                    console.log(data);
                     if (data.response === 'success') {      
                       $('#idapprove').val(data.data.id); 
                       
@@ -354,6 +349,7 @@
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
+                      $('#personalid_previde').attr('src', basePath + data.data.personalid);
           
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);
@@ -386,7 +382,6 @@
                   return;
                 }
                 if (confirm("Are you sure you want to approve this candidate?")) {
-                  // Call the approve function here
                   fn_approveCandidate(id);
                 }
 

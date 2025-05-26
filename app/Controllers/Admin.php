@@ -73,7 +73,7 @@ class Admin extends BaseController
         $days = $this->request->getGet('range') ?? 7;
         $results = $this->Md_adminpanel->getGenderStats($days);
         if (empty($results)) {
-            $results = $this->Md_adminpanel->getGenderStats(); // Tanpa parameter = semua
+            $results = $this->Md_adminpanel->getGenderStats(); 
         }
 
         $data = [
@@ -165,10 +165,6 @@ class Admin extends BaseController
         ])->setStatusCode(200);
     }
 
-
-
-
-
      public function fn_searchjobs()
     {
         $keyword = $this->request->getGet('q') ?? '';
@@ -224,12 +220,38 @@ class Admin extends BaseController
     {
         $id = $this->request->getPost('id');
         $reason = $this->request->getPost('reason');
+
+        $candidate = $this->Md_adminpanel->getCandidateById($id);
+        if (!$candidate || empty($candidate['email'])) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Candidate email not found.'
+            ]);
+        }
+        
         $result = $this->Md_adminpanel->fn_rejectcandidate($id, $reason);
 
         if ($result) {
+            // Kirim email ke kandidat
+            $emailService = \Config\Services::email();
+            $emailService->setTo($candidate['email']);
+            $emailService->setFrom('loudikmarkai@gmail.com', 'HR Recruitment');
+            $emailService->setSubject('Application Rejection Notification');
+            $emailService->setMessage(
+                "Dear {$candidate['fullname']},\n\n" .
+                "We regret to inform you that your application has been rejected.\n\n" .
+                "Reason: {$reason}\n\n" .
+                "Thank you for applying.\n\nBest regards,\nRecruitment Team"
+            );
+
+            if (!$emailService->send()) {
+                log_message('error', '❌ Email gagal dikirim ke: ' . $candidate['email']);
+                log_message('error', print_r($emailService->printDebugger(['headers', 'subject', 'body']), true));
+            }
+
             return $this->response->setJSON([
                 'response' => 'success',
-                'message'  => 'Candidate rejected successfully.'
+                'message'  => 'Candidate rejected and email sent.'
             ]);
         } else {
             return $this->response->setJSON([
@@ -239,59 +261,56 @@ class Admin extends BaseController
         }
     }
 
+
+
     public function fn_viewcandidate()
-{
-    $id = $this->request->getPost('id');
-    $files = $this->Md_adminpanel->getCandidateDocuments($id);
-    $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+    {
+        $id = $this->request->getPost('id');
+        $files = $this->Md_adminpanel->getCandidateDocuments($id);
+        $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
-    // Check if candidate data exists
-    if (!$candidate || !is_array($candidate)) {
-        return $this->response->setJSON([
-            'response' => 'error',
-            'message' => 'No candidate found.',
-            'debug' => $candidate
-        ]);
-    }
+        if (!$candidate || !is_array($candidate)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'No candidate found.',
+                'debug' => $candidate
+            ]);
+        }
 
-    // Check if file data exists
-    if (!$files || !is_array($files)) {
-        return $this->response->setJSON([
-            'response' => 'error',
-            'message' => 'No files found.',
-            'debug' => $files
-        ]);
-    }
+        if (!$files || !is_array($files)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'No files found.',
+                'debug' => $files
+            ]);
+        }
 
-    // Process documents and add file paths
-    $documents = [
-        'cv' => $files['cv'] ?? null,
-        'diploma' => $files['diploma'] ?? null,
-        'transcript' => $files['transcript'] ?? null,
-        'coverletter' => $files['coverletter'] ?? null
-    ];
+        $documents = [
+            'cv' => $files['cv'] ?? null,
+            'diploma' => $files['diploma'] ?? null,
+            'transcript' => $files['transcript'] ?? null,
+            'coverletter' => $files['coverletter'] ?? null
+        ];
 
-    foreach ($documents as $key => $filename) {
-      if ($filename) {
-          $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-          if (file_exists($filePath)) {
-              $documents[$key] = $filename;
-              // var_dump($documents[$key]);return;
+        foreach ($documents as $key => $filename) {
+          if ($filename) {
+              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+              if (file_exists($filePath)) {
+                $documents[$key] = $filename;
+              } else {
+                $documents[$key] = null; 
+              }
           } else {
-              $documents[$key] = null; 
+              $documents[$key] = null;
           }
-      } else {
-          $documents[$key] = null;
       }
-  }
-  
+      
 
-    // Return the candidate data along with document URLs
-    return $this->response->setJSON([
-        'response' => 'success',
-        'data' => array_merge($candidate, $documents)
-    ]);
-}
+        return $this->response->setJSON([
+            'response' => 'success',
+            'data' => array_merge($candidate, $documents)
+        ]);
+    }
 
 
     public function previewCandidateFile($filename = null)

@@ -385,19 +385,25 @@ public function fn_approvecandidate($id)
     return $this->db->table('tbl_applicationjobs')->update($data, ['id' => $id]);
 }
 
-public function fn_rejectcandidate($id)
+public function fn_rejectcandidate($id,$reason = null)
 {
     $data = [
       'isstatus' => 3,
       'uby' => '30580',
+      'reason'   => $reason,
       'udt' => date('Y-m-d H:i:s')
     ];
     return $this->db->table('tbl_applicationjobs')->update($data, ['id' => $id]);
 }
 
-
-
-
+public function getCandidateById($id)
+{
+    return $this->db->table('tbl_applicationjobs')
+        ->select('id, fullname, email')
+        ->where('id', $id)
+        ->get()
+        ->getRowArray();
+}
 
 
 public function getCandidateDocuments($id)

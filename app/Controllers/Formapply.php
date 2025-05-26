@@ -44,8 +44,9 @@ class Formapply extends BaseController
         'language' => $this->request->getPost('language'),
         'otp' => rand(100000, 999999),
         'trxid' => rand(100000000000, 999999999999)
-        
     ];
+
+
     
     foreach ($fields as $field => $value) {
         if (empty($value)) {
