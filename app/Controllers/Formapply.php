@@ -147,41 +147,38 @@ class Formapply extends BaseController
   public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 10)
 {
     if (!$file || !$file->isValid()) {
-        log_message('error', 'Upload invalid: ' . ($file ? $file->getErrorString() : 'No file'));
         return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
     }
 
-    if (!is_writable($uploadPath)) {
+    $realPath = realpath($uploadPath);
+    if ($realPath === false || !is_writable($realPath)) {
         log_message('error', 'Upload path not writable: ' . $uploadPath);
         return ['error' => 'Upload path is not writable: ' . $uploadPath];
     }
 
-    // Validasi ekstensi
     $ext = strtolower($file->getClientExtension());
+
+    // Cek ekstensi file
     if (!in_array($ext, $allowedExtensions)) {
         return ['error' => 'Invalid file extension: ' . $ext];
     }
 
-    // Validasi ukuran
+    // Cek ukuran file
     $maxBytes = $maxSizeMB * 1024 * 1024;
     if ($file->getSize() > $maxBytes) {
-        return ['error' => 'File exceeds size limit of ' . $maxSizeMB . 'MB'];
+        return ['error' => 'File too large. Max: ' . $maxSizeMB . 'MB'];
     }
 
     $filename = $prefix . '_' . uniqid() . '.' . $ext;
-
-    log_message('debug', 'Temp: ' . $file->getTempName());
-    log_message('debug', 'Destination: ' . $uploadPath . $filename);
-
     try {
-        $file->move($uploadPath, $filename);
+        $file->move($realPath, $filename);
     } catch (\Exception $e) {
-        log_message('error', 'Move failed: ' . $e->getMessage());
         return ['error' => 'Failed to move file: ' . $e->getMessage()];
     }
 
     return ['filename' => $filename];
 }
+
 
 
 
