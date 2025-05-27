@@ -314,26 +314,27 @@ class Admin extends BaseController
     }
 
 
-    public function previewCandidateFile($filename = null)
+    public function previewCandidateFile($fileName = null)
     {
-      if (!$filename) {
-        return $this->response->setStatusCode(400)->setBody('Missing filename');
-      }
-      $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-      log_message('debug', 'Resolved realpath: ' . realpath($filePath));
+        if (!$fileName) {
+            return $this->response->setStatusCode(400)->setBody('Missing filename');
+        }
 
+        $fileName = basename($fileName); // amankan dari path traversal
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
 
-      if (!file_exists($filePath)) {
-          return $this->response->setStatusCode(404)->setBody('File not found');
-      }
-      $mime = mime_content_type($filePath);
+        if (!file_exists($filePath)) {
+            return $this->response->setStatusCode(404)->setBody('File not found');
+        }
 
-      return $this->response
-          ->setHeader('Content-Type', $mime)
-          ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
-          ->setBody(file_get_contents($filePath));
+        $mime = mime_content_type($filePath);
 
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
+            ->setBody(file_get_contents($filePath));
     }
+
 
 
 
