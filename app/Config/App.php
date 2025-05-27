@@ -18,7 +18,8 @@ class App extends BaseConfig
      */
     // public string $baseURL = 'http://localhost:8080/';
     
-    public string $baseURL = 'http://10.20.17.50/';
+    // public string $baseURL = 'http://10.20.17.50/';
+    public string $baseURL = 'https://e-recruit.anp.tl/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
