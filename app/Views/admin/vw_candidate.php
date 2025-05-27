@@ -160,7 +160,7 @@
                               </div>
                               <div class="col-xxl-12 mt-4 mb-4">
                                 <label class="form-label fw-bold">Personal ID</label>
-                                <iframe id="personalid_previde" width="100%" height="800px"></iframe>
+                                <iframe id="personalid_preview" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-12 mt-4 mb-4">
                                 <label class="form-label fw-bold">Curriculum Vitae (CV)</label>
@@ -349,7 +349,7 @@
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
-                      $('#personalid_previde').attr('src', basePath + data.data.personalid);
+                      $('#personalid_preview').attr('src', basePath + data.data.personalid);
           
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);

@@ -314,32 +314,26 @@ class Admin extends BaseController
     }
 
 
-   public function previewCandidateFile($filename = null)
-{
-    helper('filesystem'); // Optional, for better error tracing
-
-    if (!$filename) {
-        log_message('error', 'Preview failed: Missing filename');
+    public function previewCandidateFile($filename = null)
+    {
+      if (!$filename) {
         return $this->response->setStatusCode(400)->setBody('Missing filename');
+      }
+      $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+      log_message('debug', 'Resolved realpath: ' . realpath($filePath));
+
+
+      if (!file_exists($filePath)) {
+          return $this->response->setStatusCode(404)->setBody('File not found');
+      }
+      $mime = mime_content_type($filePath);
+
+      return $this->response
+          ->setHeader('Content-Type', $mime)
+          ->setHeader('Content-Disposition', 'inline; filename="' . $filename . '"')
+          ->setBody(file_get_contents($filePath));
+
     }
-
-    // Bersihkan nama file untuk mencegah path traversal
-    $safeFilename = basename($filename);
-    $filePath = WRITEPATH . 'uploads/formapplicant/' . $safeFilename;
-
-    if (!is_file($filePath) || !file_exists($filePath)) {
-        log_message('error', 'Preview failed: File not found at ' . $filePath);
-        return $this->response->setStatusCode(404)->setBody('File not found');
-    }
-
-    $mime = mime_content_type($filePath);
-
-    return $this->response
-        ->setHeader('Content-Type', $mime)
-        ->setHeader('Content-Disposition', 'inline; filename="' . $safeFilename . '"')
-        ->setBody(file_get_contents($filePath));
-}
-
 
 
 
