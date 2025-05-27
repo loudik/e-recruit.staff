@@ -320,8 +320,10 @@ class Admin extends BaseController
             return $this->response->setStatusCode(400)->setBody('Missing filename');
         }
 
-        $fileName = basename($fileName); // amankan dari path traversal
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+        $fileName = basename($fileName);
+        // $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+        $filePath = '/home/projectanp/project_recruitment/writable/uploads/formapplicant/' . $fileName;
+
 
         if (!file_exists($filePath)) {
             return $this->response->setStatusCode(404)->setBody('File not found');

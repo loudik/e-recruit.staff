@@ -348,7 +348,8 @@
                     if (data.response === 'success') {      
                       $('#idapprove').val(data.data.id); 
 
-                      console.log("ID to view:", basePath + data.data.cv);
+                      console.log(data.data.cv);
+
                       
                       $('#cv_preview').attr('src', basePath + data.data.cv);
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
@@ -405,7 +406,7 @@
                   data: { id: id},
                   dataType: "json",
                   success: function (data) {
-                    console.log(data);
+                    
                     if (data.response === 'success') {
                       alert('Candidate approved successfully!');
                       $('#editcandidateModal').modal('hide');
