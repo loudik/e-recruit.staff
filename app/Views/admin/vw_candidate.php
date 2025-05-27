@@ -231,6 +231,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
             <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
             <script type="text/javascript"> 
+            const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
 
               $(document).ready(function(){
                 fn_getcandidate();
@@ -332,8 +333,9 @@
               }
 
               function fn_view(id) {
+                console.log("ID to view:", id);
                 $('#editcandidateModal').modal('show');
-                const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
+                
 
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
