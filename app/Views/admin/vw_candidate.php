@@ -335,6 +335,7 @@
               function fn_view(id) {
                 console.log("ID to view:", id);
                 $('#editcandidateModal').modal('show');
+                // const basePath = "</?= base_url('admin/file/viewbyfilename/') ?>";
                 
 
                 $.ajax({
@@ -346,6 +347,8 @@
                     console.log(data);
                     if (data.response === 'success') {      
                       $('#idapprove').val(data.data.id); 
+
+                      console.log("ID to view:", basePath + data.data.cv);
                       
                       $('#cv_preview').attr('src', basePath + data.data.cv);
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
