@@ -265,77 +265,97 @@ class Admin extends BaseController
 
 
     public function fn_viewcandidate()
-    {
-        $id = $this->request->getPost('id');
-        $files = $this->Md_adminpanel->getCandidateDocuments($id);
-        $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+{
+    $id = $this->request->getPost('id');
+    $files = $this->Md_adminpanel->getCandidateDocuments($id);
+    $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
-        if (!$candidate || !is_array($candidate)) {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message' => 'No candidate found.',
-                'debug' => $candidate
-            ]);
-        }
-
-        if (!$files || !is_array($files)) {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message' => 'No files found.',
-                'debug' => $files
-            ]);
-        }
-
-        $documents = [
-            'cv' => $files['cv'] ?? null,
-            'diploma' => $files['diploma'] ?? null,
-            'transcript' => $files['transcript'] ?? null,
-            'coverletter' => $files['coverletter'] ?? null
-        ];
-
-        foreach ($documents as $key => $filename) {
-          if ($filename) {
-              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-              if (file_exists($filePath)) {
-                $documents[$key] = $filename;
-              } else {
-                $documents[$key] = null; 
-              }
-          } else {
-              $documents[$key] = null;
-          }
-      }
-      
-
+    if (!$candidate || !is_array($candidate)) {
         return $this->response->setJSON([
-            'response' => 'success',
-            'data' => array_merge($candidate, $documents)
+            'response' => 'error',
+            'message' => 'No candidate found.',
+            'debug' => $candidate
         ]);
     }
 
-
- public function previewCandidateFile($fileName = null)
-{
-    if (!$fileName) {
-        return $this->response->setStatusCode(400)->setBody('Missing filename');
+    if (!$files || !is_array($files)) {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'No files found.',
+            'debug' => $files
+        ]);
     }
 
-    // Menghindari path traversal seperti ../../../etc/passwd
-    $fileName = basename($fileName); // <- hanya ambil nama file-nya saja
+    $documentKeys = [
+        'cv' => 'cv',
+        'diploma' => 'diploma',
+        'transcript' => 'transcript',
+        'coverletter' => 'cover'
+    ];
 
-    $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+    $documents = [];
 
-    if (!file_exists($filePath)) {
-        return $this->response->setStatusCode(404)->setBody('File not found');
+    foreach ($documentKeys as $key => $keyword) {
+        $filename = $files[$key] ?? null;
+
+        if ($filename) {
+            $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+            if (file_exists($filePath)) {
+                $documents[$key] = $filename;
+            } else {
+                // fallback mencari file berdasarkan keyword
+                $documents[$key] = $this->findFileByKeyword($keyword);
+            }
+        } else {
+            // fallback jika filename kosong
+            $documents[$key] = $this->findFileByKeyword($keyword);
+        }
     }
 
-    $mime = mime_content_type($filePath);
-
-    return $this->response
-        ->setHeader('Content-Type', $mime)
-        ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
-        ->setBody(file_get_contents($filePath));
+    return $this->response->setJSON([
+        'response' => 'success',
+        'data' => array_merge($candidate, $documents)
+    ]);
 }
+
+// Fungsi bantu untuk cari file berdasarkan kata kunci (misal: "cv")
+private function findFileByKeyword($keyword)
+{
+    $directory = WRITEPATH . 'uploads/formapplicant/';
+    $files = scandir($directory);
+
+    foreach ($files as $file) {
+        if (stripos($file, $keyword) !== false) {
+            return $file;
+        }
+    }
+    return null;
+}
+
+
+
+    public function previewCandidateFile($fileName = null)
+    {
+        if (!$fileName) {
+            return $this->response->setStatusCode(400)->setBody('Missing filename');
+        }
+
+        // Menghindari path traversal seperti ../../../etc/passwd
+        $fileName = basename($fileName); // <- hanya ambil nama file-nya saja
+
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+
+        if (!file_exists($filePath)) {
+            return $this->response->setStatusCode(404)->setBody('File not found');
+        }
+
+        $mime = mime_content_type($filePath);
+
+        return $this->response
+            ->setHeader('Content-Type', $mime)
+            ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
+            ->setBody(file_get_contents($filePath));
+    }
 
 
 

@@ -6,6 +6,7 @@ use App\Models\Md_adminpanel;
 
 class Home extends BaseController
 {
+    protected $Md_adminpanel; 
 
     public function __construct()
     {
