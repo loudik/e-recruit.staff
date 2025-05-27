@@ -314,28 +314,29 @@ class Admin extends BaseController
     }
 
 
-    public function previewCandidateFile($fileName = null)
-    {
-        if (!$fileName) {
-            return $this->response->setStatusCode(400)->setBody('Missing filename');
-        }
-
-        $fileName = basename($fileName);
-        // $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
-        $filePath = '/home/projectanp/project_recruitment/writable/uploads/formapplicant/' . $fileName;
-
-
-        if (!file_exists($filePath)) {
-            return $this->response->setStatusCode(404)->setBody('File not found');
-        }
-
-        $mime = mime_content_type($filePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mime)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
-            ->setBody(file_get_contents($filePath));
+ public function previewCandidateFile($fileName = null)
+{
+    if (!$fileName) {
+        return $this->response->setStatusCode(400)->setBody('Missing filename');
     }
+
+    // Menghindari path traversal seperti ../../../etc/passwd
+    $fileName = basename($fileName); // <- hanya ambil nama file-nya saja
+
+    $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+
+    if (!file_exists($filePath)) {
+        return $this->response->setStatusCode(404)->setBody('File not found');
+    }
+
+    $mime = mime_content_type($filePath);
+
+    return $this->response
+        ->setHeader('Content-Type', $mime)
+        ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
+        ->setBody(file_get_contents($filePath));
+}
+
 
 
 
