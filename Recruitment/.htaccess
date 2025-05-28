@@ -1,0 +1,42 @@
+# Disable directory browsing
+autoindex off;
+
+# ----------------------------------------------------------------------
+
+# Nginx equivalent of mod_rewrite rules
+
+# ----------------------------------------------------------------------
+
+# location / {
+#     try_files $uri $uri/ /index.php$is_args$args;
+# }
+# Redirect Trailing Slashes...
+rewrite ^/(.*)/$ /$1 permanent;
+
+# Rewrite "www.example.com -> example.com"
+if ($host ~* ^www\.(.*)) {
+    set $host_without_www $1;
+    rewrite ^(.*)$ http://$host_without_www$1 permanent;
+}
+
+# Redirect /index.php/ to /
+rewrite ^/index.php/(.*)$ /$1 permanent;
+
+# Ensure Authorization header is passed along
+location / {
+
+     try_files $uri $uri/ /index.php$is_args$args;
+
+    if ($http_authorization) {
+        set $authorization $http_authorization;
+    }
+    if ($http_authorization ~* "(.+)") {
+        set $authorization $1;
+    }
+    if ($authorization != "") {
+        add_header X-HTTP_AUTHORIZATION $authorization;
+    }
+}
+
+# Disable server signature
+server_tokens off;
