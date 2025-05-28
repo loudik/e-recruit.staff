@@ -18,6 +18,11 @@
         <title>Form Recruitment GIP</title>
         <style>
 
+          @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+          }
+
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -139,15 +144,17 @@
 
 
           <div class="modal fade" id="modalLoading" tabindex="-1" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-transparent border-0 shadow-none text-center">
-              <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bg-transparent border-0 shadow-none text-center">
+                <div class="mt-3 text-white fw-bold" style="
+                  animation: blink 1.5s infinite;
+                  -webkit-animation: blink 1.5s infinite;
+                ">
+                  Please wait...
+                </div>
               </div>
-              <div class="mt-3 text-white fw-bold">Please wait...</div>
             </div>
           </div>
-        </div>
 
 
           <!-- Modal Sign In -->

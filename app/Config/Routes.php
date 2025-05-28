@@ -53,6 +53,7 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
   $routes->post('candidate/approve', 'Admin::fn_approvecandidate');
   $routes->post('candidate/reject', 'Admin::fn_rejectcandidate');
+  $routes->post('candidate/detail', 'Admin::fn_detailcandidate');
   $routes->get('dashboard/getApplicationChartData', 'Admin::getApplicationChartData');
   $routes->get('dashboard/getGenderStats', 'Admin::getGenderStats');
   $routes->post('candidate/deletecandidate', 'Admin::fn_deletecandidate');

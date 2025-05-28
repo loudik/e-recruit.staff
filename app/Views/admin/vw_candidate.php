@@ -121,7 +121,6 @@
                                   <label for="jobs" class="form-label">Job title</label>
                                   <input type="text" id="jobs" name="jobs"class="form-control rounded-pill" disabled>
                               </div>
-                     
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Fullnames</label>
                                 <input type="text" id="fullname" name="fullname" class="form-control rounded-pill" disabled>
@@ -208,11 +207,96 @@
                     </div>
                     <div class="modal-footer justify-content-center">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="button" class="btn btn-danger" onclick="submitReject()">Submit</button>
+                       <button id="btnSubmitReject" type="button" class="btn btn-danger" onclick="submitReject(this)">
+                        <span class="default-text">Submit</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                      </button>
+
                     </div>
                   </div>
                 </div>
               </div>
+
+
+              <!-- Modal Details Candidate -->
+              <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="editcandidateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                        <div class="pxp-dashboard-content-details">
+                            <h1>Detail Candidate</h1>
+                            <p class="pxp-text-light">Detail Data Candidate that Applied</p>
+                            <div class="row mt-4 mt-lg-5">
+                              <div class="col-md-6 col-xxl-6">
+                                  <input type="hidden" id="idapprove" name="idapprove" value="" />
+                                  <label for="jobs" class="form-label">Job title</label>
+                                  <input type="text" id="jobs" name="jobs"class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="pob" class="form-label">Fullnames</label>
+                                <input type="text" id="fullname" name="fullname" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="text" id="email" name="email" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="pob" class="form-label">Graduation Year</label>
+                                <input type="text" id="graduation" name="graduation" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="educationlevel" class="form-label">education Level</label>
+                                <input type="text" id="educationlevel" name="educationlevel" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="languague" class="form-label">Languague Skills</label>
+                                <input type="text" id="language" name="language" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="pob" class="form-label">GPA</label>
+                                <input type="text" id="gpa" name="gpa" class="form-control rounded-pill" disabled>
+                              </div>                        
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="sexo" class="form-label">Sexo</label>
+                                <input type="text" id="sexo" name="sexo" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="pob" class="form-label">Address</label>
+                                <input type="text" id="address" name="address" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-md-6 col-xxl-6">
+                                <label for="pob" class="form-label">Phone</label>
+                                <input type="text" id="phone" name="phone" class="form-control rounded-pill" disabled>
+                              </div>
+                              <div class="col-xxl-12 mt-4 mb-4">
+                                <label class="form-label fw-bold">Personal ID</label>
+                                <iframe id="personalid_preview" width="100%" height="800px"></iframe>
+                              </div>
+                              <div class="col-xxl-12 mt-4 mb-4">
+                                <label class="form-label fw-bold">Curriculum Vitae (CV)</label>
+                                <iframe id="cv_preview" width="100%" height="800px"></iframe>
+                              </div>
+                              <div class="col-xxl-6">
+                                <label class="form-label fw-bold">Diploma</label>
+                                <iframe id="diploma_preview" width="100%" height="800px"></iframe>
+                              </div>
+                              <div class="col-xxl-6">
+                                <label class="form-label fw-bold">Transcript</label>
+                                <iframe id="transcript_preview" width="100%" height="800px"></iframe>
+                              </div>
+                              <div class="col-xxl-6">
+                                <label class="form-label fw-bold">Cover Letter</label>
+                                <iframe id="coverletter_preview" width="100%" height="800px"></iframe>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
 
 
             <?= view('layoutAdmin/footer.php'); ?>
@@ -289,19 +373,36 @@
                               const year = date.getFullYear();
                               const month = ('0' + (date.getMonth() + 1)).slice(-2);
                               const day = ('0' + date.getDate()).slice(-2);
-                              return `${year}${month}${day}`; // Format YYYYMMDD
+                              return `${year}${month}${day}`;
                             }
                           },
                           {
                             render: function (data, type, row) {
+                              if (row.isstatus === '2' || row.isstatus === '3') {
+                                return `
+                                  <div style="display: flex; justify-content: center; white-space: nowrap;">
+                                    <button title="Details" class="btn btn-sm btn-info" onclick="fn_detail(${row.id})">
+                                      <span class="fa fa-info-circle"></span>
+                                    </button>
+                                  </div>
+
+                                `;
+                              }
+
                               return `
                                 <div style="white-space: nowrap;">
-                                  <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_view(${row.id})"><span class="fa fa-eye"></span> </button>
-                                  <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deletecandidate(${row.id})"><span class="fa fa-trash-o"></span></button>
+                                  <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_view(${row.id})">
+                                    <span class="fa fa-eye"></span>
+                                  </button>
+                                  <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deletecandidate(${row.id})">
+                                    <span class="fa fa-trash-o"></span>
+                                  </button>
                                 </div>
                               `;
                             }
                           }
+
+
                         ]
                       });
                       $('#searchInput').off('keyup').on('keyup', function () {
@@ -337,7 +438,6 @@
                 $('#editcandidateModal').modal('show');
                  const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
                 
-
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
                   type: "POST",
@@ -437,7 +537,7 @@
                 $('#editcandidateModal').modal('hide');
               }
 
-              function submitReject() {
+              function submitReject(button) {
                 const id = $('#reject_id').val();
                 const reason = $('#reason').val().trim();
 
@@ -445,6 +545,15 @@
                   alert('Please provide a reason for rejection.');
                   return;
                 }
+
+                // Dapatkan elemen-elemen di dalam tombol
+                const defaultText = button.querySelector('.default-text');
+                const spinner = button.querySelector('.spinner-border');
+
+                // Aktifkan loading: sembunyikan teks, tampilkan spinner
+                button.disabled = true;
+                defaultText.classList.add('d-none');
+                spinner.classList.remove('d-none');
 
                 $.ajax({
                   url: "<?= base_url('admin/candidate/reject') ?>",
@@ -459,13 +568,24 @@
                       window.location.href = "<?= base_url('admin/candidate') ?>";
                     } else {
                       alert('Failed to reject candidate.');
+                      resetButton();
                     }
                   },
                   error: function (xhr, status, error) {
                     console.error('AJAX Error:', error);
+                    alert('An error occurred.');
+                    resetButton();
                   }
                 });
+
+                function resetButton() {
+                  // Reset tombol ke kondisi awal
+                  button.disabled = false;
+                  defaultText.classList.remove('d-none');
+                  spinner.classList.add('d-none');
+                }
               }
+
 
 
 
@@ -489,6 +609,49 @@
                           }
                       });
                   }
+              }
+
+              function fn_detail(id) {
+                console.log("Candidate ID:", id);
+                $.ajax({
+                  url: "<?= base_url('admin/candidate/detail') ?>" ,
+                  type: "POST",
+                  data: { id: id },
+                  dataType: "json",
+                  success: function (data) {
+                    console.log(data);
+                    if (data.response === 'success') {
+                      const c = data.candidate;
+                      // Isi semua input
+                      $('#idapprove').val(c.id);
+                      $('#jobs').val(c.jobs);
+                      $('#fullname').val(c.fullname);
+                      $('#email').val(c.email);
+                      $('#graduation').val(c.graduation);
+                      $('#educationlevel').val(c.educationlevel);
+                      $('#language').val(c.language);
+                      $('#gpa').val(c.gpa);
+                      $('#sexo').val(c.sexo);
+                      $('#address').val(c.address);
+                      $('#phone').val(c.phone);
+
+                      // Tampilkan dokumen PDF jika ada
+                      $('#personalid_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.fileidentity);
+                      $('#cv_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filecv);
+                      $('#diploma_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filediploma);
+                      $('#transcript_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filetranscript);
+                      $('#coverletter_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filecoverletter);
+
+                      $('#detailModal').modal('show');
+                    } else {
+                      alert('Data not found.');
+                    }
+                  },
+                  error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                    alert('Failed to fetch details.');
+                  }
+                });
               }
 
 

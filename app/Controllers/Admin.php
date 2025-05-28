@@ -263,75 +263,72 @@ class Admin extends BaseController
     }
 
 
+    public function fn_detailcandidate()
+    {
+        $id = $this->request->getPost('id');
+        $result = $this->Md_adminpanel->fn_getdetailcandidate($id);
+
+        if ($result) {
+            return $this->response->setJSON([
+                'response' => 'success',
+                'candidate' => $result
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Candidate not found.'
+            ]);
+        }
+    }
 
     public function fn_viewcandidate()
-{
-    $id = $this->request->getPost('id');
-    $files = $this->Md_adminpanel->getCandidateDocuments($id);
-    $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+    {
+        $id = $this->request->getPost('id');
+        $files = $this->Md_adminpanel->getCandidateDocuments($id);
+        $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
-    if (!$candidate || !is_array($candidate)) {
-        return $this->response->setJSON([
-            'response' => 'error',
-            'message' => 'No candidate found.',
-            'debug' => $candidate
-        ]);
-    }
+        if (!$candidate || !is_array($candidate)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'No candidate found.',
+                'debug' => $candidate
+            ]);
+        }
 
-    if (!$files || !is_array($files)) {
-        return $this->response->setJSON([
-            'response' => 'error',
-            'message' => 'No files found.',
-            'debug' => $files
-        ]);
-    }
+        if (!$files || !is_array($files)) {
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message' => 'No files found.',
+                'debug' => $files
+            ]);
+        }
 
-    $documentKeys = [
-        'cv' => 'cv',
-        'diploma' => 'diploma',
-        'transcript' => 'transcript',
-        'coverletter' => 'cover'
-    ];
+        $documents = [
+            'cv' => $files['cv'] ?? null,
+            'diploma' => $files['diploma'] ?? null,
+            'transcript' => $files['transcript'] ?? null,
+            'coverletter' => $files['coverletter'] ?? null
+        ];
 
-    $documents = [];
-
-    foreach ($documentKeys as $key => $keyword) {
-        $filename = $files[$key] ?? null;
-
-        if ($filename) {
-            $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-            if (file_exists($filePath)) {
+        foreach ($documents as $key => $filename) {
+          if ($filename) {
+              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
+              if (file_exists($filePath)) {
                 $documents[$key] = $filename;
-            } else {
-                // fallback mencari file berdasarkan keyword
-                $documents[$key] = $this->findFileByKeyword($keyword);
-            }
-        } else {
-            // fallback jika filename kosong
-            $documents[$key] = $this->findFileByKeyword($keyword);
-        }
+              } else {
+                $documents[$key] = null; 
+              }
+          } else {
+              $documents[$key] = null;
+          }
+      }
+      
+
+        return $this->response->setJSON([
+            'response' => 'success',
+            'data' => array_merge($candidate, $documents)
+        ]);
     }
-
-    return $this->response->setJSON([
-        'response' => 'success',
-        'data' => array_merge($candidate, $documents)
-    ]);
-}
-
-// Fungsi bantu untuk cari file berdasarkan kata kunci (misal: "cv")
-private function findFileByKeyword($keyword)
-{
-    $directory = WRITEPATH . 'uploads/formapplicant/';
-    $files = scandir($directory);
-
-    foreach ($files as $file) {
-        if (stripos($file, $keyword) !== false) {
-            return $file;
-        }
-    }
-    return null;
-}
-
 
 
     public function previewCandidateFile($fileName = null)
@@ -339,9 +336,7 @@ private function findFileByKeyword($keyword)
         if (!$fileName) {
             return $this->response->setStatusCode(400)->setBody('Missing filename');
         }
-
-        // Menghindari path traversal seperti ../../../etc/passwd
-        $fileName = basename($fileName); // <- hanya ambil nama file-nya saja
+        $fileName = basename($fileName); 
 
         $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName . '.pdf';
 
