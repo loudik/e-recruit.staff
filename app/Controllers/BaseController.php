@@ -96,7 +96,8 @@ abstract class BaseController extends Controller
         }
 
         $random = bin2hex(random_bytes(5));
-        $newName = "{$prefix}_{$random}.{$ext}";
+        $newName = "{$prefix}_{$random}";
+        // $newName = "{$prefix}_{$random}.{$ext}";
         $file->move($uploadPath, $newName);
 
         return ['filename' => $newName];

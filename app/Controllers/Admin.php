@@ -343,7 +343,7 @@ private function findFileByKeyword($keyword)
         // Menghindari path traversal seperti ../../../etc/passwd
         $fileName = basename($fileName); // <- hanya ambil nama file-nya saja
 
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName . '.pdf';
 
         if (!file_exists($filePath)) {
             return $this->response->setStatusCode(404)->setBody('File not found');

@@ -46,7 +46,6 @@ class Formapply extends BaseController
         'trxid' => rand(100000000000, 999999999999)
     ];
 
-
     
     foreach ($fields as $field => $value) {
         if (empty($value)) {
@@ -76,6 +75,8 @@ class Formapply extends BaseController
             'message' => 'Invalid GPA format!',
           ]);
       }
+
+      
 
       // Files
       $personalid = $this->request->getFile('personalid');
@@ -113,6 +114,7 @@ class Formapply extends BaseController
       $fields['coverletter'] = $coverUpload['filename'];
       $fields['diploma'] = $diplomaUpload['filename'];
       $fields['transcript'] = $transcriptUpload['filename'];
+
 
       // Simpan ke DB via model
       $addform = $this->Md_formregistration->fn_submit($fields);
@@ -160,21 +162,23 @@ class Formapply extends BaseController
       if (!in_array($ext, $allowedExtensions)) {
           return ['error' => 'Invalid file extension: ' . $ext];
       }
+      
 
       // Cek ukuran file
       $maxBytes = $maxSizeMB * 1024 * 1024;
       if ($file->getSize() > $maxBytes) {
           return ['error' => 'File too large. Max: ' . $maxSizeMB . 'MB'];
       }
-
-      $filename = $prefix . '_' . uniqid() . '.' . $ext;
+      $uniqdata = uniqid();
+      $filename = $prefix . '_' . $uniqdata . '.' . $ext;
+      $filenameDB = $prefix . '_' . $uniqdata;
       try {
           $file->move($realPath, $filename);
       } catch (\Exception $e) {
           return ['error' => 'Failed to move file: ' . $e->getMessage()];
       }
-
-      return ['filename' => $filename];
+      
+      return ['filename' => $filenameDB];
   }
 
 

@@ -7,9 +7,9 @@ autoindex off;
 
 # ----------------------------------------------------------------------
 
-location / {
-    try_files $uri $uri/ /index.php$is_args$args;
-}
+# location / {
+#     try_files $uri $uri/ /index.php$is_args$args;
+# }
 # Redirect Trailing Slashes...
 rewrite ^/(.*)/$ /$1 permanent;
 
@@ -24,6 +24,9 @@ rewrite ^/index.php/(.*)$ /$1 permanent;
 
 # Ensure Authorization header is passed along
 location / {
+
+     try_files $uri $uri/ /index.php$is_args$args;
+
     if ($http_authorization) {
         set $authorization $http_authorization;
     }
