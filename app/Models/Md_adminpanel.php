@@ -90,6 +90,15 @@ public function fn_getcandidatereject()
                     ->where('isstatus', 3)
                     ->countAllResults();
 }
+
+public function fn_getdetailcandidate($id)
+{
+    return $this->db->table('tbl_applicationjobs')
+        ->where('id', $id)
+        ->get()
+        ->getRowArray(); 
+}
+
 public function fn_getcandidateapprove()
 {
     return $this->db->table('tbl_applicationjobs')
