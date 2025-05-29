@@ -380,7 +380,13 @@ class Admin extends BaseController
         if (!$fileName) {
             return $this->response->setStatusCode(400)->setBody('Missing filename');
         }
-        $fileName = basename($fileName); 
+
+        $fileName = basename($fileName);
+
+        // ✅ Tambahkan ini agar tidak double .pdf
+        if (pathinfo($fileName, PATHINFO_EXTENSION) !== 'pdf') {
+            $fileName .= '.pdf';
+        }
 
         $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
 
@@ -395,6 +401,7 @@ class Admin extends BaseController
             ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
             ->setBody(file_get_contents($filePath));
     }
+
 
 
 
