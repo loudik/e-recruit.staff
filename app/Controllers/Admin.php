@@ -321,86 +321,82 @@ class Admin extends BaseController
    
 
     public function fn_viewcandidate()
-    {
-        $id = $this->request->getPost('id');
-        $files = $this->Md_adminpanel->getCandidateDocuments($id);
-        $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+{
+    $id = $this->request->getPost('id');
+    $files = $this->Md_adminpanel->getCandidateDocuments($id);
+    $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
-
-        if (!$candidate || !is_array($candidate)) {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message' => 'No candidate found.',
-                'debug' => $candidate
-            ]);
-        }
-        if (!$files || !is_array($files)) {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message' => 'No files found.',
-                'debug' => $files
-            ]);
-        }
-        $documents = [
-            'cv' => $files['cv'] ?? null,
-            'diploma' => $files['diploma'] ?? null,
-            'transcript' => $files['transcript'] ?? null,
-            'coverletter' => $files['coverletter'] ?? null,
-            'personalid' => $files['personalid'] ?? null
-        ];
-
-        foreach ($documents as $key => $filename) {
-            if ($filename) {
-                $filenameWithExt = $filename . '.pdf'; // tambahkan .pdf
-
-                $filePath = WRITEPATH . 'uploads/formapplicant/' . $filenameWithExt;
-
-                if (file_exists($filePath)) {
-                    $documents[$key] = $filenameWithExt; // kirim ke JS yang lengkap
-                } else {
-                    $documents[$key] = null;
-                }
-            } else {
-                $documents[$key] = null;
-            }
-        }
-
-      
-
+    if (!$candidate || !is_array($candidate)) {
         return $this->response->setJSON([
-            'response' => 'success',
-            'data' => array_merge($candidate, $documents),
+            'response' => 'error',
+            'message' => 'No candidate found.',
+            'debug' => $candidate
+        ]);
+    }
+
+    if (!$files || !is_array($files)) {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'No files found.',
             'debug' => $files
         ]);
     }
 
+    $documentTypes = ['cv', 'diploma', 'transcript', 'coverletter', 'personalid'];
+    $documents = [];
+
+    foreach ($documentTypes as $docType) {
+        $baseName = $files[$docType] ?? null;
+
+        if ($baseName) {
+            $baseName = basename($baseName); // sanitize
+            $filePath = WRITEPATH . 'uploads/formapplicant/' . $baseName . '.pdf';
+
+            if (file_exists($filePath)) {
+                $documents[$docType] = $baseName . '.pdf';
+            } else {
+                $documents[$docType] = null;
+            }
+        } else {
+            $documents[$docType] = null;
+        }
+    }
+
+    return $this->response->setJSON([
+        'response' => 'success',
+        'data' => array_merge($candidate, $documents),
+        'debug' => $files
+    ]);
+}
+
+
 
     public function previewCandidateFile($fileName = null)
-    {
-        if (!$fileName) {
-            return $this->response->setStatusCode(400)->setBody('Missing filename');
-        }
-
-        $fileName = basename($fileName);
-
-        // ✅ Tambahkan ini agar tidak double .pdf
-        if (pathinfo($fileName, PATHINFO_EXTENSION) !== 'pdf') {
-            $fileName .= '.pdf';
-        }
-
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
-
-        if (!file_exists($filePath)) {
-            return $this->response->setStatusCode(404)->setBody('File not found');
-        }
-
-        $mime = mime_content_type($filePath);
-
-        return $this->response
-            ->setHeader('Content-Type', $mime)
-            ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
-            ->setBody(file_get_contents($filePath));
+{
+    if (!$fileName) {
+        return $this->response->setStatusCode(400)->setBody('Missing filename');
     }
+
+    $fileName = basename($fileName); // sanitize
+
+    // Tambahkan ekstensi jika belum ada
+    if (!pathinfo($fileName, PATHINFO_EXTENSION)) {
+        $fileName .= '.pdf';
+    }
+
+    $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
+
+    if (!file_exists($filePath)) {
+        return $this->response->setStatusCode(404)->setBody('File not found: ' . $filePath);
+    }
+
+    $mime = mime_content_type($filePath);
+
+    return $this->response
+        ->setHeader('Content-Type', $mime)
+        ->setHeader('Content-Disposition', 'inline; filename="' . $fileName . '"')
+        ->setBody(file_get_contents($filePath));
+}
 
 
 
