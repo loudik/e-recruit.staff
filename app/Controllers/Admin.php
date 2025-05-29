@@ -383,8 +383,12 @@ class Admin extends BaseController
 
         $fileName = basename($fileName);
 
+        // ✅ Tambahkan ini agar tidak double .pdf
+        if (pathinfo($fileName, PATHINFO_EXTENSION) !== 'pdf') {
+            $fileName .= '.pdf';
+        }
 
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName .'.pdf' ;
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
 
         if (!file_exists($filePath)) {
             return $this->response->setStatusCode(404)->setBody('File not found');
