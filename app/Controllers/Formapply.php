@@ -146,40 +146,40 @@ class Formapply extends BaseController
   }
 
 
-  // public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
-  // {
-  //     if (!$file || !$file->isValid()) {
-  //         return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
-  //     }
+  public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
+  {
+      if (!$file || !$file->isValid()) {
+          return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
+      }
 
-  //     $realPath = realpath($uploadPath);
-  //     if ($realPath === false || !is_writable($realPath)) {
-  //         log_message('error', 'Upload path not writable: ' . $uploadPath);
-  //         return ['error' => 'Upload path is not writable: ' . $uploadPath];
-  //     }
+      $realPath = realpath($uploadPath);
+      if ($realPath === false || !is_writable($realPath)) {
+          log_message('error', 'Upload path not writable: ' . $uploadPath);
+          return ['error' => 'Upload path is not writable: ' . $uploadPath];
+      }
 
-  //     $ext = strtolower($file->getClientExtension());
-  //     if (!in_array($ext, $allowedExtensions)) {
-  //         return ['error' => 'Invalid file extension: ' . $ext];
-  //     }
+      $ext = strtolower($file->getClientExtension());
+      if (!in_array($ext, $allowedExtensions)) {
+          return ['error' => 'Invalid file extension: ' . $ext];
+      }
       
 
-  //     // Cek ukuran file
-  //     $maxBytes = $maxSizeMB * 1024 * 1024;
-  //     if ($file->getSize() > $maxBytes) {
-  //         return ['error' => 'File too large. Max: ' . $maxSizeMB . 'MB'];
-  //     }
-  //     $uniqdata = uniqid();
-  //     $filename = $prefix . '_' . $uniqdata . '.' . $ext;
-  //     $filenameDB = $prefix . '_' . $uniqdata;
-  //     try {
-  //         $file->move($realPath, $filename);
-  //     } catch (\Exception $e) {
-  //         return ['error' => 'Failed to move file: ' . $e->getMessage()];
-  //     }
+      // Cek ukuran file
+      $maxBytes = $maxSizeMB * 1024 * 1024;
+      if ($file->getSize() > $maxBytes) {
+          return ['error' => 'File too large. Max: ' . $maxSizeMB . 'MB'];
+      }
+      $uniqdata = uniqid();
+      $filename = $prefix . '_' . $uniqdata . '.' . $ext;
+      $filenameDB = $prefix . '_' . $uniqdata;
+      try {
+          $file->move($realPath, $filename);
+      } catch (\Exception $e) {
+          return ['error' => 'Failed to move file: ' . $e->getMessage()];
+      }
       
-  //     return ['filename' => $filenameDB];
-  // }
+      return ['filename' => $filenameDB];
+  }
 
 
 

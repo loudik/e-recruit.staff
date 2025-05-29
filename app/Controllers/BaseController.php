@@ -80,28 +80,28 @@ abstract class BaseController extends Controller
         session()->set($sessionData);
     }
 
-    public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'doc', 'docx'], $maxSizeMB = 10)
-    {
-        if (!$file || !$file->isValid()) {
-            return ['error' => "File is not valid.". $file];
-        }
+    // public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'doc', 'docx'], $maxSizeMB = 10)
+    // {
+    //     if (!$file || !$file->isValid()) {
+    //         return ['error' => "File is not valid.". $file];
+    //     }
 
-        $ext = strtolower($file->getClientExtension());
-        if (!in_array($ext, $allowedExtensions)) {
-            return ['error' => 'File type not allowed.'];
-        }
+    //     $ext = strtolower($file->getClientExtension());
+    //     if (!in_array($ext, $allowedExtensions)) {
+    //         return ['error' => 'File type not allowed.'];
+    //     }
 
-        if ($file->getSizeByUnit('mb') > $maxSizeMB) {
-            return ['error' => "File size must not exceed {$maxSizeMB} MB."];
-        }
+    //     if ($file->getSizeByUnit('mb') > $maxSizeMB) {
+    //         return ['error' => "File size must not exceed {$maxSizeMB} MB."];
+    //     }
 
-        $random = bin2hex(random_bytes(5));
-        $newName = "{$prefix}_{$random}";
-        // $newName = "{$prefix}_{$random}.{$ext}";
-        $file->move($uploadPath, $newName);
+    //     $random = bin2hex(random_bytes(5));
+    //     $newName = "{$prefix}_{$random}";
+    //     // $newName = "{$prefix}_{$random}.{$ext}";
+    //     $file->move($uploadPath, $newName);
 
-        return ['filename' => $newName];
-    }
+    //     return ['filename' => $newName];
+    // }
 
     public function remSpace($string) 
     { 
