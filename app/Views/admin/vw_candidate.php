@@ -29,7 +29,8 @@
                                     <li class="nav-item"><a href="<?= base_url('admin/newjobs') ?>"><span class="fa fa-file-text-o"></span>New Job Offer</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs') ?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate') ?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
-                                    <!-- <li class="nav-item"><a href="<?= base_url('admin/changepw') ?>"><span class="fa fa-lock"></span>Change Password</a></li> -->
+                                    <li class="nav-item"><a href="<?= base_url('admin/reports') ?>"><span class="fa fa-lock"></span>Reports</a></li>
+                                    
                                     <li class="pxp-dropdown-header mt-4">Insights</li>
                                     <li class="nav-item">
                                         <a href="company-dashboard-inbox.html" class="d-flex justify-content-between align-items-center">
@@ -226,66 +227,72 @@
                             <h1>Detail Candidate</h1>
                             <p class="pxp-text-light">Detail Data Candidate that Applied</p>
                             <div class="row mt-4 mt-lg-5">
+                              <div class="col-12 mt-4">
+                                <label for="reason" class="form-label">Approval Reason</label>
+                                <textarea id="detailreason" class="form-control rounded-3" rows="4" readonly>
+                                </textarea>
+                              </div>
+
                               <div class="col-md-6 col-xxl-6">
-                                  <input type="hidden" id="idapprove" name="idapprove" value="" />
+                                  <input type="hidden" id="detailidapprove" name="idapprove" value="" />
                                   <label for="jobs" class="form-label">Job title</label>
-                                  <input type="text" id="jobs" name="jobs"class="form-control rounded-pill" disabled>
+                                  <input type="text" id="detailjobs" name="jobs"class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Fullnames</label>
-                                <input type="text" id="fullname" name="fullname" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailfullname" name="fullname" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="text" id="email" name="email" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailemail" name="email" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Graduation Year</label>
-                                <input type="text" id="graduation" name="graduation" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailgraduation" name="graduation" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="educationlevel" class="form-label">education Level</label>
-                                <input type="text" id="educationlevel" name="educationlevel" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detaileducationlevel" name="educationlevel" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="languague" class="form-label">Languague Skills</label>
-                                <input type="text" id="language" name="language" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detaillanguage" name="language" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">GPA</label>
-                                <input type="text" id="gpa" name="gpa" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailgpa" name="gpa" class="form-control rounded-pill" disabled>
                               </div>                        
                               <div class="col-md-6 col-xxl-6">
                                 <label for="sexo" class="form-label">Sexo</label>
-                                <input type="text" id="sexo" name="sexo" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailsexo" name="sexo" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Address</label>
-                                <input type="text" id="address" name="address" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailaddress" name="address" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-md-6 col-xxl-6">
                                 <label for="pob" class="form-label">Phone</label>
-                                <input type="text" id="phone" name="phone" class="form-control rounded-pill" disabled>
+                                <input type="text" id="detailphone" name="phone" class="form-control rounded-pill" disabled>
                               </div>
                               <div class="col-xxl-12 mt-4 mb-4">
                                 <label class="form-label fw-bold">Personal ID</label>
-                                <iframe id="personalid_preview" width="100%" height="800px"></iframe>
+                                <iframe id="detailpersonalid_preview" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-12 mt-4 mb-4">
                                 <label class="form-label fw-bold">Curriculum Vitae (CV)</label>
-                                <iframe id="cv_preview" width="100%" height="800px"></iframe>
+                                <iframe id="detailcv_preview" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-6">
                                 <label class="form-label fw-bold">Diploma</label>
-                                <iframe id="diploma_preview" width="100%" height="800px"></iframe>
+                                <iframe id="detaildiploma_preview" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-6">
                                 <label class="form-label fw-bold">Transcript</label>
-                                <iframe id="transcript_preview" width="100%" height="800px"></iframe>
+                                <iframe id="detailtranscript_preview" width="100%" height="800px"></iframe>
                               </div>
                               <div class="col-xxl-6">
                                 <label class="form-label fw-bold">Cover Letter</label>
-                                <iframe id="coverletter_preview" width="100%" height="800px"></iframe>
+                                <iframe id="detailcoverletter_preview" width="100%" height="800px"></iframe>
                               </div>
                             </div>
                           </div>
@@ -315,7 +322,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
             <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
             <script type="text/javascript"> 
-           
+
 
               $(document).ready(function(){
                 fn_getcandidate();
@@ -436,7 +443,8 @@
               function fn_view(id) {
                 console.log("ID to view:", id);
                 $('#editcandidateModal').modal('show');
-                 const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
+                var basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
+                 
                 
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
@@ -444,19 +452,19 @@
                   data: { id: id },
                   dataType: "json",
                   success: function (data) {
-                    console.log(data);
-                    if (data.response === 'success') {      
-                      $('#idapprove').val(data.data.id); 
-
-                      console.log(data.data.cv);
-
-                      
+                    console.log("DEBUG FILES:", data.debug);
+                    console.log(data.data.personalid);
+                  
+                    if (data.response === 'success') {
+                     
                       $('#cv_preview').attr('src', basePath + data.data.cv);
                       $('#diploma_preview').attr('src', basePath + data.data.diploma);
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
                       $('#personalid_preview').attr('src', basePath + data.data.personalid);
-          
+
+
+                      $('#idapprove').val(data.data.id); 
                       $('#jobs').val(data.data.application);
                       $('#fullname').val(data.data.fullname);
                       $('#email').val(data.data.email);
@@ -545,12 +553,8 @@
                   alert('Please provide a reason for rejection.');
                   return;
                 }
-
-                // Dapatkan elemen-elemen di dalam tombol
                 const defaultText = button.querySelector('.default-text');
                 const spinner = button.querySelector('.spinner-border');
-
-                // Aktifkan loading: sembunyikan teks, tampilkan spinner
                 button.disabled = true;
                 defaultText.classList.add('d-none');
                 spinner.classList.remove('d-none');
@@ -613,6 +617,8 @@
 
               function fn_detail(id) {
                 console.log("Candidate ID:", id);
+                const basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
+
                 $.ajax({
                   url: "<?= base_url('admin/candidate/detail') ?>" ,
                   type: "POST",
@@ -622,25 +628,27 @@
                     console.log(data);
                     if (data.response === 'success') {
                       const c = data.candidate;
-                      // Isi semua input
-                      $('#idapprove').val(c.id);
-                      $('#jobs').val(c.jobs);
-                      $('#fullname').val(c.fullname);
-                      $('#email').val(c.email);
-                      $('#graduation').val(c.graduation);
-                      $('#educationlevel').val(c.educationlevel);
-                      $('#language').val(c.language);
-                      $('#gpa').val(c.gpa);
-                      $('#sexo').val(c.sexo);
-                      $('#address').val(c.address);
-                      $('#phone').val(c.phone);
 
-                      // Tampilkan dokumen PDF jika ada
-                      $('#personalid_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.fileidentity);
-                      $('#cv_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filecv);
-                      $('#diploma_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filediploma);
-                      $('#transcript_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filetranscript);
-                      $('#coverletter_preview').attr('src', "<?= base_url('writable/uploads/formapplicant/') ?>"+c.filecoverletter);
+                      console.log(c.reason);
+                      // Isi semua input
+                      $('#detailidapprove').val(c.id);
+                      $('#detailjobs').val(c.jobs);
+                      $('#detailfullname').val(c.fullname);
+                      $('#detailemail').val(c.email);
+                      $('#detailgraduation').val(c.graduation);
+                      $('#detaileducationlevel').val(c.educationlevel);
+                      $('#detaillanguage').val(c.language);
+                      $('#detailgpa').val(c.gpa);
+                      $('#detailsexo').val(c.sexo);
+                      $('#detailaddress').val(c.address);
+                      $('#detailphone').val(c.phone);
+                      $('#detailreason').val(c.reason);
+
+                      $('#detailcv_preview').attr('src', basePath + c.cv);
+                      $('#detaildiploma_preview').attr('src', basePath + c.diploma);
+                      $('#detailtranscript_preview').attr('src', basePath + c.transcript);
+                      $('#detailcoverletter_preview').attr('src', basePath + c.coverletter);
+                      $('#detailpersonalid_preview').attr('src', basePath + c.personalid);
 
                       $('#detailModal').modal('show');
                     } else {

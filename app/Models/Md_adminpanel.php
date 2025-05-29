@@ -388,6 +388,7 @@ public function fn_approvecandidate($id)
 {
     $data = [
       'isstatus' => 2,
+      'reason' => 'Candidate approved after successful review of qualifications and documentation',
       'uby' => '30580',
       'udt' => date('Y-m-d H:i:s')
     ];
@@ -419,7 +420,7 @@ public function getCandidateDocuments($id)
 {
     return $this->db
         ->table('tbl_applicationjobs') 
-        ->select('id, cv, diploma, transcript, coverletter, application, fullname, email, graduation, educationlevel, language, gpa, dob, pob, address, phone, sexo')
+        ->select('id, cv, diploma, transcript, coverletter, personalid,application, fullname, email, graduation, educationlevel, language, gpa, address, phone, sexo')
         ->where('id', $id)
         ->where('isdeleted', 0) 
         ->get()

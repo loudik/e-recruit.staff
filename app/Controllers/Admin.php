@@ -239,53 +239,93 @@ class Admin extends BaseController
             $emailService->setFrom('loudikmarkai@gmail.com', 'HR Recruitment');
             $emailService->setSubject('Application Rejection Notification');
             $emailService->setMessage(
-                "Dear {$candidate['fullname']},\n\n" .
-                "We regret to inform you that your application has been rejected.\n\n" .
-                "Reason: {$reason}\n\n" .
-                "Thank you for applying.\n\nBest regards,\nRecruitment Team"
+              "Dear {$candidate['fullname']},\n\n" .
+              "We regret to inform you that your application has been rejected.\n\n" .
+              "Reason: {$reason}\n\n" .
+              "Thank you for applying.\n\nBest regards,\nRecruitment Team"
             );
 
             if (!$emailService->send()) {
-                log_message('error', '❌ Email gagal dikirim ke: ' . $candidate['email']);
-                log_message('error', print_r($emailService->printDebugger(['headers', 'subject', 'body']), true));
+              log_message('error', '❌ Email gagal dikirim ke: ' . $candidate['email']);
+              log_message('error', print_r($emailService->printDebugger(['headers', 'subject', 'body']), true));
             }
 
             return $this->response->setJSON([
-                'response' => 'success',
-                'message'  => 'Candidate rejected and email sent.'
+              'response' => 'success',
+              'message'  => 'Candidate rejected and email sent.'
             ]);
         } else {
             return $this->response->setJSON([
-                'response' => 'error',
-                'message'  => 'Failed to reject candidate.'
+              'response' => 'error',
+              'message'  => 'Failed to reject candidate.'
             ]);
         }
     }
+
+
 
 
     public function fn_detailcandidate()
     {
         $id = $this->request->getPost('id');
-        $result = $this->Md_adminpanel->fn_getdetailcandidate($id);
+        $files = $this->Md_adminpanel->getCandidateDocuments($id);        
+        $candidate = $this->Md_adminpanel->fn_getdetailcandidate($id);
 
-        if ($result) {
+        if (!$candidate || !is_array($candidate)) {
             return $this->response->setJSON([
-                'response' => 'success',
-                'candidate' => $result
-            ]);
-        } else {
-            return $this->response->setJSON([
-                'response' => 'error',
-                'message'  => 'Candidate not found.'
+              'response' => 'error',
+              'message' => 'No candidate found.',
+              'debug' => $candidate
             ]);
         }
+        if (!$files || !is_array($files)) {
+            return $this->response->setJSON([
+              'response' => 'error',
+              'message' => 'No files found.',
+              'debug' => $files
+            ]);
+        }
+
+        $documents = [
+            'cv' => $files['cv'] ?? null,
+            'diploma' => $files['diploma'] ?? null,
+            'transcript' => $files['transcript'] ?? null,
+            'coverletter' => $files['coverletter'] ?? null,
+            'personalid' => $files['personalid'] ?? null
+        ];
+
+        foreach ($documents as $key => $filename) {
+            if ($filename) {
+                $filenameWithExt = $filename . '.pdf';
+                $filePath = WRITEPATH . 'uploads/formapplicant/' . $filenameWithExt;
+                if (file_exists($filePath)) {
+                    $documents[$key] = $filenameWithExt;
+                } else {
+                    $documents[$key] = null;
+                }
+            } else {
+                $documents[$key] = null;
+            }
+        }
+
+        return $this->response->setJSON([
+            'response' => 'success',
+            'candidate' => array_merge($candidate, $documents)
+        ]);
     }
+
+
+    
+
+
+   
 
     public function fn_viewcandidate()
     {
         $id = $this->request->getPost('id');
         $files = $this->Md_adminpanel->getCandidateDocuments($id);
         $candidate = $this->Md_adminpanel->getCandidateDetail($id);
+
 
         if (!$candidate || !is_array($candidate)) {
             return $this->response->setJSON([
@@ -294,7 +334,6 @@ class Admin extends BaseController
                 'debug' => $candidate
             ]);
         }
-
         if (!$files || !is_array($files)) {
             return $this->response->setJSON([
                 'response' => 'error',
@@ -302,31 +341,36 @@ class Admin extends BaseController
                 'debug' => $files
             ]);
         }
-
         $documents = [
             'cv' => $files['cv'] ?? null,
             'diploma' => $files['diploma'] ?? null,
             'transcript' => $files['transcript'] ?? null,
-            'coverletter' => $files['coverletter'] ?? null
+            'coverletter' => $files['coverletter'] ?? null,
+            'personalid' => $files['personalid'] ?? null
         ];
 
         foreach ($documents as $key => $filename) {
-          if ($filename) {
-              $filePath = WRITEPATH . 'uploads/formapplicant/' . $filename;
-              if (file_exists($filePath)) {
-                $documents[$key] = $filename;
-              } else {
-                $documents[$key] = null; 
-              }
-          } else {
-              $documents[$key] = null;
-          }
-      }
+            if ($filename) {
+                $filenameWithExt = $filename . '.pdf'; // tambahkan .pdf
+
+                $filePath = WRITEPATH . 'uploads/formapplicant/' . $filenameWithExt;
+
+                if (file_exists($filePath)) {
+                    $documents[$key] = $filenameWithExt; // kirim ke JS yang lengkap
+                } else {
+                    $documents[$key] = null;
+                }
+            } else {
+                $documents[$key] = null;
+            }
+        }
+
       
 
         return $this->response->setJSON([
             'response' => 'success',
-            'data' => array_merge($candidate, $documents)
+            'data' => array_merge($candidate, $documents),
+            'debug' => $files
         ]);
     }
 
@@ -338,7 +382,7 @@ class Admin extends BaseController
         }
         $fileName = basename($fileName); 
 
-        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName . '.pdf';
+        $filePath = WRITEPATH . 'uploads/formapplicant/' . $fileName;
 
         if (!file_exists($filePath)) {
             return $this->response->setStatusCode(404)->setBody('File not found');
