@@ -50,8 +50,8 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('candidate', 'Admin::fn_getcandidate');
   $routes->get('candidate/getcandidate', 'Admin::getcandidate');
   $routes->post('candidate/view', 'Admin::fn_viewcandidate');
-  // $routes->get('file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
-  $routes->get('file/viewbyfilename/(:segment)', 'Admin::previewCandidateFile/$1');
+  $routes->get('file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
+  // $routes->get('file/viewbyfilename/(:segment)', 'Admin::previewCandidateFile/$1');
   $routes->post('candidate/approve', 'Admin::fn_approvecandidate');
   $routes->post('candidate/reject', 'Admin::fn_rejectcandidate');
   $routes->post('candidate/detail', 'Admin::fn_detailcandidate');
