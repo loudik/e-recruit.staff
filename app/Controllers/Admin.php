@@ -351,7 +351,7 @@ class Admin extends BaseController
 
         foreach ($documents as $key => $filename) {
             if ($filename) {
-                $filenameWithExt = $filename . '.pdf'; // tambahkan .pdf
+                $filenameWithExt = $filename . '.pdf'; 
 
                 $filePath = WRITEPATH . 'uploads/formapplicant/' . $filenameWithExt;
 

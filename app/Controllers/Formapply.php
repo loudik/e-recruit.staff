@@ -146,40 +146,32 @@ class Formapply extends BaseController
   }
 
 
-  public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
-  {
-      if (!$file || !$file->isValid()) {
-          return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
-      }
+ public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
+{
+    // 🔍 DEBUG PERMISSION
+    log_message('debug', 'UPLOAD PATH DEBUG >>> ' . $uploadPath);
+    log_message('debug', 'is_dir: ' . (is_dir($uploadPath) ? 'yes' : 'no'));
+    log_message('debug', 'is_writable: ' . (is_writable($uploadPath) ? 'yes' : 'no'));
 
-      $realPath = realpath($uploadPath);
-      if ($realPath === false || !is_writable($realPath)) {
-          log_message('error', 'Upload path not writable: ' . $uploadPath);
-          return ['error' => 'Upload path is not writable: ' . $uploadPath];
-      }
+    if (!$file || !$file->isValid()) {
+        return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
+    }
 
-      $ext = strtolower($file->getClientExtension());
-      if (!in_array($ext, $allowedExtensions)) {
-          return ['error' => 'Invalid file extension: ' . $ext];
-      }
-      
+    // Pastikan folder ada
+    if (!is_dir($uploadPath)) {
+        mkdir($uploadPath, 0755, true);
+    }
 
-      // Cek ukuran file
-      $maxBytes = $maxSizeMB * 1024 * 1024;
-      if ($file->getSize() > $maxBytes) {
-          return ['error' => 'File too large. Max: ' . $maxSizeMB . 'MB'];
-      }
-      $uniqdata = uniqid();
-      $filename = $prefix . '_' . $uniqdata . '.' . $ext;
-      $filenameDB = $prefix . '_' . $uniqdata;
-      try {
-          $file->move($realPath, $filename);
-      } catch (\Exception $e) {
-          return ['error' => 'Failed to move file: ' . $e->getMessage()];
-      }
-      
-      return ['filename' => $filenameDB];
-  }
+    // Cek apakah folder bisa ditulis
+    if (!is_writable($uploadPath)) {
+        log_message('error', 'Upload path not writable: ' . $uploadPath);
+        return ['error' => 'Upload path is not writable: ' . $uploadPath];
+    }
+
+  
+}
+
+
 
 
 
