@@ -22,7 +22,7 @@ writable/session/*
 # Uploads
 writable/uploads/*
 !writable/uploads/.gitkeep
-!writable/uploads/index.html
+#!writable/uploads/index.html
 
 # Debugbar
 writable/debugbar/*
