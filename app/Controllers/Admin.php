@@ -368,7 +368,7 @@ class Admin extends BaseController
             return $this->response->setJSON([
                 'response' => 'error',
                 'message' => 'No data found.',
-                'debug' => $files
+                // 'debug' => $files
             ]);
         }
 
@@ -376,7 +376,7 @@ class Admin extends BaseController
         return $this->response->setJSON([
             'response' => 'success',
             'data' => $dataDB,
-            'debug' => $files
+            // 'debug' => $files
         ]);
     }
 
