@@ -96,11 +96,11 @@ abstract class BaseController extends Controller
         }
 
         $random = bin2hex(random_bytes(5));
-        $newName = "{$prefix}_{$random}";
-        // $newName = "{$prefix}_{$random}.{$ext}";
+        $newName = "{$prefix}_{$random}.{$ext}";
+        $newNameDB = "{$prefix}_{$random}";
         $file->move($uploadPath, $newName);
 
-        return ['filename' => $newName];
+        return ['filename' => $newNameDB];
     }
 
     public function remSpace($string) 
