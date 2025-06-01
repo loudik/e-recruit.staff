@@ -96,7 +96,6 @@ class Formapply extends BaseController
 
       $cvUpload = $this->uploadFile($cv, $prefix . '_cv', $uploadPath);
       if (isset($cvUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $cvUpload['error']]);
-      
       $coverUpload = $this->uploadFile($coverletter, $prefix . '_cover', $uploadPath);
       if (isset($coverUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $coverUpload['error']]);
       
@@ -108,7 +107,7 @@ class Formapply extends BaseController
 
       $personalidUpload = $this->uploadFile($personalid, $prefix . '_personalid', $uploadPath);
       if (isset($personalidUpload['error'])) return $this->response->setJSON(['response' => 'error', 'message' => $personalidUpload['error']]);
-      
+
       $fields['personalid'] = $personalidUpload['filename'];
       $fields['cv'] = $cvUpload['filename'];
       $fields['coverletter'] = $coverUpload['filename'];
@@ -144,38 +143,6 @@ class Formapply extends BaseController
       }
       return $this->response->setJSON($data);
   }
-
-
- public function uploadFile($file, $prefix, $uploadPath, $allowedExtensions = ['pdf', 'docx'], $maxSizeMB = 20)
-{
-    // 🔍 DEBUG PERMISSION
-    log_message('debug', 'UPLOAD PATH DEBUG >>> ' . $uploadPath);
-    log_message('debug', 'is_dir: ' . (is_dir($uploadPath) ? 'yes' : 'no'));
-    log_message('debug', 'is_writable: ' . (is_writable($uploadPath) ? 'yes' : 'no'));
-
-    if (!$file || !$file->isValid()) {
-        return ['error' => $file ? $file->getErrorString() : 'File not uploaded'];
-    }
-
-    // Pastikan folder ada
-    if (!is_dir($uploadPath)) {
-        mkdir($uploadPath, 0755, true);
-    }
-
-    // Cek apakah folder bisa ditulis
-    if (!is_writable($uploadPath)) {
-        log_message('error', 'Upload path not writable: ' . $uploadPath);
-        return ['error' => 'Upload path is not writable: ' . $uploadPath];
-    }
-
-  
-}
-
-
-
-
-
-
 
   public function fn_comfirmemail($otp, $email)
   {
