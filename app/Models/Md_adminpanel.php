@@ -420,7 +420,7 @@ public function getCandidateDocuments($id)
 {
     return $this->db
         ->table('tbl_applicationjobs') 
-        ->select('id, cv, diploma, transcript, coverletter, personalid,application, fullname, email, graduation, educationlevel, language, gpa, address, phone, sexo')
+        ->select('id, cv, diploma, transcript, coverletter, personalid,application, fullname, email, graduation, educationlevel, language, gpa, address, phone, sexo,reason')
         ->where('id', $id)
         ->where('isdeleted', 0) 
         ->get()
