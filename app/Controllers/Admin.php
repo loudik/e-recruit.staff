@@ -239,47 +239,46 @@ class Admin extends BaseController
             $emailService->setFrom('loudikmarkai@gmail.com', 'HR Recruitment');
             $emailService->setSubject('Application Rejection Notification');
             $emailService->setMessage(
-              "Dear {$candidate['fullname']},\n\n" .
-              "We regret to inform you that your application has been rejected.\n\n" .
-              "Reason: {$reason}\n\n" .
-              "Thank you for applying.\n\nBest regards,\nRecruitment Team"
+                "Dear {$candidate['fullname']},\n\n" .
+                "We regret to inform you that your application has been rejected.\n\n" .
+                "Reason: {$reason}\n\n" .
+                "Thank you for applying.\n\nBest regards,\nRecruitment Team"
             );
 
             if (!$emailService->send()) {
-              log_message('error', '❌ Email gagal dikirim ke: ' . $candidate['email']);
-              log_message('error', print_r($emailService->printDebugger(['headers', 'subject', 'body']), true));
+                log_message('error', '❌ Email gagal dikirim ke: ' . $candidate['email']);
+                log_message('error', print_r($emailService->printDebugger(['headers', 'subject', 'body']), true));
             }
 
             return $this->response->setJSON([
-              'response' => 'success',
-              'message'  => 'Candidate rejected and email sent.'
+                'response' => 'success',
+                'message'  => 'Candidate rejected and email sent.'
             ]);
         } else {
             return $this->response->setJSON([
-              'response' => 'error',
-              'message'  => 'Failed to reject candidate.'
+                'response' => 'error',
+                'message'  => 'Failed to reject candidate.'
             ]);
         }
     }
 
 
 
-
     public function fn_detailcandidate()
-    {
-        $id = $this->request->getPost('id');
-        $files = $this->Md_adminpanel->getCandidateDocuments($id);        
-        $candidate = $this->Md_adminpanel->fn_getdetailcandidate($id);
+{
+    $id = $this->request->getPost('id');
+    $files = $this->Md_adminpanel->getCandidateDocuments($id);        
+    $candidate = $this->Md_adminpanel->fn_getdetailcandidate($id);
 
-        if (!$candidate || !is_array($candidate)) {
-            return $this->response->setJSON([
-              'response' => 'error',
-              'message' => 'No candidate found.',
-              'debug' => $candidate
-            ]);
-        }
-        if (!$files || !is_array($files)) {
-            return $this->response->setJSON([
+    if (!$candidate || !is_array($candidate)) {
+        return $this->response->setJSON([
+            'response' => 'error',
+            'message' => 'No candidate found.',
+            'debug' => $candidate
+        ]);
+    }
+    if (!$files || !is_array($files)) {
+        return $this->response->setJSON([
               'response' => 'error',
               'message' => 'No files found.',
               'debug' => $files
