@@ -627,7 +627,7 @@
                   success: function (data) {
                     console.log(data);
                     if (data.response === 'success') {
-                      const c = data.candidate;
+                      const c = data.data;
 
                       console.log(c.reason);
                       // Isi semua input
