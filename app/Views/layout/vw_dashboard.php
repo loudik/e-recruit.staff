@@ -156,20 +156,8 @@
 
                                 <h3 class="mt-3 mt-lg-4">Type of Employment</h3>
                                 <div class="list-group mt-2 mt-lg-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center pxp-checked">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="" checked>
-                                            Full Time
-                                        </span>
-                                        <span class="badge rounded-pill">56</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Part Time
-                                        </span>
-                                        <span class="badge rounded-pill">34</span>
-                                    </label>
+                                  
+                                   
                                     <?php if (!empty($jobTypes)): ?>
                                         <?php foreach ($jobTypes as $job): ?>
                                             <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
@@ -184,20 +172,7 @@
                                         <p>No job types found.</p>
                                         <?php endif; ?>
 
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Contract
-                                        </span>
-                                        <span class="badge rounded-pill">76</span>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                        <span class="d-flex">
-                                            <input class="form-check-input me-2" type="checkbox" value="">
-                                            Training
-                                        </span>
-                                        <span class="badge rounded-pill">28</span>
-                                    </label>
+                                  
                                 </div>
 
                                 <h3 class="mt-3 mt-lg-4">Experience Level</h3>

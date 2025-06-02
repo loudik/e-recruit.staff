@@ -73,7 +73,14 @@
                           </div>
 
                         </div>
-
+                        <div class="col-auto order-1 order-sm-2">
+                          <div class="pxp-company-dashboard-jobs-search mb-3">
+                            <div class="input-group">
+                              <label for="filter-period" class="form-label mb-0 me-2">Filter Period:</label>
+                              <input type="month" id="filter-period" class="form-control form-control-sm" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                     <div class="table-responsive">
@@ -84,7 +91,7 @@
                             <th style="width: 25%;">Name</th>
                             <th style="width: 40%;">Applied for</th>
                             <th style="width: 15%;">Status</th>
-                            <th style="width: 25%;">Date</th>
+                            <th style="width: 15%;">Date</th>
                             <th style="width: 15%;">Action</th>
                           </tr>
                       </thead>
