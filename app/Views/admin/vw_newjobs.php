@@ -128,13 +128,13 @@
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
                                 <label for="applicants" class="form-label">Date Apply</label>
-                                <input type="date" id="applydate" name="applydate" class="form-control" value="<?= date('Y-m-d') ?>">
+                                <input type="date" id="applydate" name="applydate" class="form-control"  value="<?= date('Y-m-d') ?>">
                             </div>
                         </div>
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
                                 <label for="applicants" class="form-label">Date Expire</label>
-                                <input type="date" id="dateexpire" name="dateexpire" class="form-control">
+                                <input type="datetime-local" id="dateexpire" name="dateexpire" class="form-control">
                             </div>
                         </div>
 
@@ -156,6 +156,21 @@
             <?= view('layoutAdmin/footer.php'); ?>
 
             <script>
+
+                $(document).ready(function () {
+                    // Set min pada dateexpire saat applydate berubah
+                    $('#applydate').on('change', function () {
+                        const applyVal = $(this).val(); // format: 2025-06-02T14:30
+                        $('#dateexpire').attr('min', applyVal);
+                    });
+
+                    // (opsional) Panggil sekali saat halaman pertama kali load jika sudah ada nilai applydate
+                    const initApply = $('#applydate').val();
+                    if (initApply) {
+                        $('#dateexpire').attr('min', initApply);
+                    }
+                });
+
         
                 function fn_publish() {
                     var jobs = $('#jobs').val();
@@ -214,6 +229,27 @@
                     if (!applicants) {
                         alert('Please enter the number of applicants.');
                         $('#applicants').focus();
+                        return false;
+                    }
+
+                    if (!applydate) {
+                        alert('Please select an apply date.');
+                        $('#applydate').focus();
+                        return false;
+                    }
+
+                    if (!dateexpire) {
+                        alert('Please select an expiration date.');
+                        $('#dateexpire').focus();
+                        return false;
+                    }
+
+                    const startDate = new Date(applydate);
+                    const endDate = new Date(dateexpire);
+
+                    if (endDate.getTime() <= startDate.getTime()) {
+                        alert('Expiration date must be later than apply date.');
+                        $('#dateexpire').focus();
                         return false;
                     }
 

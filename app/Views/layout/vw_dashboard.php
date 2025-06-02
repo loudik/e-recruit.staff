@@ -154,7 +154,7 @@
                                   </div>
 
 
-                                <h3 class="mt-3 mt-lg-4">Type of Employment</h3>
+                                <h3 class="mt-3 mt-lg-4">Type of Candidate</h3>
                                 <div class="list-group mt-2 mt-lg-3">
                                   
                                    
@@ -494,10 +494,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadJobs(1);
         });
-
-
-
-
+        
       </script>
     </body>
 </html>
