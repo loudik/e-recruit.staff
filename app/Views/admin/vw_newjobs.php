@@ -111,8 +111,8 @@
                                 <select id="type" class="form-select">
                                     <option value="Full Time">Full Time</option>
                                     <option value="Part Time">Part Time</option>
-                                    <option value="Remote">Remote</option>
-                                    <option value="Internship">Internship</option>
+                                    <option value="remote">Remote</option>
+                                    <option value="internships">Internships</option>
                                     <option value="Contract">Contract</option>
                                     <option value="Training">Training</option>
                                 </select>
