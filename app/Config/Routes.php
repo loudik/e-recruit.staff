@@ -51,7 +51,6 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('candidate/getcandidate', 'Admin::getcandidate');
   $routes->post('candidate/view', 'Admin::fn_viewcandidate');
   $routes->get('file/viewbyfilename/(:any)', 'Admin::previewCandidateFile/$1');
-  // $routes->get('file/viewbyfilename/(:segment)', 'Admin::previewCandidateFile/$1');
   $routes->post('candidate/approve', 'Admin::fn_approvecandidate');
   $routes->post('candidate/reject', 'Admin::fn_rejectcandidate');
   $routes->post('candidate/detail', 'Admin::fn_detailcandidate');
@@ -71,6 +70,8 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('managejobs/searchjobs', 'Admin::fn_searchjobs');
   $routes->post('managejobs/updatestatus', 'Admin::updateJobStatus');
   $routes->post('candidate/bulk-action', 'Admin::fn_action');
+  $routes->get('reports', 'Report::fn_report');
+  $routes->get('report/getreport', 'Report::fn_getreport');
 
 
 });

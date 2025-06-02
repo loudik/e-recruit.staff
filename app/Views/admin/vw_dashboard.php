@@ -48,12 +48,7 @@
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs')?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate')?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/reports') ?>"><span class="fa fa-lock"></span>Reports</a></li>
-                                    <li class="nav-item">
-                                        <a href="company-dashboard-inbox.html" class="d-flex justify-content-between align-items-center">
-                                            <div><span class="fa fa-envelope-o"></span>Inbox</div>
-                                            <span class="badge rounded-pill">14</span>
-                                        </a>
-                                    </li>
+                               
                                 
                                 </ul>
                             </nav>

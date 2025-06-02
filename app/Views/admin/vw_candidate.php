@@ -31,13 +31,7 @@
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate') ?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/reports') ?>"><span class="fa fa-lock"></span>Reports</a></li>
                                     
-                                    <li class="pxp-dropdown-header mt-4">Insights</li>
-                                    <li class="nav-item">
-                                        <a href="company-dashboard-inbox.html" class="d-flex justify-content-between align-items-center">
-                                          <div><span class="fa fa-envelope-o"></span>Inbox</div>
-                                          <span class="badge rounded-pill">14</span>
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
                             </nav>
                         </div>
@@ -79,14 +73,7 @@
                           </div>
 
                         </div>
-                        <div class="col-auto order-1 order-sm-2">
-                          <div class="pxp-company-dashboard-jobs-search mb-3">
-                            <div class="input-group">
-                              <label for="filter-period" class="form-label mb-0 me-2">Filter Period:</label>
-                              <input type="month" id="filter-period" class="form-control form-control-sm" />
-                            </div>
-                          </div>
-                        </div>
+
                       </div>
 
                     <div class="table-responsive">
@@ -97,7 +84,7 @@
                             <th style="width: 25%;">Name</th>
                             <th style="width: 40%;">Applied for</th>
                             <th style="width: 15%;">Status</th>
-                            <th style="width: 15%;">Date</th>
+                            <th style="width: 25%;">Date</th>
                             <th style="width: 15%;">Action</th>
                           </tr>
                       </thead>
