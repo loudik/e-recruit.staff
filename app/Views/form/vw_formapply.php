@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.theme.default.min.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('assets/css/animate.css') ?>">
         <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css') ?>">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
         <title>Form Recruitment GIP</title>
         <style>
 
@@ -156,6 +157,9 @@
             </div>
           </div>
 
+          <!-- Modal Success Message -->
+          
+
 
           <!-- Modal Sign In -->
           <div class="modal fade pxp-user-modal" id="modalemail" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
@@ -188,6 +192,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
         <script src="<?= base_url('assets/js/nav.js') ?>"></script>
         <script src="<?= base_url('assets/js/Chart.min.js') ?>"></script>
@@ -220,7 +226,7 @@
 
         var formData = new FormData();
         // formData.append('jobs', $('#jobs').val());
-        formData.append('jobs', $('#job_id').val());     // ini adalah job ID sebenarnya
+        formData.append('jobs', $('#job_id').val());
         formData.append('trxid', $('#trxid').val()); 
         formData.append('fullname', $('#fullname').val());
         formData.append('email', $('#email').val());
@@ -292,27 +298,46 @@
             processData: false,
             contentType: false,
             success: function(response) {
-                if (response.response === 'success') {
-                  alert('Success: ' + response.message);
-                    setTimeout(() => {
-                        location.reload(); 
-                    }, 2000);
-                }else if (response.trxid === 'TRXID-RESET-SESSION') {
-                    alert('Error: ' + response.message);
-                    setTimeout(() => {
-                        location.reload(); 
-                    }, 2000);
-                    return;
-                } else {
-                    alert('Error: ' + response.message);
-                    return;
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                alert('Error confirming OTP: ' + xhr.status + ' - ' + error);
+            if (response.response === 'success') {
+                // ✅ Tutup modal OTP
+                $('#modalemail').modal('hide');
+                $('#modalLoading').modal('hide');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Congratulations!',
+                    text: response.message,
+                    confirmButtonText: 'OK',
+                    timer: 3000,
+                    timerProgressBar: true
+                }).then(() => {
+                    location.reload(); // atau redirect jika perlu
+                });
+            } else if (response.trxid === 'TRXID-RESET-SESSION') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Session Expired',
+                    text: response.message,
+                    confirmButtonText: 'Reload'
+                }).then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Verification Failed',
+                    text: response.message
+                });
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'AJAX Error',
+                text: 'Error confirming OTP: ' + xhr.status + ' - ' + error
+            });
+        }
+    });
 
         return false;
     }

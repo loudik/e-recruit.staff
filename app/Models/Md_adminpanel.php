@@ -17,6 +17,12 @@ class Md_adminpanel extends Model
     return $query->getResultArray();
   }
 
+  public function fn_getgroup()
+  {
+    $query = $this->db->query("SELECT * FROM tbl_group where isdeleted = 0  order by groupname asc");
+    return $query->getResultArray();
+  }
+
 
 
   public function fn_addnewjobs($jobs, $location, $category, $jobdescription, $experience, $level, $type, $applicants, $applydate, $dateexpire, $idtrx)
@@ -218,7 +224,7 @@ public function getCategories()
         [$limit, $offset]
     );
 
-    return $query->getResultArray(); // Mengembalikan hasil query dalam bentuk array
+    return $query->getResultArray(); 
   }
 
     public function getSortedJobs($sort = '0', $limit = 3, $offset = 0)

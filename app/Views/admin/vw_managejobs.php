@@ -169,13 +169,13 @@
                                     <div class="col-md-6 col-xxl-3">
                                         <div class="mb-3">
                                             <label for="applydate" class="form-label">Date Apply</label>
-                                            <input type="date" id="applydate" name="applydate" class="form-control" >
+                                            <input type="datetime-local" id="applydate" name="applydate" class="form-control" >
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xxl-3">
                                         <div class="mb-3">
                                             <label for="dateexpire" class="form-label">Date Expire</label>
-                                            <input type="date" id="dateexpire" name="dateexpire" class="form-control">
+                                            <input type="datetime-local" id="dateexpire" name="dateexpire" class="form-control">
                                         </div>
                                     </div>
 

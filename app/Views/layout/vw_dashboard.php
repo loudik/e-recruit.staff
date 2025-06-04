@@ -47,7 +47,7 @@
 
                                         </li>
                                         <li class="nav-item dropdown">
-                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#job-1">Find Jobs</a>
+                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#job-1">Find Jobs & Interships</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -60,7 +60,7 @@
                                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Home</a>
                             </li>
                             <li class="dropdown">
-                                <a href="#job-1" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs</a>
+                                <a href="#job-1" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs  & Interships</a>
                             </li>
                         </ul>
                     </nav>
@@ -251,13 +251,10 @@
                         <div class="col-auto">
                             <nav class="mt-3 mt-sm-0" aria-label="Jobs list pagination">
                             <ul class="pagination pxp-pagination" id="pagination">
-
                             </ul>
                             </nav>
                         </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -291,7 +288,7 @@
                                     <div class="pxp-footer-section">
                                         <h3>For Candidates</h3>
                                         <ul class="pxp-footer-list">
-                                            <li><a href="jobs-list-1.html">Find Jobs</a></li>
+                                            <li><a href="jobs-list-1.html">Find Jobs & Interships</a></li>
                                             <li><a href="candidate-dashboard.html">Candidate Dashboard</a></li>
                                             <li><a href="candidate-dashboard-applications.html">My Applications</a></li>
                                             <li><a href="candidate-dashboard-fav-jobs.html">Favourite Jobs</a></li>

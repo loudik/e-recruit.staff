@@ -117,6 +117,7 @@ class Admin extends BaseController
     public function fn_getnewjobs()
     {         
       $data['title'] = 'New Jobs';
+      $data['group'] =  $this->Md_adminpanel->fn_getgroup();
       $data['categories'] =  $this->Md_adminpanel->fn_getcategory();
       return view('admin/vw_newjobs', $data);
     }

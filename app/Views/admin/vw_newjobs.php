@@ -63,15 +63,16 @@
                 <p class="pxp-text-light">Add a new job to your company's jobs list.</p>
                 <form>
                     <div class="row mt-4 mt-lg-5">
-                        <div class="col-xxl-6">
-                            <div class="mb-3">
-                                <label for="jobs" class="form-label">Job title</label>
-                                <input type="text" id="jobs" name="jobs" class="form-control" placeholder="Add title">
-                            </div>
-                        </div>
                         <div class="col-md-6 col-xxl-3">
-                            <label for="location" class="form-label">Location</label>
-                            <input type="text" id="location" name="location" class="form-control" placeholder="City 8, Canossa Has Laran">
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Group</label>
+                                <select id="category" class="form-select">
+                                    <option>Select a Group</option>
+                                    <?php foreach ($group as $group): ?>
+                                        <option value="<?= $group['id']; ?>"><?= $group['groupname']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
@@ -84,9 +85,18 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <div class="col-md-6 col-xxl-3">
+                            <div class="mb-3">
+                                <label for="jobs" class="form-label">Job title</label>
+                                <input type="text" id="jobs" name="jobs" class="form-control" placeholder="Add title">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xxl-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" name="location" class="form-control" placeholder="City 8, Canossa Has Laran">
+                        </div>
                     </div>
-
-
 
                     <div class="row">
                         <div class="col-md-6 col-xxl-3">
