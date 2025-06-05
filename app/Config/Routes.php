@@ -72,6 +72,10 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('candidate/bulk-action', 'Admin::fn_action');
   $routes->get('reports', 'Report::fn_report');
   $routes->get('report/getreport', 'Report::fn_getreport');
+  $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
+  $routes->get('logo-base64', 'Report::logoBase64');
+
+
 
 
 });

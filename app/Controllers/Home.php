@@ -13,42 +13,43 @@ class Home extends BaseController
         $this->Md_adminpanel = new Md_adminpanel();
     }
     public function index()
-    {
-        $sort = $this->request->getGet('sort') ?? '0';
-        $keyword = $this->request->getGet('q');
+{
+    $sort = $this->request->getGet('sort') ?? '0';
+    $keyword = $this->request->getGet('q');
 
-        if (!empty($keyword)) {
-            $data['jobs'] = $this->Md_adminpanel->searchJobs($keyword);
-        } else {
-            $data['jobs'] = $this->Md_adminpanel->getSortedJobs($sort, 3, 0);
-        }
-
-        $jobTypes = $this->Md_adminpanel->getJobTypeCount();
-        $data['Levels'] = $this->Md_adminpanel->getExperienceLevelCounts();
-        $data['jobCategories'] = $this->Md_adminpanel->getJobByjob();
-        $data['categories'] = $this->Md_adminpanel->getCategories();
-        $data['popular_keywords'] = $this->Md_adminpanel->getPopularKeywords();
-        $data['keyword'] = $keyword;
-        $data['sort'] = $sort;
-
-        // Hitung internships
-        $internshipCount = 0;
-        foreach ($jobTypes as $job) {
-            if ($job['type'] === 'internships') {
-                $internshipCount = $job['count'];
-                break;
-            }
-        }
-
-        $data['jobTypes'] = [
-            [
-                'type' => 'internships',
-                'count' => $internshipCount
-            ]
-        ];
-
-        return view('layout/vw_dashboard', $data);
+    if (!empty($keyword)) {
+        $this->data['jobs'] = $this->Md_adminpanel->searchJobs($keyword);
+    } else {
+        $this->data['jobs'] = $this->Md_adminpanel->getSortedJobs($sort, 3, 0);
     }
+
+    $jobTypes = $this->Md_adminpanel->getJobTypeCount();
+    $this->data['Levels'] = $this->Md_adminpanel->getExperienceLevelCounts();
+    $this->data['jobCategories'] = $this->Md_adminpanel->getJobByjob();
+    $this->data['categories'] = $this->Md_adminpanel->getCategories();
+    $this->data['popular_keywords'] = $this->Md_adminpanel->getPopularKeywords();
+    $this->data['keyword'] = $keyword;
+    $this->data['sort'] = $sort;
+
+    // Hitung internships
+    $internshipCount = 0;
+    foreach ($jobTypes as $job) {
+        if ($job['type'] === 'internships') {
+            $internshipCount = $job['count'];
+            break;
+        }
+    }
+
+    $this->data['jobTypes'] = [
+        [
+            'type' => 'internships',
+            'count' => $internshipCount
+        ]
+    ];
+
+    return view('layout/vw_dashboard', $this->data);
+}
+
 
 
     public function fn_getpages()

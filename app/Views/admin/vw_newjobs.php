@@ -63,28 +63,29 @@
                 <p class="pxp-text-light">Add a new job to your company's jobs list.</p>
                 <form>
                     <div class="row mt-4 mt-lg-5">
+                        <!-- Dropdown Group -->
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
-                                <label for="category" class="form-label">Group</label>
-                                <select id="category" class="form-select">
-                                    <option>Select a Group</option>
-                                    <?php foreach ($group as $group): ?>
-                                        <option value="<?= $group['id']; ?>"><?= $group['groupname']; ?></option>
+                                <label for="group" class="form-label">Group</label>
+                                <select id="group" class="form-select">
+                                    <option value="">Select a Group</option>
+                                    <?php foreach ($group as $g): ?>
+                                        <option value="<?= $g['id']; ?>"><?= $g['groupname']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Dropdown Category -->
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
                                 <label for="category" class="form-label">Category</label>
                                 <select id="category" class="form-select">
-                                    <option>Select a category</option>
-                                    <?php foreach ($categories as $category): ?>
-                                        <option value="<?= $category['id']; ?>"><?= $category['unitname']; ?></option>
-                                    <?php endforeach; ?>
+                                    <option value="">Select a Category</option>
                                 </select>
                             </div>
                         </div>
+
                         
                         <div class="col-md-6 col-xxl-3">
                             <div class="mb-3">
@@ -181,6 +182,34 @@
                     }
                 });
 
+
+                $(document).ready(function () {
+                    $('#group').on('change', function () {
+                        let groupId = $(this).val();
+                        let $category = $('#category');
+
+                        $category.html('<option value="">Loading...</option>');
+
+                        if (groupId !== '') {
+                            $.ajax({
+                                url: '/admin/getCategoriesByGroup/' + groupId,
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $category.html('<option value="">Select a Category</option>');
+                                    $.each(data, function (i, item) {
+                                        $category.append('<option value="' + item.id + '">' + item.unitname + '</option>');
+                                    });
+                                },
+                                error: function () {
+                                    $category.html('<option value="">Error loading data</option>');
+                                }
+                            });
+                        } else {
+                            $category.html('<option value="">Select a Category</option>');
+                        }
+                    });
+                });
         
                 function fn_publish() {
                     var jobs = $('#jobs').val();

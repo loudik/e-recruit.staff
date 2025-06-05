@@ -11,27 +11,29 @@ class Report extends BaseController
     }
     public function fn_report()
     {         
-      $title = 'Report';
-      return view('admin/vw_reports');
+       $this->data['title'] = 'Report';
+      return view('admin/vw_reports', $this->data);
     }
 
     public function fn_getreport()
     {
-      $start = $this->request->getGet('start'); // format: 2025-01
-      $end   = $this->request->getGet('end');   // format: 2025-08
+        $start = $this->request->getGet('start');
+        $end = $this->request->getGet('end');
 
-      $report = $this->Md_report->fn_getreport($start, $end);
-      if (!empty($report)) {
+        $data = $this->Md_report->fn_getreport($start, $end);
+
         return $this->response->setJSON([
-          'response' => 'success',
-          'data'     => $report
+            'response' => 'success',
+            'data'     => $data
         ]);
-      } else {
-        return $this->response->setJSON([
-          'response' => 'error',
-          'message'  => 'No candidates found.'
-        ]);
-      }
     }
+
+    public function logoBase64()
+    {
+      $base64 = $this->getLogoBase64();
+      return $this->response->setJSON(['base64' => $base64]);
+    }
+
+
 
   }

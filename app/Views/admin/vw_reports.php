@@ -61,9 +61,6 @@
                 <p class="pxp-text-light">Detailed list of candidates that applied for your job.</p>
 
                 <div class="mt-4 mt-lg-5">
-                    
-
-
                     <div class="d-flex justify-content-right align-items-center gap-3 mb-4">
                         <div class="d-flex align-items-center gap-2">
                             <label for="filter-start" class="form-label mb-0">Start Period:</label>
@@ -315,119 +312,141 @@
             <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
             <script type="text/javascript"> 
 
-            $(document).ready(function () {
-                flatpickr("#filter-start", {
-                    plugins: [new monthSelectPlugin({ shorthand: true, dateFormat: "Y-m", theme: "light" })]
-                });
-
-                flatpickr("#filter-end", {
-                    plugins: [new monthSelectPlugin({ shorthand: true, dateFormat: "Y-m", theme: "light" })]
-                });
-                fn_getreport();
-                $('#filter-start, #filter-end').on('change', fn_getreport);
+            $.get("<?= base_url('admin/logo-base64') ?>", function (res) {
+                logoBase64 = res.base64;
             });
 
 
-            function fn_getreport() {
-                const startPeriod = $('#filter-start').val();
-                const endPeriod = $('#filter-end').val();
 
-                // Siapkan parameter, hanya kirim jika ada
-                let params = {};
-                if (startPeriod && endPeriod) {
-                    params.start = startPeriod;
-                    params.end = endPeriod;
-                }
+          $(document).ready(function () {
+            flatpickr("#filter-start", {
+                plugins: [new monthSelectPlugin({ shorthand: true, dateFormat: "Y-m", theme: "light" })]
+            });
 
-                $.ajax({
-                    url: "<?= base_url('admin/report/getreport') ?>",
-                    type: "GET",
-                    dataType: "json",
-                    data: params,
-                    success: function (data) {
-                    console.log(data);
-                    if (data.response === 'success') {
-                        $('.pxp-company-dashboard-jobs-search-results').text(`${data.data.length} candidates`);
+            flatpickr("#filter-end", {
+                plugins: [new monthSelectPlugin({ shorthand: true, dateFormat: "Y-m", theme: "light" })]
+            });
+            fn_getreport();
+            $('#filter-start, #filter-end').on('change', fn_getreport);
+          });
 
-                        if ($.fn.DataTable.isDataTable('#tblcandidate')) {
-                            $('#tblcandidate').DataTable().clear().destroy();
-                        }
 
-                        let table = $('#tblcandidate').DataTable({
-                        dom: 'Bfrtip',
-                        responsive: true,
-                        searching: true,
-                        paging: true,
-                        data: data.data,
-                        columnDefs: [
-                            { defaultContent: "-", targets: "_all" },
-                            { orderable: false, targets: 0 }
-                        ],
-                        columns: [
-                            {
-                            data: null,
-                            render: function (data, type, row, meta) {
-                                return meta.row + 1;
-                            },
-                            orderable: false
-                            },
 
-                            { data: 'fullname' },
-                            { data: 'application' },
-                            { data: 'unitname' },
-                            {
-                            data: 'isstatus',
-                            render: function (data) {
-                                if (data === '1') return '<span class="badge rounded-pill bg-primary">Confirm</span>';
-                                if (data === '2') return '<span class="badge rounded-pill bg-success">Approve</span>';
-                                if (data === '3') return '<span class="badge rounded-pill bg-danger">Reject</span>';
-                                return '<span class="badge badge-secondary">N/A</span>';
-                            }
-                            },
-                            {
-                                data: 'idt',
-                                render: function (data) {
-                                    const date = new Date(data);
-                                    const year = date.getFullYear();
-                                    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-                                    const day = ('0' + date.getDate()).slice(-2);
-                                    return `<span style="white-space: nowrap;">${day}-${month}-${year}</span>`;
+    function fn_getreport() {
+          const start = $('#filter-start').val();
+          const end = $('#filter-end').val();
+
+          $.ajax({
+              url: "<?= base_url('admin/report/getreport') ?>",
+              type: "GET",
+              data: { start, end },
+              dataType: "json",
+              success: function (data) {
+                  if (data.response === 'success') {
+                      if ($.fn.DataTable.isDataTable('#tblcandidate')) {
+                          $('#tblcandidate').DataTable().clear().destroy();
+                      }
+
+                      $('#tblcandidate').DataTable({
+                          dom: 'Bfrtip',
+                          data: data.data,
+                          buttons: [
+                              {
+                                  extend: 'excelHtml5',
+                                  title: 'Candidate Report',
+                                  exportOptions: {
+                                      columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                                  },
+                                  customize: function (xlsx) {
+                                    const sheet = xlsx.xl.worksheets['sheet1.xml'];
+                                    const headers = [
+                                        'No', 'Fullname', 'Application', 'Group', 'Unit', 'Status',
+                                        'Phone', 'Email', 'Gender', 'Education Level', 'Graduation', 'GPA', 'Date'
+                                    ];
+
+                                    const firstRow = $('row', sheet).first();
+                                    $('c', firstRow).each(function (i) {
+                                        if (headers[i]) {
+                                            const cell = $(this);
+                                            const value = cell.find('v');
+                                            if (value.length) value.text(headers[i]);
+                                        }
+                                    });
                                 }
-                            }
 
-                            
-                        ]
-                        });
+                              },
+                              {
+                                  extend: 'pdfHtml5',
+                                  title: 'Candidate Report',
+                                  orientation: 'landscape',
+                                  pageSize: 'A4',
+                                  exportOptions: {
+                                      columns: [0,1,2,3,4,5,6,7,8,9,10,11,12]
+                                  },
+                                  customize: function (doc) {
+                                      if (logoBase64) {
+                                          doc.content.splice(0, 0, {
+                                              image: logoBase64,
+                                              width: 100,
+                                              alignment: 'center',
+                                              margin: [0, 0, 0, 10]
+                                          });
+                                      }
 
-                        $('#searchInput').off('keyup').on('keyup', function () {
-                        table.column(0).search(this.value).draw();
-                        });
-
-                        $('#tblcandidate_filter input')
-                        .addClass('form-control-sm')
-                        .css('width', '180px');
-
-                        $('#checkAll').on('change', function () {
-                        $('.row-check').prop('checked', this.checked);
-                        $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
-                        });
-
-                        $('#bulkApplyBtn').prop('disabled', true);
-                        $(document).on('change', '.row-check', function () {
-                        $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
-                        });
-
-                    } else {
-                        alert('No data found');
-                    }
-                    },
-                    error: function (xhr, status, error) {
-                    console.error('AJAX Error:', error);
-                    }
-                });
-                }
-
-
-
-
-              </script>
+                                      doc.content.splice(1, 0, {
+                                          text: 'Candidate Report - Exported',
+                                          fontSize: 14,
+                                          alignment: 'center',
+                                          margin: [0, 0, 0, 10]
+                                      });
+                                  }
+                              }
+                          ],
+                          columns: [
+                              {
+                                  data: null,
+                                  render: (data, type, row, meta) => meta.row + 1,
+                                  orderable: false,
+                                  title: 'No'
+                              },
+                              { data: 'fullname', title: 'Fullname' },
+                              { data: 'application', title: 'Application' },
+                              { data: 'groupname', title: 'Group' },
+                              { data: 'unitname', title: 'Unit' },
+                              {
+                                  data: 'isstatus',
+                                  title: 'Status',
+                                  render: function (data) {
+                                      if (data === '1') return 'Confirm';
+                                      if (data === '2') return 'Approve';
+                                      if (data === '3') return 'Reject';
+                                      return 'N/A';
+                                  }
+                              },
+                              { data: 'phone', visible: false, title: 'Phone' },
+                              { data: 'email', visible: false, title: 'Email' },
+                              { data: 'sexo', visible: false, title: 'Gender' },
+                              { data: 'educationlevel', visible: false, title: 'Education Level' },
+                              { data: 'graduation', visible: false, title: 'Graduation' },
+                              { data: 'gpa', visible: false, title: 'GPA' },
+                              {
+                                  data: 'idt',
+                                  visible: false,
+                                  title: 'Date',
+                                  render: function (data) {
+                                      const d = new Date(data);
+                                      return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+                                  }
+                              }
+                          ]
+                      });
+                  } else {
+                      alert('No data found');
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.error('AJAX error:', error);
+              }
+          });
+      }
+  </script>

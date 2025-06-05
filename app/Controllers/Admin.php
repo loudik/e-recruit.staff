@@ -17,30 +17,37 @@ class Admin extends BaseController
     }
 
     public function fn_getdashboard()
-    {   
-        $range = $this->request->getGet('range') ?? 7;
-        $data['title'] = 'Dashboard Admin Panel';
-        $data['candidates'] = $this->Md_adminpanel->fn_getall();
-        $data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
-        $data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
-        $data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
-        $data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
-        $data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
-        $data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
+{
+    $range = $this->request->getGet('range') ?? 7;
 
-        $growthPercent = 0;
-        $isGrowthUp = false;
-        if ($data['applicationsBeforeCount'] > 0) {
-            $growthPercent = (($data['applicationsCount'] - $data['applicationsBeforeCount']) / $data['applicationsBeforeCount']) * 100;
-            $isGrowthUp = $data['applicationsCount'] > $data['applicationsBeforeCount'];
-        }
+    $this->data['title'] = 'Dashboard Admin Panel';
+    $this->data['candidates'] = $this->Md_adminpanel->fn_getall();
+    $this->data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
+    $this->data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
+    $this->data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
+    $this->data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
+    $this->data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
+    $this->data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
 
-        $data['growthPercent'] = round($growthPercent, 1);
-        $data['isGrowthUp'] = $isGrowthUp;
-        $data['selectedDays'] = $range;
+    $growthPercent = 0;
+    $isGrowthUp = false;
 
-        return view('admin/vw_dashboard', $data);
+    if ($this->data['applicationsBeforeCount'] > 0) {
+        $growthPercent = (
+            ($this->data['applicationsCount'] - $this->data['applicationsBeforeCount']) /
+            $this->data['applicationsBeforeCount']
+        ) * 100;
+
+        $isGrowthUp = $this->data['applicationsCount'] > $this->data['applicationsBeforeCount'];
     }
+
+    $this->data['growthPercent'] = round($growthPercent, 1);
+    $this->data['isGrowthUp'] = $isGrowthUp;
+    $this->data['selectedDays'] = $range;
+
+    return view('admin/vw_dashboard', $this->data);
+}
+
 
 
 
@@ -115,19 +122,28 @@ class Admin extends BaseController
 
 
     public function fn_getnewjobs()
-    {         
-      $data['title'] = 'New Jobs';
-      $data['group'] =  $this->Md_adminpanel->fn_getgroup();
-      $data['categories'] =  $this->Md_adminpanel->fn_getcategory();
-      return view('admin/vw_newjobs', $data);
+    {
+        $this->data['title'] = 'New Jobs';
+        $this->data['group'] = $this->Md_adminpanel->fn_getgroup();
+        $this->data['categories'] = [];
+        
+        return view('admin/vw_newjobs', $this->data);
+    }
+
+
+    public function getCategoriesByGroup($groupId)
+    {
+        $categories = $this->Md_adminpanel->fn_getcategorybygroup($groupId);
+        return $this->response->setJSON($categories);
     }
 
     public function fn_getmanagejobs()
-    {         
-      $data['title'] = 'Manage Jobs';
-    //   $data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
-      return view('admin/vw_managejobs', $data);
+    {
+        $this->data['title'] = 'Manage Jobs';
+        // $this->data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
+        return view('admin/vw_managejobs', $this->data);
     }
+
 
     public function fn_getmanagedata()
     {
@@ -181,7 +197,7 @@ class Admin extends BaseController
 
     public function fn_getcandidate()
     {         
-      return view('admin/vw_candidate');
+      return view('admin/vw_candidate', $this->data);
     }
 
     public function getcandidate()
@@ -446,15 +462,15 @@ class Admin extends BaseController
 
     public function fn_getchangepw()
     {         
-      $data['title'] = 'Change Password';
-      return view('admin/vw_changepw', $data);
+      $this->$data['title'] = 'Change Password';
+      return view('admin/vw_changepw', $this->$data);
     }
 
 
     public function fn_getprofile()
     {         
-      $data['title'] = 'Profile';
-      return view('admin/vw_profile', $data);
+      $this->$data['title'] = 'Profile';
+      return view('admin/vw_profile', $this->$data);
     }
 
 

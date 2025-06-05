@@ -23,6 +23,16 @@ class Md_adminpanel extends Model
     return $query->getResultArray();
   }
 
+  public function fn_getcategorybygroup($groupId)
+    {
+        return $this->db->table('tbl_unit')
+            ->where('isdeleted', 0)
+            ->where('idgroup', $groupId)
+            ->orderBy('unitname', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
+
 
 
   public function fn_addnewjobs($jobs, $location, $category, $jobdescription, $experience, $level, $type, $applicants, $applydate, $dateexpire, $idtrx)
@@ -449,9 +459,20 @@ public function fn_getcandidate()
 
 public function fn_getmanagedata()
 {
-    $query = $this->db->query("SELECT * FROM tbl_managementjobs WHERE isdeleted = 0 ORDER BY id DESC");
+    $query = $this->db->query("
+        SELECT 
+            a.*, 
+            b.unitname AS category, 
+            c.groupname
+        FROM tbl_managementjobs a
+        JOIN tbl_unit b ON a.idunit = b.id
+        JOIN tbl_group c ON b.idgroup = c.id
+        WHERE a.isdeleted = 0
+        ORDER BY a.id DESC
+    ");
     return $query->getResultArray();
 }
+
 
  public function searchManageJobs($keyword)
 {

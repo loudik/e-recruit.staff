@@ -37,6 +37,7 @@ abstract class BaseController extends Controller
      * @var list<string>
      */
     protected $helpers = [];
+    protected $data = [];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -55,6 +56,7 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
        $this->session = service('session');
+       $this->data['logoPath'] = base_url('assets/images/anplogo.png');
     }
 
     public function generateShortUniqueID($length = 16)
@@ -108,5 +110,19 @@ abstract class BaseController extends Controller
         $string = preg_replace('/\s+/', '', $string); 
         return $string; 
     }
+
+    protected function getLogoBase64($relativePath = 'assets/images/anplogo.png')
+    {
+        $fullPath = FCPATH . $relativePath;
+
+        if (!file_exists($fullPath)) {
+            return null;
+        }
+
+        $type = pathinfo($fullPath, PATHINFO_EXTENSION);
+        $data = file_get_contents($fullPath);
+        return 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
+
 
 }

@@ -82,7 +82,9 @@
                         <table class="table table-hover align-middle" id="tblmanagejobs">
                             <thead>
                                 <tr>
+                                    <th style="width: 10%;">No</th>
                                     <th style="width: 35%;">Job</th>
+                                    <th style="width: 30%;">Group</th>
                                     <th style="width: 30%;">Category</th>
                                     <th style="width: 12%;">Type</th>
                                     <th style="width: 15%;">Applications</th>
@@ -275,7 +277,16 @@
                         data: data.data,
                         columnDefs: [{ defaultContent: "-", targets: "_all" }],
                         columns: [
+                            {
+                                data: null,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + 1;
+                                },
+                                title: 'No', 
+                                orderable: false
+                            },
                             { data: 'jobs' },
+                            { data: 'groupname' },
                             { data: 'category' },
                             { data: 'type' },
                             { data: 'applicants' },
@@ -465,7 +476,7 @@
                           success: function(response) {
                               if (response.response === 'success') {
                                   alert('Job deleted successfully');
-                                  // Reload the page or update the UI as needed
+                                 
                                   window.location.href = "<?= base_url('admin/managejobs') ?>"; 
                               } else {
                                   alert('Failed to delete job');
