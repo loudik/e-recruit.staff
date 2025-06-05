@@ -56,7 +56,7 @@ abstract class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
        $this->session = service('session');
-       $this->data['logoPath'] = base_url('assets/images/anplogo.png');
+       $this->data['logoPath'] = base_url('anplogo.png');
     }
 
     public function generateShortUniqueID($length = 16)
