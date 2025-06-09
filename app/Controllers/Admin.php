@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Md_adminpanel;
+use App\Models\Md_administrator;
 
 class Admin extends BaseController
 {
@@ -9,11 +10,14 @@ class Admin extends BaseController
     public function __construct()
     {
         $this->Md_adminpanel = new Md_adminpanel();
+        $this->Md_administrator = new Md_administrator();
     }
-    public function fn_getadminpanel()
+    public function fn_getadministrator()
     {         
-        $title = 'Admin Panel';
-      return view('admin/vw_adminpanel');
+     $this->data['title'] = 'Dashboard Admin Panel';
+     $this->data['menus'] = $this->Md_administrator->getAllMenus();
+     $this->data['users'] = [];
+      return view('admin/vw_administrator', $this->data);
     }
 
     public function fn_getdashboard()
@@ -21,6 +25,7 @@ class Admin extends BaseController
     $range = $this->request->getGet('range') ?? 7;
 
     $this->data['title'] = 'Dashboard Admin Panel';
+    $this->data['menu'] = $this->menu;
     $this->data['candidates'] = $this->Md_adminpanel->fn_getall();
     $this->data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
     $this->data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
@@ -124,6 +129,7 @@ class Admin extends BaseController
     public function fn_getnewjobs()
     {
         $this->data['title'] = 'New Jobs';
+        $this->data['menu'] = $this->menu;
         $this->data['group'] = $this->Md_adminpanel->fn_getgroup();
         $this->data['categories'] = [];
         
@@ -140,6 +146,7 @@ class Admin extends BaseController
     public function fn_getmanagejobs()
     {
         $this->data['title'] = 'Manage Jobs';
+        $this->data['menu'] = $this->menu;
         // $this->data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
         return view('admin/vw_managejobs', $this->data);
     }
@@ -197,6 +204,7 @@ class Admin extends BaseController
 
     public function fn_getcandidate()
     {         
+    $this->data['menu'] = $this->menu;
       return view('admin/vw_candidate', $this->data);
     }
 

@@ -34,6 +34,9 @@ $routes->get('auth/callback', 'Oauth::callback');
 $routes->get('auth/login', 'Oauth::login');
 $routes->post('auth/login', 'Oauth::fn_loginform');
 
+
+
+
 });
 
 
@@ -74,6 +77,9 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('report/getreport', 'Report::fn_getreport');
   $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
   $routes->get('logo-base64', 'Report::logoBase64');
+
+  $routes->get('administrator', 'Admin::fn_getadministrator');
+  $routes->get('users-json', 'Oauth::fetchAzureUsers');
 
 
 

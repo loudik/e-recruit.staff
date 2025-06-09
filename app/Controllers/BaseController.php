@@ -38,6 +38,7 @@ abstract class BaseController extends Controller
      */
     protected $helpers = [];
     protected $data = [];
+    protected $menu;
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -57,6 +58,8 @@ abstract class BaseController extends Controller
 
        $this->session = service('session');
        $this->data['logoPath'] = base_url('anplogo.png');
+    $role_id = $this->session->get('role_id') ?? 0;
+$this->menu = model('App\Models\Md_administrator')->getMenuByRole($role_id);
     }
 
     public function generateShortUniqueID($length = 16)

@@ -18,7 +18,7 @@ class Oauth extends Controller
             'tenant'       => getenv('AZURE_TENANT_ID'),
             'urlAuthorize' => 'https://login.microsoftonline.com/' . getenv('AZURE_TENANT_ID') . '/oauth2/v2.0/authorize',
             'urlAccessToken' => 'https://login.microsoftonline.com/' . getenv('AZURE_TENANT_ID') . '/oauth2/v2.0/token',
-            'scopes'       => ['openid', 'profile', 'email', 'offline_access', 'User.Read'],
+            'scopes'       => ['openid', 'profile', 'email', 'offline_access', 'User.Read', 'User.Read.All'],
         ]);
 
         $this->provider->defaultEndPointVersion = '2.0';
@@ -31,8 +31,7 @@ class Oauth extends Controller
 
     public function login()
     {
-        $email = $this->request->getGet('email'); // dari form input, bisa kosong
-
+        $email = $this->request->getGet('email'); 
         $options = [
             'prompt' => 'select_account'
         ];
@@ -49,7 +48,7 @@ class Oauth extends Controller
     }
 
 
-   public function callback()
+    public function callback()
     {
         $sessionState = session()->get('oauth2state');
         $requestState = $this->request->getVar('state');
@@ -61,12 +60,27 @@ class Oauth extends Controller
 
         try {
             // Ambil token dari Microsoft
+            // $token = $this->provider->getAccessToken('authorization_code', [
+            //     'code' => $this->request->getVar('code')
+            // ]);
+
+
+            // $accessToken   = $token->getToken();
+
             $token = $this->provider->getAccessToken('authorization_code', [
                 'code' => $this->request->getVar('code')
             ]);
 
+            $accessToken = $token->getToken();
+            $refreshToken = $token->getRefreshToken();
 
-            $accessToken   = $token->getToken();
+            // ✅ Simpan token ke session
+            session()->set('microsoft_token', $accessToken);
+            session()->set('microsoft_refresh_token', $refreshToken);
+
+            log_message('debug', 'Session Token: ' . session()->get('microsoft_token'));
+
+
             $client        = \Config\Services::curlrequest();
             $defaultAvatar = base_url('assets/images/customer-4.png');
 
@@ -77,18 +91,6 @@ class Oauth extends Controller
                 ]
             ]);
             $userGraph = json_decode($graphResponse->getBody(), true);
-
-            // var_dump($userGraph);return;
-
-            // $email    = strtolower($userGraph['mail'] ?? $userGraph['userPrincipalName'] ?? '');
-            // $name     = $userGraph['displayName'] ?? $email;
-            // $jobTitle = $userGraph['jobTitle'] ?? 'Tidak tersedia';
-
-            // if (!$email) {
-            //     exit('Gagal login: Email tidak ditemukan.');
-            // }
-
-            // Ambil foto profil, fallback jika 404/error
             try {
                 $photoResponse = $client->get('https://graph.microsoft.com/v1.0/me/photo/$value', [
                     'headers' => [
@@ -120,6 +122,94 @@ class Oauth extends Controller
             exit('Gagal login: ' . $e->getMessage());
         }
     }
+
+    public function fetchAzureUsers()
+    {
+        $token = session()->get('microsoft_token');
+        if (!$token) {
+            return $this->response->setJSON(['error' => 'Access token not available']);
+        }
+
+        try {
+            $client = \Config\Services::curlrequest();
+            $res = $client->get('https://graph.microsoft.com/v1.0/users', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Accept'        => 'application/json',
+                ]
+            ]);
+
+            $result = json_decode($res->getBody(), true);
+            return $this->response->setJSON([
+                'count' => count($result['value'] ?? []),
+                'users' => $result['value'] ?? [],
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['error' => $e->getMessage()]);
+        }
+    }
+
+
+
+    // MicrosoftLoginController.php
+    public function getUsersAsJson()
+{
+    $token = session()->get('microsoft_token');
+    if (!$token) {
+        return $this->response->setJSON(['error' => 'Access token not found.']);
+    }
+
+    $client = \Config\Services::curlrequest();
+    $search = strtolower(trim($this->request->getGet('search') ?? ''));
+    $allUsers = [];
+
+    // Link awal
+    $nextLink = 'https://graph.microsoft.com/v1.0/users?$top=100&$select=id,displayName,jobTitle';
+
+    try {
+        do {
+            // Gunakan nextLink langsung TANPA tambahan query apa pun
+            $res = $client->get($nextLink, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token
+                ]
+            ]);
+
+            $result = json_decode($res->getBody(), true);
+            $users = $result['value'] ?? [];
+            $allUsers = array_merge($allUsers, $users);
+
+            // Ambil nextLink dari hasil response
+            $nextLink = $result['@odata.nextLink'] ?? null;
+
+            log_message('debug', 'Next link is: ' . ($nextLink ?: 'NONE'));
+
+        } while ($nextLink);
+
+        // Filter hasil berdasarkan search keyword
+        $filtered = array_filter($allUsers, function ($user) use ($search) {
+            return $search === '' || strpos(strtolower($user['displayName']), $search) !== false;
+        });
+
+        // Ambil hanya 20 teratas
+        $limited = array_slice(array_values($filtered), 0, 20);
+
+        return $this->response->setJSON([
+            'count' => count($allUsers),
+            'users' => $limited
+        ]);
+
+    } catch (\Exception $e) {
+        return $this->response->setJSON([
+            'error' => 'Failed to fetch users',
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+
+
+
 
     public function fn_loginform()
     {
@@ -158,12 +248,6 @@ class Oauth extends Controller
         return redirect()->to($authUrl);
     }
 
-
-
-
-
-
-    
 
     public function logout()
     {

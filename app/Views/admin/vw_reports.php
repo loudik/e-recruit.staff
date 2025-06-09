@@ -31,6 +31,7 @@
                                     <li class="nav-item"><a href="<?= base_url('admin/managejobs') ?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/candidate') ?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
                                     <li class="nav-item"><a href="<?= base_url('admin/reports') ?>"><span class="fa fa-lock"></span>Reports</a></li>
+                                    <li class="nav-item"><a href="<?= base_url('admin/administrator') ?>"><span class="fa fa-lock"></span>Reports</a></li>
                                     
                                     
                                 </ul>

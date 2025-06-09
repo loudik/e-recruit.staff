@@ -12,6 +12,7 @@ class Report extends BaseController
     public function fn_report()
     {         
        $this->data['title'] = 'Report';
+       $this->data['menu'] = $this->menu;
       return view('admin/vw_reports', $this->data);
     }
 

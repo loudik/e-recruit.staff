@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'afterlogin'    => \App\Filters\Afterlogin::class,
         'beforelogin'   => \App\Filters\Beforelogin::class,
+        // 'isLoggedIn'    => \App\Filters\IsLoggedIn::class,
     ];
 
     /**
