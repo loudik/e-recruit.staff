@@ -58,6 +58,8 @@ class Oauth extends Controller
             exit('Invalid state');
         }
 
+        
+
         try {
             // Ambil token dari Microsoft
             // $token = $this->provider->getAccessToken('authorization_code', [
@@ -123,36 +125,9 @@ class Oauth extends Controller
         }
     }
 
+   
+
     public function fetchAzureUsers()
-    {
-        $token = session()->get('microsoft_token');
-        if (!$token) {
-            return $this->response->setJSON(['error' => 'Access token not available']);
-        }
-
-        try {
-            $client = \Config\Services::curlrequest();
-            $res = $client->get('https://graph.microsoft.com/v1.0/users', [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Accept'        => 'application/json',
-                ]
-            ]);
-
-            $result = json_decode($res->getBody(), true);
-            return $this->response->setJSON([
-                'count' => count($result['value'] ?? []),
-                'users' => $result['value'] ?? [],
-            ]);
-        } catch (\Exception $e) {
-            return $this->response->setJSON(['error' => $e->getMessage()]);
-        }
-    }
-
-
-
-    // MicrosoftLoginController.php
-    public function getUsersAsJson()
 {
     $token = session()->get('microsoft_token');
     if (!$token) {
@@ -161,42 +136,29 @@ class Oauth extends Controller
 
     $client = \Config\Services::curlrequest();
     $search = strtolower(trim($this->request->getGet('search') ?? ''));
-    $allUsers = [];
 
-    // Link awal
-    $nextLink = 'https://graph.microsoft.com/v1.0/users?$top=100&$select=id,displayName,jobTitle';
+    // Gunakan filter langsung jika ada pencarian
+    $baseUrl = 'https://graph.microsoft.com/v1.0/users?$top=20&$select=id,displayName,jobTitle';
+
+    if (!empty($search)) {
+        $filter = "\$filter=startswith(displayName,'" . addslashes($search) . "')";
+        $baseUrl .= '&' . $filter;
+    }
 
     try {
-        do {
-            // Gunakan nextLink langsung TANPA tambahan query apa pun
-            $res = $client->get($nextLink, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token
-                ]
-            ]);
+        $res = $client->get($baseUrl, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'ConsistencyLevel' => 'eventual'
+            ]
+        ]);
 
-            $result = json_decode($res->getBody(), true);
-            $users = $result['value'] ?? [];
-            $allUsers = array_merge($allUsers, $users);
-
-            // Ambil nextLink dari hasil response
-            $nextLink = $result['@odata.nextLink'] ?? null;
-
-            log_message('debug', 'Next link is: ' . ($nextLink ?: 'NONE'));
-
-        } while ($nextLink);
-
-        // Filter hasil berdasarkan search keyword
-        $filtered = array_filter($allUsers, function ($user) use ($search) {
-            return $search === '' || strpos(strtolower($user['displayName']), $search) !== false;
-        });
-
-        // Ambil hanya 20 teratas
-        $limited = array_slice(array_values($filtered), 0, 20);
+        $result = json_decode($res->getBody(), true);
+        $users = $result['value'] ?? [];
 
         return $this->response->setJSON([
-            'count' => count($allUsers),
-            'users' => $limited
+            'count' => count($users),
+            'users' => $users
         ]);
 
     } catch (\Exception $e) {
@@ -206,7 +168,6 @@ class Oauth extends Controller
         ]);
     }
 }
-
 
 
 
