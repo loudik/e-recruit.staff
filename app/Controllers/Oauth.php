@@ -108,12 +108,16 @@ class Oauth extends Controller
                 $base64Image = $defaultAvatar;
             }
 
+            $menuData = $this->loadSidebarMenus($userGraph['id']);
             // Simpan session
             session()->set([
                 'phone'       => $userGraph['businessPhones'],
                 'name'    => $userGraph['displayName'],
                 'jobtitle'    => $userGraph['jobTitle'],
                 'email'    => $userGraph['userPrincipalName'],
+                'microsoft_id'    => $userGraph['id'],
+                'treemenu'     => $menuData['treemenu'],     // HTML sidebar
+                'routes'       => $menuData['routes'],       // CSV routes
                 'avatar'      => $base64Image,
                 'isLoggedIn'  => true,
             ]);
@@ -125,6 +129,16 @@ class Oauth extends Controller
         }
     }
 
+    public function loadSidebarMenus($microsoft_id)
+    {
+        if (!$microsoft_id) {
+            return [];
+        }
+
+        $Md_administrator = model('App\Models\Md_administrator');
+        return $Md_administrator->getMenusByRole($microsoft_id);
+    }
+
    
 
     public function fetchAzureUsers()
@@ -133,6 +147,8 @@ class Oauth extends Controller
     if (!$token) {
         return $this->response->setJSON(['error' => 'Access token not found.']);
     }
+
+    
 
     $client = \Config\Services::curlrequest();
     $search = strtolower(trim($this->request->getGet('search') ?? ''));

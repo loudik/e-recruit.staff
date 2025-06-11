@@ -49,6 +49,7 @@ $routes->get('logout', 'Oauth::logout');
 
 $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('dashboard', 'Admin::fn_getdashboard');
+  $routes->get('defaultdashboard', 'Admin::fn_getdashboarddefault');
   $routes->get('newjobs', 'Admin::fn_getnewjobs');
   $routes->get('candidate', 'Admin::fn_getcandidate');
   $routes->get('candidate/getcandidate', 'Admin::getcandidate');
@@ -74,15 +75,13 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('managejobs/updatestatus', 'Admin::updateJobStatus');
   $routes->post('candidate/bulk-action', 'Admin::fn_action');
   $routes->get('reports', 'Report::fn_report');
-  $routes->get('report/getreport', 'Report::fn_getreport');
+  $routes->get('report/getreport' , 'Report::fn_getreport');
   $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
   $routes->get('logo-base64', 'Report::logoBase64');
 
   $routes->get('administrator', 'Admin::fn_getadministrator');
   $routes->get('users-json', 'Oauth::fetchAzureUsers');
-
-
-
+  $routes->post('addnewadmin', 'Admin::fn_addadministrator');
 
 });
 

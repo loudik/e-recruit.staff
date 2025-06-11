@@ -16,7 +16,8 @@ class Afterlogin implements FilterInterface
         //   return redirect()->back();
         // }
         if (session()->has('email')) {
-            return redirect()->to('/admin/dashboard'); // lebih baik redirect ke tujuan utama
+            
+            return redirect()->to('/admin/dashboard'); 
         }
     }
 

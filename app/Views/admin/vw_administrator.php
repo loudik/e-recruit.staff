@@ -64,8 +64,8 @@
     <div id="accessFormContainer" style="display: none;" class="mb-4"> 
         <div class="col-md-6 col-xxl-3">
             <div class="mb-3">
-                <label for="employee1" class="form-label">Employee</label>
-                <select id="employee1" name="employee1[]" class="form-select">
+                <label for="employee1" class="form-label" style="font-weight: bold;">employee1</label>
+                <select id="employee1" name="employee1" class="form-select">
                     <?php foreach ($users as $u): ?>
                         <option value="<?= $u['id']; ?>">
                             <?= esc($u['displayName']) ?>
@@ -78,7 +78,7 @@
             <!-- Department -->
             <div class="col-md-6 col-xxl-3">
                 <div class="mb-3">
-                    <label for="department" class="form-label">Department</label>
+                    <label for="department" class="form-label" style="font-weight: bold;">Department</label>
                     <input type="text" id="department" name="department" class="form-control" readonly>
                 </div>
             </div>
@@ -86,19 +86,18 @@
             <!-- Menu -->
             <div class="col-md-6 col-xxl-3">
                 <div class="mb-3">
-                    <label for="menuaccess" class="form-label">Menu</label>
+                    <label for="menuaccess" class="form-label" style="font-weight: bold;">Menu</label>
                     <select id="menuaccess" name="menuaccess[]" class="form-select" multiple>
                         <?php foreach ($menus as $menu): ?>
-                            <option value="<?= $menu['id'] ?>">
+                            <option value="<?= $menu['id'] ?>" <?= in_array($menu['id'], $selectedMenus ?? []) ? 'selected' : '' ?>>
                                 <?= esc($menu['menuname']) ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
+
                 </div>
             </div>
         </div>
-
-
             <div class="mt-2">
                 <button type="button" class="btn btn-success" onclick="fn_publish()">Publish</button>
                 <button type="reset" class="btn btn-secondary">Cancel</button>
@@ -133,6 +132,9 @@
 
             <?= view('layoutAdmin/footer.php'); ?>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <!-- Tambahkan di view kalau belum -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
             <script>
 
@@ -147,7 +149,7 @@
 
                $(document).ready(function () {
                 $('#employee1').select2({
-                    placeholder: 'Select an Employee',
+                    placeholder: 'Select an employee1',
                     width: '100%',
                     allowClear: true,
                     ajax: {
@@ -157,7 +159,7 @@
                         data: function (params) {
                             console.log("Searching for:", params.term);
                             return {
-                                search: params.term || '' // kirim term pencarian
+                                search: params.term || '' 
                             };
                         },
                         processResults: function (data) {
@@ -201,115 +203,53 @@
                   formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
               }
 
-
-        
                 function fn_publish() {
-                    var jobs = $('#jobs').val();
-                    var location = $('#location').val();
-                    var category = $('#category').val();
-                    var jobdescription = $('#jobdescription').val();
-                    var experience = $('#experience').val();
-                    var level = $('#level').val();
-                    var type = $('#type').val();
-                    var applicants = $('#applicants').val();
-                    var applydate = $('#applydate').val();
-                    var dateexpire = $('#dateexpire').val();
+                    var employee = $('#employee1').val();
+                    var department = $('#department').val();
+                    var menuaccess = $('#menuaccess').val();
 
-                    if (!jobs) {
-                        alert('Please enter a job title.');
-                        $('#jobs').focus();
-                        return false;
-                    }
-
-                    if (!location) {
-                        alert('Please enter a location.');
-                        $('#location').focus();
-                        return false;
-                    }
-
-                    if (!category) {
-                        alert('Please select a category.');
-                        $('#category').focus();
-                        return false;
-                    }
-
-                    if (!jobdescription) {
-                        alert('Please enter a job description.');
-                        $('#jobdescription').focus();
-                        return false;
-                    }
-
-                    if (!experience) {
-                        alert('Please enter the experience required.');
-                        $('#experience').focus();
-                        return false;
-                    }
-
-                    if (!level) {
-                        alert('Please select a career level.');
-                        $('#level').focus();
-                        return false;
-                    }
-
-                    if (!type) {
-                        alert('Please select an employment type.');
-                        $('#type').focus();
-                        return false;
-                    }
-
-                    if (!applicants) {
-                        alert('Please enter the number of applicants.');
-                        $('#applicants').focus();
-                        return false;
-                    }
-
-                    if (!applydate) {
-                        alert('Please select an apply date.');
-                        $('#applydate').focus();
-                        return false;
-                    }
-
-                    if (!dateexpire) {
-                        alert('Please select an expiration date.');
-                        $('#dateexpire').focus();
-                        return false;
-                    }
-
-                    const startDate = new Date(applydate);
-                    const endDate = new Date(dateexpire);
-
-                    if (endDate.getTime() <= startDate.getTime()) {
-                        alert('Expiration date must be later than apply date.');
-                        $('#dateexpire').focus();
-                        return false;
-                    }
-
-                
-
+                    console.log("Employee:", employee);
+                    console.log("Department:", department);
+                    console.log("Menu Access:", menuaccess);
+                    
                     $.ajax({
-                        url: '<?= base_url('admin/addnewjobs') ?>',
+                        url: '<?= base_url('admin/addnewadmin') ?>',
                         type: 'POST',
                         dataType: 'json',
-
                         data: {
-                            jobs: jobs,
-                            location: location,
-                            category: category,
-                            jobdescription: jobdescription,
-                            experience: experience,
-                            level: level,
-                            type: type,
-                            applicants: applicants,
-                            applydate: applydate,
-                            dateexpire: dateexpire
+                            employee: employee,
+                            department: department,
+                            menuaccess: menuaccess
+                            
                         },
                         success: function(response) {
-                            alert('Job published successfully!');
-                            window.location.href = "<?= base_url('admin/managejobs') ?>";
+                            if (response.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Access Published!',
+                                    text: 'The access rights were successfully saved.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    location.reload(); // reload setelah SweetAlert selesai
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed',
+                                    text: response.message || 'Something went wrong'
+                                });
+                            }
                         },
                         error: function(xhr, status, error) {
-                            alert('An error occurred while publishing the job.');
+                            console.error('AJAX Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Request Failed',
+                                text: 'An error occurred while publishing access.'
+                            });
                         }
+
                     });
 
                 }

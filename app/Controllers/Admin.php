@@ -20,40 +20,115 @@ class Admin extends BaseController
       return view('admin/vw_administrator', $this->data);
     }
 
-    public function fn_getdashboard()
-{
-    $range = $this->request->getGet('range') ?? 7;
+    public function fn_addadministrator()
+    {
+        $employeeID = $this->request->getPost('employee'); // Sesuaikan dengan JS
+        $department = $this->request->getPost('department');
+        $menuIDs = $this->request->getPost('menuaccess');
 
-    $this->data['title'] = 'Dashboard Admin Panel';
-    $this->data['menu'] = $this->menu;
-    $this->data['candidates'] = $this->Md_adminpanel->fn_getall();
-    $this->data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
-    $this->data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
-    $this->data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
-    $this->data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
-    $this->data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
-    $this->data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
+        // Validasi input dasar
+        if (!$employeeID || !is_string($employeeID)) {
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Valid Employee ID is required.'
+        ]);
+        }
 
-    $growthPercent = 0;
-    $isGrowthUp = false;
+        if (!is_array($menuIDs) || count($menuIDs) === 0) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'At least one menu must be selected.'
+            ]);
+        }
 
-    if ($this->data['applicationsBeforeCount'] > 0) {
-        $growthPercent = (
-            ($this->data['applicationsCount'] - $this->data['applicationsBeforeCount']) /
-            $this->data['applicationsBeforeCount']
-        ) * 100;
+        
 
-        $isGrowthUp = $this->data['applicationsCount'] > $this->data['applicationsBeforeCount'];
+        // Panggil model untuk simpan ke DB
+        $result = $this->Md_administrator->addAdministrator($employeeID, $department, $menuIDs);
+        // var_dump($result);return;
+        log_message('debug', 'Result from model: ' . print_r($result, true));
+
+
+        if (!$result['success']) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => $result['message'] ?? 'Failed to assign administrator.'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Administrator access assigned successfully.'
+        ]);
     }
 
-    $this->data['growthPercent'] = round($growthPercent, 1);
-    $this->data['isGrowthUp'] = $isGrowthUp;
-    $this->data['selectedDays'] = $range;
+    
+    public function fn_getdashboard()
+    {
+        // $this->loadSidebarMenus();
+        $range = $this->request->getGet('range') ?? 7;
 
-    return view('admin/vw_dashboard', $this->data);
-}
+        $this->data['title'] = 'Dashboard Admin Panel';
+        $this->data['menu'] = $this->menu;
+        $this->data['candidates'] = $this->Md_adminpanel->fn_getall();
+        $this->data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
+        $this->data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
+        $this->data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
+        $this->data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
+        $this->data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
+        $this->data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
 
+        $growthPercent = 0;
+        $isGrowthUp = false;
 
+        if ($this->data['applicationsBeforeCount'] > 0) {
+            $growthPercent = (
+                ($this->data['applicationsCount'] - $this->data['applicationsBeforeCount']) /
+                $this->data['applicationsBeforeCount']
+            ) * 100;
+
+            $isGrowthUp = $this->data['applicationsCount'] > $this->data['applicationsBeforeCount'];
+        }
+
+        $this->data['growthPercent'] = round($growthPercent, 1);
+        $this->data['isGrowthUp'] = $isGrowthUp;
+        $this->data['selectedDays'] = $range;
+
+        return view('admin/vw_dashboard', $this->data);
+    }
+    public function fn_getdashboarddefault()
+    {
+        // $this->loadSidebarMenus();
+        $range = $this->request->getGet('range') ?? 7;
+
+        $this->data['title'] = 'Dashboard Admin Panel';
+        $this->data['menu'] = $this->menu;
+        $this->data['candidates'] = $this->Md_adminpanel->fn_getall();
+        $this->data['jobs'] = $this->Md_adminpanel->fn_getjobcount();
+        $this->data['applications'] = $this->Md_adminpanel->fn_getapplicationcount();
+        $this->data['candidatesreject'] = $this->Md_adminpanel->fn_getcandidatereject();
+        $this->data['candidateapprove'] = $this->Md_adminpanel->fn_getcandidateapprove();
+        $this->data['applicationsCount'] = $this->Md_adminpanel->getApplicationsCount($range);
+        $this->data['applicationsBeforeCount'] = $this->Md_adminpanel->getApplicationsBeforeCount($range);
+
+        $growthPercent = 0;
+        $isGrowthUp = false;
+
+        if ($this->data['applicationsBeforeCount'] > 0) {
+            $growthPercent = (
+                ($this->data['applicationsCount'] - $this->data['applicationsBeforeCount']) /
+                $this->data['applicationsBeforeCount']
+            ) * 100;
+
+            $isGrowthUp = $this->data['applicationsCount'] > $this->data['applicationsBeforeCount'];
+        }
+
+        $this->data['growthPercent'] = round($growthPercent, 1);
+        $this->data['isGrowthUp'] = $isGrowthUp;
+        $this->data['selectedDays'] = $range;
+
+        return view('admin/vw_dashboarddefault', $this->data);
+    }
 
 
 
@@ -105,6 +180,7 @@ class Admin extends BaseController
 
     public function fn_action()
     {
+        //  $this->data['sidebarMenus'] = $this->loadSidebarMenus();
         if (!$this->request->isAJAX()) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid request']);
         }
@@ -145,6 +221,7 @@ class Admin extends BaseController
 
     public function fn_getmanagejobs()
     {
+        //  $this->data['sidebarMenus'] = $this->loadSidebarMenus();
         $this->data['title'] = 'Manage Jobs';
         $this->data['menu'] = $this->menu;
         // $this->data['jobs'] = $this->Md_adminpanel->fn_loadmanagejob();
@@ -203,8 +280,9 @@ class Admin extends BaseController
 
 
     public function fn_getcandidate()
-    {         
-    $this->data['menu'] = $this->menu;
+    {   
+        //  $this->data['sidebarMenus'] = $this->loadSidebarMenus();      
+        $this->data['menu'] = $this->menu;
       return view('admin/vw_candidate', $this->data);
     }
 
