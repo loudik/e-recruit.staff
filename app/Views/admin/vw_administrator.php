@@ -107,7 +107,7 @@
 
           <!-- Table always visible -->
           <div class="table-responsive">
-              <table class="table table-hover align-middle" id="tblmanagejobs">
+              <table class="table table-hover align-middle" id="'tbladministrator">'">
                   <thead>
                       <tr>
                           <th style="width: 10%;">No</th>
@@ -143,8 +143,92 @@
                       placeholder: "Select one or more modules",
                        width: '100%'
                   });
+
+                  fn_loadadministrator();
                   
               });
+
+
+              function fn_loadadministrator() {
+                  $.ajax({
+                      url: '<?= base_url('admin/getadministrator') ?>',
+                      type: 'GET',
+                      dataType: 'json',
+                      success: function (data){
+                        if(data.response === 'success'){
+                            if ($.fn.DataTable.isDataTable('#tbladministrator')) {
+                                $('#tbladministrator').DataTable().clear().destroy();
+                            }
+                        let table = $('#tbladministrator').DataTable({
+                        dom: 'Bfrtip',
+                        responsive: true,
+                        searching: false,
+                        paging: true,
+                      
+                        data: data.data,
+                        columnDefs: [{ defaultContent: "-", targets: "_all" }],
+                        columns: [
+                            {
+                                data: null,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + 1;
+                                },
+                                title: 'No', 
+                                orderable: false
+                            },
+                            { data: 'jobs' },
+                            { data: 'groupname' },
+                            { data: 'category' },
+                            { data: 'type' },
+                            { data: 'applicants' },
+                            {
+                                data: 'status',
+                                orderable: false,
+                                render: function (data, type, row) {
+                                    const isActive = data == 0;
+                                    const label = isActive ? 'Active' : 'Inactive';
+                                    const btnClass = isActive ? 'btn-success' : 'btn-danger';
+                                    const nextStatus = isActive ? 1 : 0;
+
+                                    return `
+                                    <button class="btn btn-sm ${btnClass} btn-toggle-status"
+                                            data-id="${row.id}" data-status="${nextStatus}">
+                                        ${label}
+                                    </button>`;
+                                }
+                                },
+
+
+
+
+                            {
+                                render: function (data, type, row) {
+                                return `
+                                    <div style="white-space: nowrap;">
+                                    <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_editJob(${row.id})">
+                                        <span class="fa fa-eye"></span>
+                                    </button>
+                                    <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deleteJob(${row.id})">
+                                        <span class="fa fa-trash-o"></span>
+                                    </button>
+                                    </div>
+                                `;
+                                }
+                            }
+                        ]
+
+                      });
+                      
+                    } else {
+                      alert('No data found');
+                    }
+                  },
+                  error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                        }
+                    
+                });
+                }
 
 
                $(document).ready(function () {
