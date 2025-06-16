@@ -34,6 +34,7 @@ class Md_administrator extends Model
             ->getResultArray();
     }
 
+        // Ambil semua menu dari tbl_treemenu
     public function getAllMenus()
     {
         return $this->db->table('tbl_treemenu')
@@ -43,32 +44,39 @@ class Md_administrator extends Model
             ->getResultArray();
     }
 
+    // Ambil akses menu berdasarkan microsoft_id
+    public function getAccessByMicrosoftId($microsoftId)
+    {
+        return $this->db->table('tbl_accessright')
+            ->where('microsoft_id', $microsoftId)
+            ->get()
+            ->getRowArray(); // Kembalikan 1 baris
+    }
+
+ 
     
-    public function addAdministrator($employeeID, $department, $menuIDs)
+    public function addAdministrator($employeeID, $department, $menuIDs, $displayName = null, $email = null)
 {
     $builder = $this->db->table('tbl_accessright');
 
-    // Hapus yang lama
-    $builder->where('role_id', $employeeID)->delete();
+    $builder->where('microsoft_id', $employeeID)->delete();
 
-    // Hilangkan duplikat
     $menuIDs = array_unique($menuIDs);
-
-    $menuIDsString = implode(',', array_unique($menuIDs));
-
-    // return $menuIDsString;
+    $menuIDsString = implode(',', $menuIDs);
 
     $data = [
-        'microsoft_id'    => $employeeID,
-        'department' => $department,
-        'menu_ids'    => $menuIDsString,
-        'can_view'   => 1,
-        'can_create' => 0,
-        'can_update' => 0,
-        'can_delete' => 0,
-        'isdeleted'  => 0,
-        'iby'        => session()->get('email') ?? 'system',
-        'idt'        => date('Y-m-d H:i:s')
+        'microsoft_id'  => $employeeID,
+        'display_name'  => $displayName,
+        'email'         => $email,
+        'department'    => $department,
+        'menu_ids'      => $menuIDsString,
+        'can_view'      => 1,
+        'can_create'    => 0,
+        'can_update'    => 0,
+        'can_delete'    => 0,
+        'isdeleted'     => 0,
+        'iby'           => session()->get('email') ?? 'system',
+        'idt'           => date('Y-m-d H:i:s')
     ];
 
     if ($builder->insert($data)) {
@@ -80,6 +88,7 @@ class Md_administrator extends Model
         'message' => 'Failed to insert into tbl_accessright.'
     ];
 }
+
 
 
 /**
@@ -134,16 +143,29 @@ class Md_administrator extends Model
             $name  = esc($menu['menuname']);
 
             $treemenu   .= "<li><a href=\"{$baseUrl}{$url}\"><span class=\"{$icon}\"></span> {$name}</a></li>";
-            $routeParts[] = "/$url";
+            // $routeParts[] = "/$url";
+            $routeParts[] = $url;
+
         }
 
-        $routesSession = implode(',', $routeParts);   // <-- TANPA koma di akhir
+       $extraRoutes = ['admin/users-json', 'admin/addnewadmin', 'admin/get-menuaccess','admin/administrator/details'];
+
+        foreach ($extraRoutes as $r) {
+            if (!in_array($r, $routeParts)) {
+                $routeParts[] = $r;
+            }
+        }
+
+        $routesSession = implode(',', $routeParts); 
 
         return [
             'treemenu' => $treemenu,
             'routes'   => $routesSession,
         ];
+
     }
+
+    
 
 
 }

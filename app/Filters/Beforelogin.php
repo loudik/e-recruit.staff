@@ -9,26 +9,45 @@ use CodeIgniter\Filters\FilterInterface;
 
 class Beforelogin implements FilterInterface
 {
-    public function before(RequestInterface $request, $arguments = null)
+     public function before(RequestInterface $request, $arguments = null)
     {
         $session = session();
-
-        // Redirect jika belum login
         if (!$session->has('email')) {
+            if ($request->isAJAX()) {
+                return service('response')->setJSON(['error' => 'Not authenticated'])->setStatusCode(401);
+            }
+
             return redirect()->to(base_url('/login'));
         }
+   
 
-        $path = $request->getUri()->getPath();
+        $path = ltrim(strtok($request->getUri()->getPath(), '?'), '/'); // 🔧 bersihkan path
+
         $routes = $session->get('routes'); 
-        $allowedRoutes = $routes ? array_map('trim', explode(',', $routes)) : [];
+        $allowedRoutes = $routes ? array_map(fn($r) => strtolower(trim($r)), explode(',', $routes)) : [];
+        $path = strtolower(trim($path));
 
-        log_message('debug', 'DEBUGTEST Path accessed: ' . $path);
-        log_message('debug', 'DEBUGTEST Allowed routes: ' . implode(', ', $allowedRoutes));
+        // Debug log
+        log_message('debug', 'BEFORELOGIN: PATH = ' . $path);
+        log_message('debug', 'BEFORELOGIN: ROUTES = ' . implode(', ', $allowedRoutes));
+        log_message('debug', 'MATCH? ' . (in_array($path, $allowedRoutes) ? 'YES' : 'NO'));
+
+        log_message('debug', 'BEFORELOGIN: SESSION email = ' . $session->get('email'));
+
+
+        foreach ($allowedRoutes as $r) {
+            log_message('debug', 'COMPARE: [' . $path . '] == [' . $r . '] → ' . ($path === $r ? 'YES' : 'NO'));
+        }
+
 
         if (!in_array($path, $allowedRoutes)) {
-            log_message('debug', 'DEBUGTEST masuk sini tidak 1: ' . $path);
-            return redirect()->to(base_url('/admin/dashboard')); // ✅ return!
+            if ($request->isAJAX()) {
+                return service('response')->setJSON(['error' => 'Access denied'])->setStatusCode(403);
+            }
+
+            return redirect()->to(base_url('/admin/dashboard'));
         }
+
 
         log_message('debug', 'DEBUGTEST masuk sini tidak 2: ' . $path);
 

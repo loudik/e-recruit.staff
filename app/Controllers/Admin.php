@@ -12,21 +12,78 @@ class Admin extends BaseController
         $this->Md_adminpanel = new Md_adminpanel();
         $this->Md_administrator = new Md_administrator();
     }
-    public function fn_getadministrator()
-    {         
-     $this->data['title'] = 'Dashboard Admin Panel';
-     $this->data['menus'] = $this->Md_administrator->getAllMenus();
-     $this->data['users'] = [];
-      return view('admin/vw_administrator', $this->data);
+    // public function fn_getadministrator()
+    // {         
+    //  $this->data['title'] = 'Dashboard Admin Panel';
+    //  $this->data['menus'] = $this->Md_administrator->getAllMenus();
+    //  $this->data['users'] = [];
+    //   return view('admin/vw_administrator', $this->data);
+    // }
+
+    public function fn_getadministrator($microsoftId = null)
+    {
+        
+         $microsoftId = session()->get('microsoft_id');
+        $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
+        if (!$access) {
+            echo "Data tidak ditemukan untuk Microsoft ID: $microsoftId"; exit;
+        }
+
+        $selectedMenus = array_map('intval', explode(',', $access['menu_ids'] ?? ''));
+
+        $this->data['menus'] = $this->Md_administrator->getAllMenus();
+        $this->data['selectedMenus'] = $selectedMenus;
+        $this->data['access'] = $access;
+        $this->data['users'] = [];
+
+        return view('admin/vw_administrator', $this->data);
     }
+
+    public function get_menuaccess()
+    {
+        $microsoftId = $this->request->getGet('microsoft_id');
+        if (!$microsoftId) {
+            return $this->response->setJSON(['error' => 'Microsoft ID kosong']);
+        }
+        $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
+        if (!$access || empty($access['menu_ids'])) {
+        log_message('debug', 'Akses tidak ditemukan untuk ID: ' . $microsoftId);
+            return $this->response->setJSON(['error' => 'Access denied']);
+        }
+        $selectedMenus = array_map('intval', explode(',', $access['menu_ids']));
+        return $this->response->setJSON(['selectedMenus' => $selectedMenus]);
+    }
+
+     public function fn_detailadministrator()
+{
+    $data = $this->Md_adminpanel->fn_detailadministrator(); // ⬅️ ambil semua tanpa filter microsoft_id
+
+    foreach ($data as $index => &$row) {
+        $row['no'] = $index + 1;
+    }
+
+    return $this->response->setJSON([
+        'status' => 'success',
+        'data'   => $data
+    ]);
+}
+
+
+
+
+
+
+
+
 
     public function fn_addadministrator()
     {
         $employeeID = $this->request->getPost('employee'); // Sesuaikan dengan JS
         $department = $this->request->getPost('department');
         $menuIDs = $this->request->getPost('menuaccess');
+        $displayName = $this->request->getPost('displayname');  
+        $email       = $this->request->getPost('email');
 
-        // Validasi input dasar
         if (!$employeeID || !is_string($employeeID)) {
         return $this->response->setJSON([
             'status' => 'error',
@@ -41,26 +98,25 @@ class Admin extends BaseController
             ]);
         }
 
-        
-
+    
         // Panggil model untuk simpan ke DB
-        $result = $this->Md_administrator->addAdministrator($employeeID, $department, $menuIDs);
-        // var_dump($result);return;
-        log_message('debug', 'Result from model: ' . print_r($result, true));
+        $result = $this->Md_administrator->addAdministrator($employeeID, $department, $menuIDs, $displayName,$email);
 
 
-        if (!$result['success']) {
+        if ($result) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Administrator added successfully.'
+            ]);
+        } else {
             return $this->response->setJSON([
                 'status' => 'error',
-                'message' => $result['message'] ?? 'Failed to assign administrator.'
+                'message' => 'Failed to add administrator.'
             ]);
         }
-
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Administrator access assigned successfully.'
-        ]);
+        
     }
+    
 
     
     public function fn_getdashboard()
@@ -696,7 +752,8 @@ class Admin extends BaseController
           ], 400);
       }
   }
-
+}
+    
 
   
   
@@ -707,4 +764,4 @@ class Admin extends BaseController
 
 
 
-  }
+  

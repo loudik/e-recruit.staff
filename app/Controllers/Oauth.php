@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use CodeIgniter\Controller;
 use TheNetworg\OAuth2\Client\Provider\Azure;
+use App\Controllers\BaseController;
+
 
 class Oauth extends Controller
 {
@@ -61,14 +63,6 @@ class Oauth extends Controller
         
 
         try {
-            // Ambil token dari Microsoft
-            // $token = $this->provider->getAccessToken('authorization_code', [
-            //     'code' => $this->request->getVar('code')
-            // ]);
-
-
-            // $accessToken   = $token->getToken();
-
             $token = $this->provider->getAccessToken('authorization_code', [
                 'code' => $this->request->getVar('code')
             ]);
@@ -92,6 +86,7 @@ class Oauth extends Controller
                     'Authorization' => 'Bearer ' . $accessToken
                 ]
             ]);
+
             $userGraph = json_decode($graphResponse->getBody(), true);
             try {
                 $photoResponse = $client->get('https://graph.microsoft.com/v1.0/me/photo/$value', [
@@ -107,20 +102,24 @@ class Oauth extends Controller
             } catch (\Exception $e) {
                 $base64Image = $defaultAvatar;
             }
+            
 
             $menuData = $this->loadSidebarMenus($userGraph['id']);
-            // Simpan session
+
+
             session()->set([
-                'phone'       => $userGraph['businessPhones'],
-                'name'    => $userGraph['displayName'],
-                'jobtitle'    => $userGraph['jobTitle'],
-                'email'    => $userGraph['userPrincipalName'],
-                'microsoft_id'    => $userGraph['id'],
-                'treemenu'     => $menuData['treemenu'],     // HTML sidebar
-                'routes'       => $menuData['routes'],       // CSV routes
-                'avatar'      => $base64Image,
-                'isLoggedIn'  => true,
+                'phone'         => $userGraph['businessPhones'],
+                'name'          => $userGraph['displayName'],
+                'jobtitle'      => $userGraph['jobTitle'],
+                'email'         => $userGraph['userPrincipalName'],
+                'microsoft_id'  => $userGraph['id'],
+                'treemenu'      => $menuData['treemenu'],
+                'routes'        => $menuData['routes'],
+                // 'routes'        => implode(',', $menuRoutes),
+                'avatar'        => $base64Image,
+                'isLoggedIn'    => true,
             ]);
+
 
             return redirect()->to('/admin/dashboard');
 
@@ -128,6 +127,58 @@ class Oauth extends Controller
             exit('Gagal login: ' . $e->getMessage());
         }
     }
+
+     public function fetchAzureUsers()
+    {
+        log_message('debug', 'FETCH AZURE USERS DIPANGGIL');
+        $token = session()->get('microsoft_token');
+
+        
+        if (!$token) {
+            return $this->response->setJSON(['error' => 'Access token not found.']);
+        }
+
+
+
+        $client = \Config\Services::curlrequest();
+        $search = strtolower(trim($this->request->getGet('search') ?? ''));
+
+        $queryParams = [
+            '$top'    => 20,
+            '$select' => 'id,displayName,jobTitle'
+        ];
+
+        if (!empty($search)) {
+            $queryParams['$filter'] = "startswith(displayName,'" . $search . "')";
+        }
+
+        $baseUrl = 'https://graph.microsoft.com/v1.0/users?' . http_build_query($queryParams);
+
+        try {
+            $res = $client->get($baseUrl, [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $token,
+                    'ConsistencyLevel' => 'eventual'
+                ]
+            ]);
+
+            $result = json_decode($res->getBody(), true);
+            $users = $result['value'] ?? [];
+
+            return $this->response->setJSON([
+                'count' => count($users),
+                'users' => $users
+            ]);
+
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'error' => 'Failed to fetch users',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+
 
     public function loadSidebarMenus($microsoft_id)
     {
@@ -141,58 +192,13 @@ class Oauth extends Controller
 
    
 
-    public function fetchAzureUsers()
-{
-    $token = session()->get('microsoft_token');
-    if (!$token) {
-        return $this->response->setJSON(['error' => 'Access token not found.']);
-    }
-
-    
-
-    $client = \Config\Services::curlrequest();
-    $search = strtolower(trim($this->request->getGet('search') ?? ''));
-
-    // Gunakan filter langsung jika ada pencarian
-    $baseUrl = 'https://graph.microsoft.com/v1.0/users?$top=20&$select=id,displayName,jobTitle';
-
-    if (!empty($search)) {
-        $filter = "\$filter=startswith(displayName,'" . addslashes($search) . "')";
-        $baseUrl .= '&' . $filter;
-    }
-
-    try {
-        $res = $client->get($baseUrl, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $token,
-                'ConsistencyLevel' => 'eventual'
-            ]
-        ]);
-
-        $result = json_decode($res->getBody(), true);
-        $users = $result['value'] ?? [];
-
-        return $this->response->setJSON([
-            'count' => count($users),
-            'users' => $users
-        ]);
-
-    } catch (\Exception $e) {
-        return $this->response->setJSON([
-            'error' => 'Failed to fetch users',
-            'message' => $e->getMessage()
-        ]);
-    }
-}
-
+   
 
 
 
     public function fn_loginform()
     {
         $email = $this->request->getPost('email') ?? $this->request->getGet('email');
-
-        // Jika dari form (POST), cek ke DB dulu
         if ($this->request->getMethod() === 'post') {
             if (!$email) {
                 return redirect()->back()->with('error', 'Email wajib diisi.');

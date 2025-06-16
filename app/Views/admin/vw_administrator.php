@@ -3,6 +3,64 @@
         <?= view('layoutAdmin/sidebar.php'); ?>
         <?= view('layoutAdmin/navbar.php'); ?>
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <style>
+    .dropdown-checkbox {
+        position: relative;
+        width: 100%;
+    }
+
+    .dropdown-checkbox-toggle {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        background-color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .dropdown-checkbox-list {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        width: 100%;
+        max-height: 250px;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        z-index: 9999;
+        margin-top: 5px;
+        padding: 10px;
+    }
+
+    .dropdown-checkbox.open .dropdown-checkbox-list {
+        display: block;
+    }
+
+    .dropdown-checkbox-list .form-check {
+        display: flex;
+        align-items: center;
+        padding: 4px 0;
+        gap: 10px;
+    }
+
+    .dropdown-checkbox-list .form-check-input {
+        margin: 0;
+        width: 18px;
+        height: 18px;
+        accent-color: #0d6efd;
+    }
+
+    .dropdown-checkbox-list .form-check-label {
+        font-size: 16px;
+        cursor: pointer;
+        margin-bottom: 0;
+    }
+</style>
+
+
 
      
 
@@ -64,14 +122,22 @@
     <div id="accessFormContainer" style="display: none;" class="mb-4"> 
         <div class="col-md-6 col-xxl-3">
             <div class="mb-3">
-                <label for="employee1" class="form-label" style="font-weight: bold;">employee1</label>
+                <label for="employee1" class="form-label" style="font-weight: bold;">Employee</label>
                 <select id="employee1" name="employee1" class="form-select">
-                    <?php foreach ($users as $u): ?>
-                        <option value="<?= $u['id']; ?>">
-                            <?= esc($u['displayName']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
+                <?php foreach ($users as $u): ?>
+                     <?php 
+                            echo '<!-- ID: '.$u['id'].' | Name: '.$u['displayName'].' | Email: '.$u['userPrincipalName'].' -->';
+                        ?>
+                    <option 
+                        value="<?= $u['id']; ?>" 
+                        data-displayname="<?= esc($u['displayName']) ?>" 
+                        data-email="<?= esc($u['userPrincipalName']) ?>"
+                    >
+                        <?= esc($u['displayName']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             </div>
         </div>           
         <div class="row mt-4">
@@ -85,18 +151,25 @@
 
             <!-- Menu -->
             <div class="col-md-6 col-xxl-3">
-                <div class="mb-3">
-                    <label for="menuaccess" class="form-label" style="font-weight: bold;">Menu</label>
-                    <select id="menuaccess" name="menuaccess[]" class="form-select" multiple>
+                <label class="form-label fw-bold">Menu</label>
+                <div class="dropdown-checkbox" id="menuDropdown">
+                    <div class="dropdown-checkbox-toggle" onclick="toggleDropdown()">Select menu...</div>
+                    <div class="dropdown-checkbox-list">
                         <?php foreach ($menus as $menu): ?>
-                            <option value="<?= $menu['id'] ?>" <?= in_array($menu['id'], $selectedMenus ?? []) ? 'selected' : '' ?>>
-                                <?= esc($menu['menuname']) ?>
-                            </option>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    name="menuaccess[]" id="menu_<?= $menu['id'] ?>"
+                                    value="<?= $menu['id'] ?>"
+                                    <?= in_array($menu['id'], $selectedMenus ?? []) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="menu_<?= $menu['id'] ?>">
+                                    <?= esc($menu['menuname']) ?>
+                                </label>
+                            </div>
                         <?php endforeach; ?>
-                    </select>
-
+                    </div>
                 </div>
             </div>
+
         </div>
             <div class="mt-2">
                 <button type="button" class="btn btn-success" onclick="fn_publish()">Publish</button>
@@ -107,15 +180,13 @@
 
           <!-- Table always visible -->
           <div class="table-responsive">
-              <table class="table table-hover align-middle" id="'tbladministrator">'">
+              <table class="table table-hover align-middle" id="tbladministrator">
                   <thead>
                       <tr>
                           <th style="width: 10%;">No</th>
-                          <th style="width: 35%;">Job</th>
-                          <th style="width: 30%;">Group</th>
-                          <th style="width: 30%;">Category</th>
-                          <th style="width: 12%;">Type</th>
-                          <th style="width: 15%;">Applications</th>
+                          <th style="width: 35%;">Name</th>
+                          <th style="width: 30%;">Department</th>
+                          <th style="width: 30%;">Menu</th>
                           <th style="width: 15%;">Status</th>
                           <th style="width: 30%;">Action</th>
                       </tr>
@@ -132,106 +203,80 @@
 
             <?= view('layoutAdmin/footer.php'); ?>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-            <!-- Tambahkan di view kalau belum -->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 
             <script>
-
               $(document).ready(function () {
                   $('#menuaccess').select2({
                       placeholder: "Select one or more modules",
                        width: '100%'
                   });
-
                   fn_loadadministrator();
                   
               });
 
-
               function fn_loadadministrator() {
-                  $.ajax({
-                      url: '<?= base_url('admin/getadministrator') ?>',
-                      type: 'GET',
-                      dataType: 'json',
-                      success: function (data){
-                        if(data.response === 'success'){
+                $.ajax({
+                    url: '<?= base_url('admin/administrator/details') ?>',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Response:", response);
+                        if (response.status === 'success') {
                             if ($.fn.DataTable.isDataTable('#tbladministrator')) {
+                                console.log($.fn.DataTable);
+
                                 $('#tbladministrator').DataTable().clear().destroy();
                             }
-                        let table = $('#tbladministrator').DataTable({
-                        dom: 'Bfrtip',
-                        responsive: true,
-                        searching: false,
-                        paging: true,
-                      
-                        data: data.data,
-                        columnDefs: [{ defaultContent: "-", targets: "_all" }],
-                        columns: [
-                            {
-                                data: null,
-                                render: function (data, type, row, meta) {
-                                    return meta.row + 1;
-                                },
-                                title: 'No', 
-                                orderable: false
-                            },
-                            { data: 'jobs' },
-                            { data: 'groupname' },
-                            { data: 'category' },
-                            { data: 'type' },
-                            { data: 'applicants' },
-                            {
-                                data: 'status',
-                                orderable: false,
-                                render: function (data, type, row) {
-                                    const isActive = data == 0;
-                                    const label = isActive ? 'Active' : 'Inactive';
-                                    const btnClass = isActive ? 'btn-success' : 'btn-danger';
-                                    const nextStatus = isActive ? 1 : 0;
 
-                                    return `
-                                    <button class="btn btn-sm ${btnClass} btn-toggle-status"
-                                            data-id="${row.id}" data-status="${nextStatus}">
-                                        ${label}
-                                    </button>`;
-                                }
-                                },
-
-
-
-
-                            {
-                                render: function (data, type, row) {
-                                return `
-                                    <div style="white-space: nowrap;">
-                                    <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_editJob(${row.id})">
-                                        <span class="fa fa-eye"></span>
-                                    </button>
-                                    <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deleteJob(${row.id})">
-                                        <span class="fa fa-trash-o"></span>
-                                    </button>
-                                    </div>
-                                `;
-                                }
-                            }
-                        ]
-
-                      });
-                      
-                    } else {
-                      alert('No data found');
-                    }
-                  },
-                  error: function (xhr, status, error) {
-                    console.error('AJAX Error:', error);
+                            let table = $('#tbladministrator').DataTable({
+                                data: response.data,
+                                columns: [
+                                    { data: 'no' },
+                                    { data: 'microsoft_id' },
+                                    { data: 'display_name' },
+                                    { data: 'department' },
+                                    { data: 'menu_ids' },
+                                    
+                                    {
+                                        data: null,
+                                        render: function(data, type, row) {
+                                            return `<button class="btn btn-primary btn-sm" onclick="fn_edit(${row.id})">Edit</button>
+                                                    <button class="btn btn-danger btn-sm" onclick="fn_delete(${row.id})">Delete</button>`;
+                                        }
+                                    }
+                                ],
+                                responsive: true
+                            });
+                        } else {
+                            console.error('Failed to load administrator data:', response.message);
                         }
-                    
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                    }
                 });
                 }
 
+                  function toggleDropdown() {
+                    document.getElementById('menuDropdown').classList.toggle('open');
+                }
 
-               $(document).ready(function () {
+                // Optional: tutup dropdown jika klik di luar
+                window.addEventListener('click', function(e) {
+                    const box = document.getElementById('menuDropdown');
+                    if (!box.contains(e.target)) {
+                        box.classList.remove('open');
+                    }
+                });
+
+
+              
+
+
+              $(document).ready(function () {
                 $('#employee1').select2({
                     placeholder: 'Select an employee1',
                     width: '100%',
@@ -240,19 +285,25 @@
                         url: "<?= base_url('admin/users-json') ?>",
                         dataType: 'json',
                         delay: 250,
+                        xhrFields: {
+                            withCredentials: true
+                        },
                         data: function (params) {
                             console.log("Searching for:", params.term);
                             return {
-                                search: params.term || '' 
+                                search: params.term || ''
                             };
                         },
                         processResults: function (data) {
                             return {
                                 results: (data.users || []).map(function (user) {
+                                    console.log("User data:", user);
                                     return {
                                         id: user.id,
                                         text: user.displayName,
-                                        jobTitle: user.jobTitle || '' 
+                                        jobTitle: user.jobTitle || '',
+                                        displayname: user.displayName,              // ✅ TAMBAHKAN
+                                        email: user.userPrincipalName || '' 
                                     };
                                 })
                             };
@@ -268,17 +319,43 @@
                     }
                 });
 
-                // Saat user dipilih, isi field department
+                // Saat user dipilih, isi field department dan ambil menu akses
                 $('#employee1').on('select2:select', function (e) {
                     const selected = e.params.data;
                     $('#department').val(selected.jobTitle || '');
+
+                    // 🔥 Tambahan: AJAX ambil akses menu berdasarkan microsoft_id
+                    $.ajax({
+                        url: "<?= base_url('admin/get-menuaccess') ?>",
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            microsoft_id: selected.id // id = microsoft_id
+                        },
+                        success: function (response) {
+                            const selectedMenus = response.selectedMenus || [];
+
+                            // Uncheck semua menu
+                            $('input[name="menuaccess[]"]').prop('checked', false);
+
+                            // Centang sesuai menu_ids
+                            selectedMenus.forEach(function (id) {
+                                $('#menu_' + id).prop('checked', true);
+                            });
+                        },
+                        error: function () {
+                            console.warn('Gagal memuat akses menu.');
+                        }
+                    });
                 });
 
-                // Kosongkan department saat opsi di-clear
+                // Saat dropdown di-clear, kosongkan department dan uncheck semua
                 $('#employee1').on('select2:clear', function () {
                     $('#department').val('');
+                    $('input[name="menuaccess[]"]').prop('checked', false);
                 });
-            });
+              });
+
 
 
 
@@ -287,26 +364,38 @@
                   formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
               }
 
+              
+
+
                 function fn_publish() {
                     var employee = $('#employee1').val();
-                    var department = $('#department').val();
-                    var menuaccess = $('#menuaccess').val();
+                    var selectedUser = $('#employee1').select2('data')[0];
+                    console.log("Email:", selectedUser.email);
+                    var displayName = selectedUser.displayname;
+                    var email = selectedUser.email;
 
-                    console.log("Employee:", employee);
-                    console.log("Department:", department);
-                    console.log("Menu Access:", menuaccess);
-                    
+                    var department = $('#department').val();
+                    var menuaccess = [];
+                    $('input[name="menuaccess[]"]:checked').each(function () {
+                        menuaccess.push($(this).val());
+                    });
+
+
                     $.ajax({
                         url: '<?= base_url('admin/addnewadmin') ?>',
                         type: 'POST',
                         dataType: 'json',
                         data: {
                             employee: employee,
+                            displayname: displayName,
+                            email: email,
                             department: department,
                             menuaccess: menuaccess
-                            
                         },
                         success: function(response) {
+                            console.log("Display Name:", displayName);
+                            console.log("Email:", email);
+
                             if (response.status === 'success') {
                                 Swal.fire({
                                     icon: 'success',
@@ -315,7 +404,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(() => {
-                                    location.reload(); // reload setelah SweetAlert selesai
+                                    location.reload();
                                 });
                             } else {
                                 Swal.fire({
@@ -333,9 +422,8 @@
                                 text: 'An error occurred while publishing access.'
                             });
                         }
-
                     });
+}
 
-                }
 
             </script>

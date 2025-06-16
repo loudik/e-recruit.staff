@@ -474,6 +474,22 @@ public function fn_getmanagedata()
 }
 
 
+// MODEL
+
+public function fn_detailadministrator()
+{
+    return $this->db->table('tbl_accessright')
+        ->where('isdeleted', 0)
+        ->get()
+        ->getResultArray();
+}
+
+
+
+
+
+
+
  public function searchManageJobs($keyword)
 {
     return $this->db->table('tbl_managementjobs')

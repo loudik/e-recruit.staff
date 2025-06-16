@@ -35,8 +35,6 @@ $routes->get('auth/login', 'Oauth::login');
 $routes->post('auth/login', 'Oauth::fn_loginform');
 
 
-
-
 });
 
 
@@ -79,9 +77,14 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
   $routes->get('logo-base64', 'Report::logoBase64');
 
-  $routes->get('administrator', 'Admin::fn_getadministrator');
+  // $routes->get('administrator', 'Admin::fn_getadministrator');
+  $routes->get('administrator', 'Admin::fn_getadministrator'); // form kosong atau default
+  $routes->get('administrator/details', 'Admin::fn_detailadministrator'); // form kosong atau default
+  $routes->get('administrator/(:segment)', 'Admin::fn_getadministrator/$1'); 
   $routes->get('users-json', 'Oauth::fetchAzureUsers');
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');
+  $routes->get('get-menuaccess', 'Admin::get_menuaccess');
+
 
 });
 

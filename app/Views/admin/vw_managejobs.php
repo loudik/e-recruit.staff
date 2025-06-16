@@ -22,12 +22,7 @@
                             <nav class="pxp-nav-mobile">
                                 <ul class="navbar-nav justify-content-end flex-grow-1">
                                     <li class="pxp-dropdown-header">Admin tools</li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/dashboard')?>"><span class="fa fa-home"></span>Dashboard</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/newjobs')?>"><span class="fa fa-file-text-o"></span>New Job Offer</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/managejobs')?>"><span class="fa fa-briefcase"></span>Manage Jobs</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/candidate')?>"><span class="fa fa-user-circle-o"></span>Candidates</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/reports') ?>"><span class="fa fa-lock"></span>Reports</a></li>
-                                    <li class="nav-item"><a href="<?= base_url('admin/administrator') ?>"><span class="fa fa-lock"></span>Reports</a></li>
+                                   <?= session()->get('treemenu') ?? '' ?>
                                     
                                 </ul>
                             </nav>
