@@ -79,7 +79,8 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
 
   // $routes->get('administrator', 'Admin::fn_getadministrator');
   $routes->get('administrator', 'Admin::fn_getadministrator'); // form kosong atau default
-  $routes->get('administrator/details', 'Admin::fn_detailadministrator'); // form kosong atau default
+  $routes->get('administrator/details', 'Admin::fn_detailadministrator');
+  $routes->post('administrator/delete', 'Admin::fn_deleteaccess'); // ambil data admin
   $routes->get('administrator/(:segment)', 'Admin::fn_getadministrator/$1'); 
   $routes->get('users-json', 'Oauth::fetchAzureUsers');
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');

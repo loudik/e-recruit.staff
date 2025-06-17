@@ -376,6 +376,16 @@ public function getCategories()
       return $this->db->table('tbl_managementjobs')->update($data, ['id' => $id]);
   }
 
+
+  public function fn_deleteaccess($id)
+  {
+      $data = [
+        'isdeleted' => 1,
+        'uby' => 'System',
+        'udt' => date('Y-m-d H:i:s')];
+      return $this->db->table('tbl_accessright')->update($data, ['id' => $id]);
+  }
+
   public function fn_login($email)
   {
       // Ambil dari tbl_employee berdasarkan email
@@ -475,14 +485,52 @@ public function fn_getmanagedata()
 
 
 // MODEL
-
 public function fn_detailadministrator()
 {
-    return $this->db->table('tbl_accessright')
+    // Ambil data accessright
+    $results = $this->db->table('tbl_accessright')
         ->where('isdeleted', 0)
         ->get()
         ->getResultArray();
+
+    // Ambil semua menu (peta ID → nama)
+    $menus = $this->db->table('tbl_treemenu')
+        ->select('id, menuname')
+        ->where('isactive', 1)
+        ->where('isdeleted', 0)
+        ->get()
+        ->getResultArray();
+
+    $menuMap = [];
+    foreach ($menus as $menu) {
+        $menuMap[$menu['id']] = $menu['menuname'];
+    }
+
+    // Proses tiap baris accessright
+    $data = [];
+    $no = 1;
+    foreach ($results as $row) {
+        $menuNames = [];
+
+        if (!empty($row['menu_ids'])) {
+            $ids = explode(',', $row['menu_ids']);
+
+            foreach ($ids as $id) {
+                $id = (int) trim($id);
+                if (isset($menuMap[$id])) {
+                    $menuNames[] = $menuMap[$id];
+                }
+            }
+        }
+
+        $row['no'] = $no++;
+        $row['menu_names'] = implode(', ', $menuNames); // ⬅️ ini yang ditampilkan
+        $data[] = $row;
+    }
+
+    return $data;
 }
+
 
 
 

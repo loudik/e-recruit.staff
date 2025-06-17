@@ -55,18 +55,18 @@ class Admin extends BaseController
     }
 
      public function fn_detailadministrator()
-{
-    $data = $this->Md_adminpanel->fn_detailadministrator(); // ⬅️ ambil semua tanpa filter microsoft_id
+    {
+        $data = $this->Md_adminpanel->fn_detailadministrator(); // ⬅️ ambil semua tanpa filter microsoft_id
 
-    foreach ($data as $index => &$row) {
-        $row['no'] = $index + 1;
+        foreach ($data as $index => &$row) {
+            $row['no'] = $index + 1;
+        }
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data'   => $data
+        ]);
     }
-
-    return $this->response->setJSON([
-        'status' => 'success',
-        'data'   => $data
-    ]);
-}
 
 
 
@@ -739,6 +739,25 @@ class Admin extends BaseController
   {
       $id = $this->request->getPost('id');
       $result = $this->Md_adminpanel->fn_deleteJob($id);
+
+      if ($result) {
+          return $this->response->setJSON([
+              'response' => 'success',
+              'message' => 'Job deleted successfully!',
+          ]);
+      } else {
+          return $this->response->setJSON([
+              'response' => 'error',
+              'message' => 'Failed to delete job!',
+          ], 400);
+      }
+  }
+
+
+  public function fn_deleteaccess()
+  {
+      $id = $this->request->getPost('id');
+      $result = $this->Md_adminpanel->fn_deleteaccess($id);
 
       if ($result) {
           return $this->response->setJSON([

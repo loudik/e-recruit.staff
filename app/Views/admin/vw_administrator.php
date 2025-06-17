@@ -185,7 +185,7 @@
                       <tr>
                           <th style="width: 10%;">No</th>
                           <th style="width: 35%;">Name</th>
-                          <th style="width: 30%;">Department</th>
+                          <th style="width: 30%;">Position</th>
                           <th style="width: 30%;">Menu</th>
                           <th style="width: 15%;">Status</th>
                           <th style="width: 30%;">Action</th>
@@ -235,18 +235,32 @@
                                 data: response.data,
                                 columns: [
                                     { data: 'no' },
-                                    { data: 'microsoft_id' },
                                     { data: 'display_name' },
                                     { data: 'department' },
-                                    { data: 'menu_ids' },
+                                     { data: 'menu_names' },
+                                    {
+                                        data: 'isstatus',
+                                        render: function (data) {
+                                        if (data === '0') {
+                                            return '<span class="badge rounded-pill bg-success">Active</span>';
+                                        } else if (data === '1') {
+                                            return '<span class="badge rounded-pill bg-danger">Inactive</span>';
+                                        } 
+                                        }
+                                    },
                                     
                                     {
-                                        data: null,
-                                        render: function(data, type, row) {
-                                            return `<button class="btn btn-primary btn-sm" onclick="fn_edit(${row.id})">Edit</button>
-                                                    <button class="btn btn-danger btn-sm" onclick="fn_delete(${row.id})">Delete</button>`;
+                                            data: null,
+                                            render: function(data, type, row) {
+                                                return `
+                                                    <div class="d-flex gap-1">
+                                                        <button class="btn btn-primary btn-sm" onclick="fn_edit(${row.id})">Edit</button>
+                                                        <button class="btn btn-danger btn-sm" onclick="fn_delete(${row.id})">Delete</button>
+                                                    </div>`;
+                                            }
                                         }
-                                    }
+
+
                                 ],
                                 responsive: true
                             });
@@ -272,6 +286,52 @@
                     }
                 });
 
+
+                function fn_delete(id) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "This action cannot be undone!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '<?= base_url('admin/administrator/delete') ?>',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: { id: id },
+                                success: function(response) {
+                                    if (response.response === 'success') {
+                                        Swal.fire(
+                                            'Deleted!',
+                                            'The administrator has been deleted.',
+                                            'success'
+                                        ).then(() => {
+                                            fn_loadadministrator();
+                                        });
+                                    } else {
+                                        Swal.fire(
+                                            'Error!',
+                                            response.message || 'Failed to delete the administrator.',
+                                            'error'
+                                        );
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('AJAX Error:', error);
+                                    Swal.fire(
+                                        'Error!',
+                                        'An error occurred while deleting the administrator.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                }
 
               
 
@@ -302,7 +362,7 @@
                                         id: user.id,
                                         text: user.displayName,
                                         jobTitle: user.jobTitle || '',
-                                        displayname: user.displayName,              // ✅ TAMBAHKAN
+                                        displayname: user.displayName,             
                                         email: user.userPrincipalName || '' 
                                     };
                                 })
@@ -423,7 +483,13 @@
                             });
                         }
                     });
-}
+                }
+
+
+                funtion fn_edit(id) {
+                    // Redirect to edit page with ID
+                    window.location.href = '<?= base_url('admin/administrator/') ?>' + id;
+                }
 
 
             </script>

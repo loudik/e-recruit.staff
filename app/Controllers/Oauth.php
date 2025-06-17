@@ -74,7 +74,6 @@ class Oauth extends Controller
             session()->set('microsoft_token', $accessToken);
             session()->set('microsoft_refresh_token', $refreshToken);
 
-            log_message('debug', 'Session Token: ' . session()->get('microsoft_token'));
 
 
             $client        = \Config\Services::curlrequest();
@@ -121,6 +120,7 @@ class Oauth extends Controller
             ]);
 
 
+
             return redirect()->to('/admin/dashboard');
 
         } catch (\Exception $e) {
@@ -145,7 +145,7 @@ class Oauth extends Controller
 
         $queryParams = [
             '$top'    => 20,
-            '$select' => 'id,displayName,jobTitle'
+            '$select' => 'id,displayName,jobTitle,userPrincipalName'
         ];
 
         if (!empty($search)) {

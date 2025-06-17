@@ -100,70 +100,88 @@ class Md_administrator extends Model
  * ]
  */
      public function getMenusByRole($roleId): array
-    {
-        // ------------------------------------------------------------------
-        // 1. Ambil access–menu_id
-        // ------------------------------------------------------------------
-        $user = $this->db->table('tbl_accessright')
-            ->select('menu_ids')                 // kolom TEXT hasil migrasi
-            ->where('microsoft_id', $roleId)
-            ->where('isdeleted', 0)
-            ->get()
-            ->getFirstRow();                    // cuma butuh 1 baris
+{
+    // Log ID yang masuk
+    log_message('debug', 'getMenusByRole called with roleId: ' . $roleId);
 
-        if (!$user || empty($user->menu_ids)) {
-            // Tidak ada menu untuk role ini
-            return ['treemenu' => '', 'routes' => ''];
-        }
+    // 1. Ambil menu_ids dari tbl_accessright
+    $user = $this->db->table('tbl_accessright')
+        ->select('menu_ids')
+        ->where('microsoft_id', $roleId)
+        ->where('isdeleted', 0) // Pastikan kolom ini ada di tabel!
+        ->get()
+        ->getFirstRow();
 
-        // Ubah "1,2,3" ⇒ [1,2,3]
+    $menuIds = [];
+
+    if ($user && !empty($user->menu_ids)) {
         $menuIds = array_filter(array_map('intval', explode(',', $user->menu_ids)));
-
-        // ------------------------------------------------------------------
-        // 2. Ambil detail menu
-        // ------------------------------------------------------------------
-        $menus = $this->db->table('tbl_treemenu')
-            ->where('isdeleted', 0)
-            ->where('isactive', 1)
-            ->whereIn('id', $menuIds)
-            ->orderBy('sort_order', 'asc')
-            ->get()
-            ->getResultArray();
-
-        // ------------------------------------------------------------------
-        // 3. Susun HTML & daftar route
-        // ------------------------------------------------------------------
-        $baseUrl    = base_url('/');
-        $treemenu   = '';
-        $routeParts = [];                       // kumpulkan route satu-per-satu
-
-        foreach ($menus as $menu) {
-            $url   = esc($menu['menuurl']);
-            $icon  = esc($menu['menuicon'] ?: 'fa fa-circle-o');
-            $name  = esc($menu['menuname']);
-
-            $treemenu   .= "<li><a href=\"{$baseUrl}{$url}\"><span class=\"{$icon}\"></span> {$name}</a></li>";
-            // $routeParts[] = "/$url";
-            $routeParts[] = $url;
-
-        }
-
-       $extraRoutes = ['admin/users-json', 'admin/addnewadmin', 'admin/get-menuaccess','admin/administrator/details'];
-
-        foreach ($extraRoutes as $r) {
-            if (!in_array($r, $routeParts)) {
-                $routeParts[] = $r;
-            }
-        }
-
-        $routesSession = implode(',', $routeParts); 
-
-        return [
-            'treemenu' => $treemenu,
-            'routes'   => $routesSession,
-        ];
-
+        log_message('debug', 'menu_ids parsed: ' . implode(',', $menuIds));
     }
+
+    // 2. Fallback jika menuIds kosong
+    if (empty($menuIds)) {
+        log_message('warning', "No menu_ids found for microsoft_id: $roleId. Fallback to dashboard only.");
+        return [
+            'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span> Dashboard</a></li>',
+            'routes'   => ['admin/dashboard'],
+        ];
+    }
+
+    // 3. Ambil data menu dari tbl_treemenu
+    $menus = $this->db->table('tbl_treemenu')
+        ->where('isdeleted', 0)
+        ->where('isactive', 1)
+        ->whereIn('id', $menuIds)
+        ->orderBy('sort_order', 'asc')
+        ->get()
+        ->getResultArray();
+
+    log_message('debug', 'Menus fetched from DB: ' . print_r($menus, true));
+
+    // 4. Susun HTML & route
+    $baseUrl    = base_url('/');
+    $treemenu   = '';
+    $routeParts = [];
+
+    foreach ($menus as $menu) {
+        if (empty($menu['menuurl'])) {
+            log_message('warning', 'Menu ID ' . $menu['id'] . ' has empty menuurl, skipped.');
+            continue;
+        }
+
+        $url  = strtolower(trim($menu['menuurl']));
+        $icon = esc($menu['menuicon'] ?: 'fa fa-circle-o');
+        $name = esc($menu['menuname']);
+
+        $treemenu .= "<li><a href=\"{$baseUrl}{$url}\"><span class=\"{$icon}\"></span> {$name}</a></li>";
+        $routeParts[] = $url;
+
+        log_message('debug', "Rendered menu ID {$menu['id']} → {$url}");
+    }
+
+    // 5. Tambahkan extra routes (ajax, API, dsb)
+    $extraRoutes = [
+        'admin/users-json',
+        'admin/addnewadmin',
+        'admin/get-menuaccess',
+        'admin/administrator/details',
+        'admin/administrator/delete',
+    ];
+
+    foreach ($extraRoutes as $r) {
+        $r = strtolower($r);
+        if (!in_array($r, $routeParts)) {
+            $routeParts[] = $r;
+        }
+    }
+    return [
+        'treemenu' => $treemenu,
+        'routes'   => $routeParts, 
+    ];
+}
+
+
 
     
 
