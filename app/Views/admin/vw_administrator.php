@@ -214,7 +214,6 @@
                        width: '100%'
                   });
                   fn_loadadministrator();
-                  
               });
 
               function fn_loadadministrator() {
@@ -383,8 +382,6 @@
                 $('#employee1').on('select2:select', function (e) {
                     const selected = e.params.data;
                     $('#department').val(selected.jobTitle || '');
-
-                    // 🔥 Tambahan: AJAX ambil akses menu berdasarkan microsoft_id
                     $.ajax({
                         url: "<?= base_url('admin/get-menuaccess') ?>",
                         type: 'GET',
@@ -486,10 +483,6 @@
                 }
 
 
-                funtion fn_edit(id) {
-                    // Redirect to edit page with ID
-                    window.location.href = '<?= base_url('admin/administrator/') ?>' + id;
-                }
 
 
             </script>
