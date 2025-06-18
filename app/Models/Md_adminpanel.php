@@ -141,6 +141,14 @@ public function updateStatus($id, $newStatus)
 }
 
 
+public function fn_updatestatusadmin($id, $newStatus)
+{
+    return $this->db->table('tbl_accessright')
+                    ->where('id', $id)
+                    ->update(['isstatus' => $newStatus]);
+}
+
+
 
 
 public function getJobByjob()

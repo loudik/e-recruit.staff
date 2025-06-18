@@ -85,6 +85,9 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('users-json', 'Oauth::fetchAzureUsers');
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');
   $routes->get('get-menuaccess', 'Admin::get_menuaccess');
+  $routes->post('updatestatusadmin', 'Admin::fn_updatestatusadmin');
+
+
 
 
 });

@@ -239,24 +239,36 @@
                                      { data: 'menu_names' },
                                     {
                                         data: 'isstatus',
-                                        render: function (data) {
-                                        if (data === '0') {
-                                            return '<span class="badge rounded-pill bg-success">Active</span>';
-                                        } else if (data === '1') {
-                                            return '<span class="badge rounded-pill bg-danger">Inactive</span>';
-                                        } 
+                                        orderable: false,
+                                        render: function (data, type, row) {
+                                            const isActive = data == 0;
+                                            const label = isActive ? 'Active' : 'Inactive';
+                                            const spanClass = isActive ? 'badge bg-success' : 'badge bg-danger';
+                                            const nextStatus = isActive ? 1 : 0;
+
+                                            return `
+                                                <span class="${spanClass} span-toggle-status"
+                                                    data-id="${row.id}" data-status="${nextStatus}" style="cursor:pointer;">
+                                                    ${label}
+                                                </span>`;
                                         }
                                     },
+
+
                                     
                                     {
                                             data: null,
-                                            render: function(data, type, row) {
+                                            render: function (data, type, row) {
                                                 return `
-                                                    <div class="d-flex gap-1">
-                                                        <button class="btn btn-primary btn-sm" onclick="fn_edit(${row.id})">Edit</button>
-                                                        <button class="btn btn-danger btn-sm" onclick="fn_delete(${row.id})">Delete</button>
-                                                    </div>`;
+                                                <div class="d-flex gap-1">
+                                                    <span class="badge bg-danger text-white px-2 py-1"
+                                                        style="cursor:pointer; font-size: 0.75rem;"
+                                                        onclick="fn_delete(${row.id})">
+                                                        Delete
+                                                    </span>
+                                                </div>`;
                                             }
+
                                         }
 
 
@@ -272,6 +284,36 @@
                     }
                 });
                 }
+
+                $(document).on('click', '.span-toggle-status', function () {
+                    const id = $(this).data('id');
+                    const status = $(this).data('status');
+
+                    $.ajax({
+                        url: '<?= base_url('admin/updatestatusadmin') ?>',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            status: status
+                        },
+                        success: function (res) {
+                            if (res.success) {
+                                location.reload(); // Reload the page to reflect changes
+                            } else {
+                                alert(res.message || 'Failed to update status');
+                            }
+                        },
+                        error: function () {
+                            alert('AJAX request failed');
+                        }
+                    });
+                });
+
+
+
+
+
+                // <button class="btn btn-primary btn-sm" onclick="fn_edit(${row.id})">Edit</button>
 
                   function toggleDropdown() {
                     document.getElementById('menuDropdown').classList.toggle('open');

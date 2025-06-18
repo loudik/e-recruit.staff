@@ -190,6 +190,7 @@ class Md_administrator extends Model
             'admin/candidate/getcandidate',
             'admin/candidate/view',
             'admin/file/viewbyfilename',
+            'admin/updatestatusadmin',
         ];
 
         foreach ($extraRoutes as $r) {

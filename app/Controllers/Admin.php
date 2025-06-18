@@ -324,6 +324,27 @@ class Admin extends BaseController
         ])->setStatusCode(200);
     }
 
+    public function fn_updatestatusadmin()
+    {
+        $id = $this->request->getPost('id');
+        $status = $this->request->getPost('status');
+
+        if (!$id || $status === null) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Invalid request'
+            ])->setStatusCode(400);
+        }
+
+        $updated = $this->Md_adminpanel->fn_updatestatusadmin($id, $status);
+
+        return $this->response->setJSON([
+            'success' => $updated,
+            'message' => $updated ? 'Status updated successfully' : 'Failed to update'
+        ])->setStatusCode(200);
+    }
+
+
      public function fn_searchjobs()
     {
         $keyword = $this->request->getGet('q') ?? '';
