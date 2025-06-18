@@ -16,16 +16,14 @@
         <link href="<?= base_url('assets/css/animate.css'); ?>" rel="stylesheet">
         <link href="<?= base_url('assets/css/style.css'); ?>" rel="stylesheet">
 
-
-
         <title>Pannel Access</title>
     </head>
     <body style="background-color: var(--pxpMainColorLight);">
         <div class="pxp-preloader"><span>Loading...</span></div>
         <div class="pxp-dashboard-side-panel d-none d-lg-block">
     <div class="pxp-logo">
-       <a href="<?= base_url('') ?>" class="pxp-animate">
-            <img src="<?= base_url('assets/images/anplogo.png') ?>" alt="Logo" style="height: 60px;">
+       <a href="#" class="pxp-animate">
+            <img src="<?= base_url('anplogo.png') ?>" alt="Logo" style="height: 60px;">
         </a>
 
     </div>

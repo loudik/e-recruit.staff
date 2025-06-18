@@ -34,7 +34,9 @@
                     <div class="offcanvas offcanvas-start pxp-nav-mobile-container pxp-is-dashboard" tabindex="-1" id="pxpMobileNav">
                         <div class="offcanvas-header">
                             <div class="pxp-logo">
-                                <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
+                               <a href="#" class="pxp-animate">
+                                    <img src="<?= base_url('anplogo.png') ?>" alt="Logo" style="height: 60px;">
+                                </a>
                             </div>
                             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>

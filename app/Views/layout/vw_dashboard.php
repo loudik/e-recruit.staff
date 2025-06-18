@@ -25,8 +25,8 @@
             <div class="pxp-container">
                 <div class="pxp-header-container">
                     <div class="pxp-logo">
-                         <a href="<?= base_url('') ?>" class="pxp-animate">
-                            <img src="<?= base_url('assets/images/anplogo.png') ?>" alt="Logo" style="height: 60px;">
+                         <a href="#" class="pxp-animate">
+                            <img src="<?= base_url('anplogo.png') ?>" alt="Logo" style="height: 60px;">
                         </a>
 
                     </div>
