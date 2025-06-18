@@ -434,8 +434,7 @@
                   data: { id: id },
                   dataType: "json",
                   success: function (data) {
-                    console.log("DEBUG FILES:", data.debug);
-                    console.log(data.data.personalid);
+                    console.log("Response data:", data);
                   
                     if (data.response === 'success') {
                      

@@ -498,43 +498,6 @@ class Admin extends BaseController
         // $candidate = $this->Md_adminpanel->getCandidateDetail($id);
 
 
-        // if (!$candidate || !is_array($candidate)) {
-        //     return $this->response->setJSON([
-        //         'response' => 'error',
-        //         'message' => 'No candidate found.',
-        //         'debug' => $candidate
-        //     ]);
-        // }
-        // if (!$files || !is_array($files)) {
-        //     return $this->response->setJSON([
-        //         'response' => 'error',
-        //         'message' => 'No files found.',
-        //         'debug' => $files
-        //     ]);
-        // }
-        // $documents = [
-        //     'cv' => $files['cv'] ?? null,
-        //     'diploma' => $files['diploma'] ?? null,
-        //     'transcript' => $files['transcript'] ?? null,
-        //     'coverletter' => $files['coverletter'] ?? null,
-        //     'personalid' => $files['personalid'] ?? null
-        // ];
-
-        // foreach ($documents as $key => $filename) {
-        //     if ($filename) {
-        //         $filenameWithExt = $filename . '.pdf'; 
-
-        //         $filePath = WRITEPATH . 'uploads/formapplicant/' . $filenameWithExt;
-
-        //         if (file_exists($filePath)) {
-        //             $documents[$key] = $filenameWithExt; // kirim ke JS yang lengkap
-        //         } else {
-        //             $documents[$key] = null;
-        //         }
-        //     } else {
-        //         $documents[$key] = null;
-        //     }
-        // }
 
         if (!$dataDB) {
             return $this->response->setJSON([

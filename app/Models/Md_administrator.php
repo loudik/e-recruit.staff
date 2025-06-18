@@ -177,7 +177,6 @@ class Md_administrator extends Model
             log_message('debug', "Rendered menu ID {$menu['id']} → {$url}");
         }
 
-        // 5. Tambahkan extra routes (ajax, API, dsb)
         $extraRoutes = [
             'admin/users-json',
             'admin/addnewadmin',
@@ -187,6 +186,10 @@ class Md_administrator extends Model
             'admin/addnewjobs',
             'admin/newjobs',
             'admin/getCategoriesByGroup',
+            'admin/candidate',
+            'admin/candidate/getcandidate',
+            'admin/candidate/view',
+            'admin/file/viewbyfilename',
         ];
 
         foreach ($extraRoutes as $r) {
