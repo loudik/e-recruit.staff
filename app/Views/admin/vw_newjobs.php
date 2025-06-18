@@ -187,7 +187,7 @@
 
                         if (groupId !== '') {
                             $.ajax({
-                                url: '/admin/getCategoriesByGroup/' + groupId,
+                                url: '<?= base_url('admin/getCategoriesByGroup') ?>/' + groupId,
                                 method: 'GET',
                                 dataType: 'json',
                                 success: function (data) {

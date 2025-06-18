@@ -59,35 +59,52 @@ class Md_administrator extends Model
 {
     $builder = $this->db->table('tbl_accessright');
 
-    $builder->where('microsoft_id', $employeeID)->delete();
+    // Gabungkan menu ID jadi CSV string
+    $menuIDsString = implode(',', array_unique($menuIDs));
 
-    $menuIDs = array_unique($menuIDs);
-    $menuIDsString = implode(',', $menuIDs);
+    // Cek apakah data sudah ada berdasarkan microsoft_id
+    $existing = $builder->where('microsoft_id', $employeeID)->get()->getRow();
 
-    $data = [
-        'microsoft_id'  => $employeeID,
-        'display_name'  => $displayName,
-        'email'         => $email,
-        'department'    => $department,
-        'menu_ids'      => $menuIDsString,
-        'can_view'      => 1,
-        'can_create'    => 0,
-        'can_update'    => 0,
-        'can_delete'    => 0,
-        'isdeleted'     => 0,
-        'iby'           => session()->get('email') ?? 'system',
-        'idt'           => date('Y-m-d H:i:s')
-    ];
+    if ($existing) {
+        // Jika sudah ada, update hanya menu_ids
+        $update = $builder->where('microsoft_id', $employeeID)
+                          ->update([
+                              'menu_ids'  => $menuIDsString,
+                              'idt'       => date('Y-m-d H:i:s'),
+                              'iby'       => session()->get('email') ?? 'system',
+                          ]);
 
-    if ($builder->insert($data)) {
-        return ['success' => true];
+        if ($update) {
+            return ['success' => true, 'message' => 'Access updated.'];
+        } else {
+            return ['success' => false, 'message' => 'Failed to update access.'];
+        }
+
+    } else {
+        // Jika belum ada, insert baru
+        $data = [
+            'microsoft_id'  => $employeeID,
+            'display_name'  => $displayName,
+            'email'         => $email,
+            'department'    => $department,
+            'menu_ids'      => $menuIDsString,
+            'can_view'      => 1,
+            'can_create'    => 0,
+            'can_update'    => 0,
+            'can_delete'    => 0,
+            'isdeleted'     => 0,
+            'iby'           => session()->get('email') ?? 'system',
+            'idt'           => date('Y-m-d H:i:s')
+        ];
+
+        if ($builder->insert($data)) {
+            return ['success' => true, 'message' => 'New access inserted.'];
+        } else {
+            return ['success' => false, 'message' => 'Failed to insert access.'];
+        }
     }
-
-    return [
-        'success' => false,
-        'message' => 'Failed to insert into tbl_accessright.'
-    ];
 }
+
 
 
 
@@ -100,86 +117,89 @@ class Md_administrator extends Model
  * ]
  */
      public function getMenusByRole($roleId): array
-{
-    // Log ID yang masuk
-    log_message('debug', 'getMenusByRole called with roleId: ' . $roleId);
+    {
+        // Log ID yang masuk
+        log_message('debug', 'getMenusByRole called with roleId: ' . $roleId);
 
-    // 1. Ambil menu_ids dari tbl_accessright
-    $user = $this->db->table('tbl_accessright')
-        ->select('menu_ids')
-        ->where('microsoft_id', $roleId)
-        ->where('isdeleted', 0) // Pastikan kolom ini ada di tabel!
-        ->get()
-        ->getFirstRow();
+        // 1. Ambil menu_ids dari tbl_accessright
+        $user = $this->db->table('tbl_accessright')
+            ->select('menu_ids')
+            ->where('microsoft_id', $roleId)
+            ->where('isdeleted', 0) // Pastikan kolom ini ada di tabel!
+            ->get()
+            ->getFirstRow();
 
-    $menuIds = [];
+        $menuIds = [];
 
-    if ($user && !empty($user->menu_ids)) {
-        $menuIds = array_filter(array_map('intval', explode(',', $user->menu_ids)));
-        log_message('debug', 'menu_ids parsed: ' . implode(',', $menuIds));
-    }
+        if ($user && !empty($user->menu_ids)) {
+            $menuIds = array_filter(array_map('intval', explode(',', $user->menu_ids)));
+            log_message('debug', 'menu_ids parsed: ' . implode(',', $menuIds));
+        }
 
-    // 2. Fallback jika menuIds kosong
-    if (empty($menuIds)) {
-        log_message('warning', "No menu_ids found for microsoft_id: $roleId. Fallback to dashboard only.");
+        // 2. Fallback jika menuIds kosong
+        if (empty($menuIds)) {
+            log_message('warning', "No menu_ids found for microsoft_id: $roleId. Fallback to dashboard only.");
+            return [
+                'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span> Dashboard</a></li>',
+                'routes'   => ['admin/dashboard'],
+            ];
+        }
+
+        // 3. Ambil data menu dari tbl_treemenu
+        $menus = $this->db->table('tbl_treemenu')
+            ->where('isdeleted', 0)
+            ->where('isactive', 1)
+            ->whereIn('id', $menuIds)
+            ->orderBy('sort_order', 'asc')
+            ->get()
+            ->getResultArray();
+
+        log_message('debug', 'Menus fetched from DB: ' . print_r($menus, true));
+
+        // 4. Susun HTML & route
+        $baseUrl    = base_url('/');
+        $treemenu   = '';
+        $routeParts = [];
+
+        foreach ($menus as $menu) {
+            if (empty($menu['menuurl'])) {
+                log_message('warning', 'Menu ID ' . $menu['id'] . ' has empty menuurl, skipped.');
+                continue;
+            }
+
+            $url  = strtolower(trim($menu['menuurl']));
+            $icon = esc($menu['menuicon'] ?: 'fa fa-circle-o');
+            $name = esc($menu['menuname']);
+
+            $treemenu .= "<li><a href=\"{$baseUrl}{$url}\"><span class=\"{$icon}\"></span> {$name}</a></li>";
+            $routeParts[] = $url;
+
+            log_message('debug', "Rendered menu ID {$menu['id']} → {$url}");
+        }
+
+        // 5. Tambahkan extra routes (ajax, API, dsb)
+        $extraRoutes = [
+            'admin/users-json',
+            'admin/addnewadmin',
+            'admin/get-menuaccess',
+            'admin/administrator/details',
+            'admin/administrator/delete',
+            'admin/addnewjobs',
+            'admin/newjobs',
+            'admin/getCategoriesByGroup',
+        ];
+
+        foreach ($extraRoutes as $r) {
+            $r = strtolower($r);
+            if (!in_array($r, $routeParts)) {
+                $routeParts[] = $r;
+            }
+        }
         return [
-            'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span> Dashboard</a></li>',
-            'routes'   => ['admin/dashboard'],
+            'treemenu' => $treemenu,
+            'routes'   => $routeParts, 
         ];
     }
-
-    // 3. Ambil data menu dari tbl_treemenu
-    $menus = $this->db->table('tbl_treemenu')
-        ->where('isdeleted', 0)
-        ->where('isactive', 1)
-        ->whereIn('id', $menuIds)
-        ->orderBy('sort_order', 'asc')
-        ->get()
-        ->getResultArray();
-
-    log_message('debug', 'Menus fetched from DB: ' . print_r($menus, true));
-
-    // 4. Susun HTML & route
-    $baseUrl    = base_url('/');
-    $treemenu   = '';
-    $routeParts = [];
-
-    foreach ($menus as $menu) {
-        if (empty($menu['menuurl'])) {
-            log_message('warning', 'Menu ID ' . $menu['id'] . ' has empty menuurl, skipped.');
-            continue;
-        }
-
-        $url  = strtolower(trim($menu['menuurl']));
-        $icon = esc($menu['menuicon'] ?: 'fa fa-circle-o');
-        $name = esc($menu['menuname']);
-
-        $treemenu .= "<li><a href=\"{$baseUrl}{$url}\"><span class=\"{$icon}\"></span> {$name}</a></li>";
-        $routeParts[] = $url;
-
-        log_message('debug', "Rendered menu ID {$menu['id']} → {$url}");
-    }
-
-    // 5. Tambahkan extra routes (ajax, API, dsb)
-    $extraRoutes = [
-        'admin/users-json',
-        'admin/addnewadmin',
-        'admin/get-menuaccess',
-        'admin/administrator/details',
-        'admin/administrator/delete',
-    ];
-
-    foreach ($extraRoutes as $r) {
-        $r = strtolower($r);
-        if (!in_array($r, $routeParts)) {
-            $routeParts[] = $r;
-        }
-    }
-    return [
-        'treemenu' => $treemenu,
-        'routes'   => $routeParts, 
-    ];
-}
 
 
 

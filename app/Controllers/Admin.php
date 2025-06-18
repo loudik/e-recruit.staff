@@ -260,6 +260,7 @@ class Admin extends BaseController
 
     public function fn_getnewjobs()
     {
+        
         $this->data['title'] = 'New Jobs';
         $this->data['menu'] = $this->menu;
         $this->data['group'] = $this->Md_adminpanel->fn_getgroup();
