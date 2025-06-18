@@ -75,7 +75,8 @@
                       <table class="table table-hover align-middle" id="tblcandidate">
                         <thead>
                           <tr>
-                            <th><input type="checkbox" id="checkAll"></th>
+                            <!-- <th><input type="checkbox" id="checkAll"></th> -->
+                            <th style="width: 25%;">No</th>
                             <th style="width: 25%;">Name</th>
                             <th style="width: 40%;">Applied for</th>
                             <th style="width: 15%;">Status</th>
@@ -331,12 +332,20 @@
                         data: data.data,
                         columnDefs: [{ defaultContent: "-", targets: "_all" }],
                         columns: [
-                           {
-                            data: 'id',
-                            render: function (data, type, row) {
-                              return `<input type="checkbox" class="row-check" value="${data}">`;
-                            },
-                            orderable: false
+                          //  {
+                          //   data: 'id',
+                          //   render: function (data, type, row) {
+                          //     return `<input type="checkbox" class="row-check" value="${data}">`;
+                          //   },
+                          //   orderable: false
+                          // },
+                          {
+                                data: null,
+                                render: function (data, type, row, meta) {
+                                    return meta.row + 1;
+                                },
+                                title: 'No', 
+                                orderable: false
                           },
                           { data: 'fullname' },
                           { data: 'application' },
