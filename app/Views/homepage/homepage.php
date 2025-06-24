@@ -51,7 +51,7 @@
     <a href="<?= base_url('loginpage') ?>" class="role-option">
       <i class="fas fa-user-tie"></i> Recruitment Staff
     </a>
-    <a href="<?= base_url('/') ?>" class="role-option">
+    <a href="<?= base_url('/home') ?>" class="role-option">
       <i class="fas fa-graduation-cap"></i> Internship
     </a>
   </div>
