@@ -175,8 +175,6 @@
                                         <?php else: ?>
                                         <p>No job types found.</p>
                                         <?php endif; ?>
-
-                                  
                                 </div>
 
                                 <h3 class="mt-3 mt-lg-4">Experience Level</h3>

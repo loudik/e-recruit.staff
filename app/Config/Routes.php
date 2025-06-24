@@ -5,7 +5,14 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/home', 'Home::index');
+
+$routes->get('test-cookie', 'Home::checkCookie');
+
+
+// OAuth
+$routes->get('/Oauth', 'Oauth::index');
+$routes->get('logout', 'Oauth::logout');
 
 // FORM REGISTRATION
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');
@@ -17,9 +24,14 @@ $routes->post('/comfirmotp', 'Formapply::fn_comfirmotp');
 // Dashboard
 $routes->get('/jobs/pages', 'Home::fn_getpages');
 
+// HOMEPAGE
+$routes->get('/', 'Home::fn_gethomepage');
+$routes->get('loginpage', 'Home::fn_getloginpage');
+$routes->post('loginpage/register', 'Home::fn_register');
 
-//Admin
-// $routes->get('/admin', 'Admin::fn_getadminpanel');
+
+
+
 
 
 
@@ -40,9 +52,7 @@ $routes->post('auth/login', 'Oauth::fn_loginform');
 
 
 
-// OAuth
-$routes->get('/', 'Oauth::index');
-$routes->get('logout', 'Oauth::logout');
+
 
 
 $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {

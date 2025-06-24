@@ -156,7 +156,6 @@ class Md_administrator extends Model
 
         log_message('debug', 'Menus fetched from DB: ' . print_r($menus, true));
 
-        // 4. Susun HTML & route
         $baseUrl    = base_url('/');
         $treemenu   = '';
         $routeParts = [];

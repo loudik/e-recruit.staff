@@ -15,6 +15,8 @@ class Login extends BaseController
       return view('login/vw_login', ['title' => $title]);
     }
 
+
+
     public function fn_login()
     {
         $username = $this->request->getPost('username');
@@ -60,9 +62,6 @@ class Login extends BaseController
     }
 
     
-
-
-
     public function check()
     {
         $username = $this->request->getPost('username');
@@ -79,5 +78,7 @@ class Login extends BaseController
         }
     }
 
+
+ 
 
   }
