@@ -525,9 +525,21 @@ form.sign-in-form {
         </div>
       </div>
     </div>
-    <script src="<?= base_url('assets/loudik/userlogin.js') ?>"></script>
+    <!-- <script src="</?= base_url('assets/loudik/userlogin.js') ?>"></script> -->
     <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
     <script>
+
+      const sign_in_btn = document.querySelector("#sign-in-btn");
+      const sign_up_btn = document.querySelector("#sign-up-btn");
+      const container = document.querySelector(".container");
+
+      sign_up_btn.addEventListener("click", () => {
+        container.classList.add("sign-up-mode");
+      });
+
+      sign_in_btn.addEventListener("click", () => {
+        container.classList.remove("sign-up-mode");
+      });
 
        function togglePassword(id, icon) {
         const input = document.getElementById(id);
