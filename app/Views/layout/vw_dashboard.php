@@ -45,14 +45,16 @@
                             </div>
                             <div class="offcanvas-body">
                                 <nav class="pxp-nav-mobile">
-                                    <ul class="navbar-nav justify-content-end flex-grow-1>
+                                    <ul class="navbar-nav justify-content-end flex-grow-1">
                                         <li class="nav-item dropdown">
                                             <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Home</a>
-
                                         </li>
                                         <li class="nav-item dropdown">
                                             <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#job-1">Find Jobs & Interships</a>
                                         </li>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Logout</a></li>
+                                        </ul>
                                     </ul>
                                 </nav>
                             </div>
@@ -66,6 +68,13 @@
                             <li class="dropdown">
                                 <a href="#job-1" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs  & Interships</a>
                             </li>
+                            <?php 
+                            if (session()->get('login_id') != "") {
+                                $logout=site_url('logoutstaff');
+                                echo "<li><a class='dropdown-item' href=$logout>Logout</a></li>";
+                            }
+                            ?>
+
                         </ul>
                     </nav>
                     <nav class="pxp-user-nav d-none d-sm-flex">

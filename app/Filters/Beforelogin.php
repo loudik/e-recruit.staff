@@ -14,7 +14,7 @@ class Beforelogin implements FilterInterface
         $session = session();
 
         // Cek apakah user sudah login
-        if (!$session->has('email')) {
+        if (!$session->has('microsoft_id')) {
             if ($request->isAJAX()) {
                 return service('response')->setJSON(['error' => 'Not authenticated'])->setStatusCode(401);
             }

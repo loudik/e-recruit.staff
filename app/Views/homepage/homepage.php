@@ -51,10 +51,33 @@
     <a href="<?= base_url('loginpage') ?>" class="role-option">
       <i class="fas fa-user-tie"></i> Recruitment Staff
     </a>
-    <a href="<?= base_url('/home') ?>" class="role-option">
+    <a href="#" class="role-option" id="logoutToHome">
       <i class="fas fa-graduation-cap"></i> Internship
     </a>
+
+
   </div>
 
 </body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#logoutToHome').on('click', function (e) {
+      e.preventDefault();
+
+      $.get("<?= base_url('logout') ?>", function (res) {
+        // Redirect ke home setelah logout selesai
+        window.location.href = "<?= base_url('/home') ?>";
+      }).fail(function (xhr) {
+        alert("Logout failed!");
+        console.error(xhr.responseText);
+      });
+    });
+  });
+</script>
+
+
+
+
 </html>

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
 
 
     <title>Sign in & Sign up Form</title>
@@ -430,31 +430,17 @@ form.sign-in-form {
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="<?= base_url('auth/login') ?>" method="post" class="sign-in-form">
+          <form  class="sign-in-form">
             <h2 class="title">Sign in</h2>
-              <?php if (session()->getFlashdata('error')): ?>
-                  <div class="error-message">
-                      <?= session()->getFlashdata('error') ?>
-                  </div>
-              <?php endif; ?>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text"  name="email"  placeholder="Email Microsoft 365" required/>
+              <input type="email"  name="email" id="email" placeholder="Email" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="pwd" id="pwd" placeholder="Password" />
             </div>
-            <input type="submit" value="Login" class="btn solid"/>
-            <p class="social-text">Or Sign in with social platforms</p>
-            <div class="social-media">
-            <a href="<?= base_url('auth/login') ?>" class="social-icon" title="Sign in with Microsoft">
-                <i class="fab fa-microsoft"></i>
-              </a>
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-            </div>
+             <button type="button" class="btn solid" onclick="fn_validationlogin()">Login</button>
           </form>
           <form action="#" class="sign-up-form">
             <h2 class="title">Sign up</h2>
@@ -468,22 +454,20 @@ form.sign-in-form {
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" name="email" id="email" />
+              <input type="email" placeholder="Email" name="signin_email" id="signin_email" />
             </div>
             <div class="input-field position-relative">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Password" name="password" id="password" />
-              <i class="fas fa-eye toggle-eye" onclick="togglePassword('password', this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;"></i>
+              <i class="fas fa-eye toggle-eye" onclick="togglePassword('password', this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;color: #888;z-index: 2;"></i>
             </div>
 
             <div class="input-field position-relative">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Confirm Password" name="confirm_password" id="confirm_password" />
-              <i class="fas fa-eye toggle-eye" onclick="togglePassword('confirm_password', this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;"></i>
+              <i class="fas fa-eye toggle-eye" onclick="togglePassword('confirm_password', this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;color: #888;z-index: 2;"></i>
             </div>
-
             <button type="button" class="btn" onclick="fn_signup()">Sign up</button>
-
             <p class="social-text">Or Sign up with social platforms</p>
             <div class="social-media">
               <a href="#" class="social-icon">
@@ -492,7 +476,6 @@ form.sign-in-form {
               <a href="/auth/microsoft" class="social-icon">
                 <i class="fab fa-microsoft"></i>
               </a>
-
             </div>
           </form>
         </div>
@@ -509,7 +492,7 @@ form.sign-in-form {
               Sign up
             </button>
           </div>
-          <img src="<? base_url('uploads/loginpage/log.svg');?>" class="image" alt="" /> 
+          <img src="<?= base_url('assets/loginpage/log.svg');?>" class="image" alt="" /> 
         </div>
         <div class="panel right-panel">
           <div class="content">
@@ -521,12 +504,13 @@ form.sign-in-form {
               Sign in
             </button>
           </div>
-          <img src="<? base_url('uploads/loginpage/register.svg'); ?>" class="image" alt="" />
+          <img src="<?= base_url('assets/loginpage/register.svg'); ?>" class="image" alt="" />
         </div>
       </div>
     </div>
-    <!-- <script src="</?= base_url('assets/loudik/userlogin.js') ?>"></script> -->
     <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
       const sign_in_btn = document.querySelector("#sign-in-btn");
@@ -555,24 +539,65 @@ form.sign-in-form {
       }
 
 
-        function fn_signup() {
+      function fn_validationlogin() {
+  const email = $('#email').val().trim();
+  const password = $('#pwd').val().trim();
 
+
+  $.ajax({
+    url: '<?= base_url('loginpage/validationlogin') ?>',
+    method: 'POST',
+    data: {
+      email: email,
+      password: password
+    },
+    dataType: 'json',
+    success: function(data) {
+      if (data.response === 'success') {
+        Swal.fire({
+          icon: 'success',
+          title: 'Login successful',
+          showConfirmButton: false,
+          timer: 1000
+        }).then(() => {
+          window.location.href = '<?= base_url('/home') ?>';
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: data.message || 'Invalid credentials'
+        });
+      }
+    },
+    error: function(xhr, status, error) {
+      console.error(xhr.responseText);
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong',
+        text: error
+      });
+    }
+  });
+}
+
+
+
+
+
+        function fn_signup() {
           const fullname = document.getElementById('fullname').value;
           const username = document.getElementById('username').value;
-          const email = document.getElementById('email').value;
+          const email = document.getElementById('signin_email').value;
           const password = document.getElementById('password').value;
           const confirmPassword = document.getElementById('confirm_password').value;
-
-          if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
-          }
 
           const formData = new FormData();
           formData.append('fullname', fullname);
           formData.append('username', username);
           formData.append('email', email);
           formData.append('password', password);
+          formData.append('confirm_password', confirmPassword);
 
           fetch('<?= base_url('loginpage/register') ?>', {
             method: 'POST',
@@ -582,7 +607,7 @@ form.sign-in-form {
             .then(data => {
               if (data.response === 'success') {
                 alert(data.message);
-                window.location.href = '<?= base_url('loginpage/login') ?>';
+                window.location.href = '<?= base_url('loginpage') ?>';
               } else {
                 alert(data.message || 'Registration failed');
               }

@@ -15,7 +15,7 @@ class Afterlogin implements FilterInterface
         // if ($session->has('email')) {
         //   return redirect()->back();
         // }
-        if (session()->has('email')) {
+        if (session()->has('microsoft_id')) {
             
             return redirect()->to('/admin/dashboard'); 
         }

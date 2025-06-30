@@ -115,12 +115,8 @@
                             <div class="mb-3">
                                 <label for="type" class="form-label">Employment type</label>
                                 <select id="type" class="form-select">
-                                    <option value="Full Time">Full Time</option>
-                                    <option value="Part Time">Part Time</option>
-                                    <option value="remote">Remote</option>
                                     <option value="internships">Internships</option>
-                                    <option value="Contract">Contract</option>
-                                    <option value="Training">Training</option>
+                                    <option value="Staff">Staff</option>
                                 </select>
                             </div>
                         </div>

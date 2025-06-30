@@ -5,14 +5,23 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/home', 'Home::index');
 
-$routes->get('test-cookie', 'Home::checkCookie');
+
 
 
 // OAuth
 $routes->get('/Oauth', 'Oauth::index');
 $routes->get('logout', 'Oauth::logout');
+$routes->get('logoutstaff', 'Home::logout');
+
+$routes->get('/home', 'Home::index');
+
+// $routes->group('home', ['filter' => 'homeaccess'], function ($routes) {
+//   $routes->get('getformregistration', 'Formapply::fn_getdataregistration');
+//   $routes->post('submitdataregistration', 'Formapply::fn_submitdataregistration');
+//   $routes->post('comfirmemail', 'Formapply::fn_comfirmemail');
+//   $routes->post('comfirmotp', 'Formapply::fn_comfirmotp');
+// });
 
 // FORM REGISTRATION
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');
@@ -27,7 +36,9 @@ $routes->get('/jobs/pages', 'Home::fn_getpages');
 // HOMEPAGE
 $routes->get('/', 'Home::fn_gethomepage');
 $routes->get('loginpage', 'Home::fn_getloginpage');
+$routes->get('loginpage/login', 'Home::fn_getloginpage');
 $routes->post('loginpage/register', 'Home::fn_register');
+$routes->post('loginpage/validationlogin', 'Home::fn_validationlogin');
 
 
 

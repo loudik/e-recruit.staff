@@ -11,6 +11,17 @@ class Md_adminpanel extends Model
   protected $primaryKey = 'id'; 
 
 
+  public function getCategoryByEmailFromJob($email)
+{
+    return $this->db->table('tbl_staffapply sa')
+        ->select('mj.type')
+        ->join('tbl_managementjobs mj', 'mj.id = sa.job_id')
+        ->where('sa.email', $email)
+        ->get()
+        ->getRowArray();
+}
+
+
   public function fn_getcategory()
   {
     $query = $this->db->query("SELECT * FROM tbl_unit where isdeleted = 0  order by unitname asc");
@@ -32,6 +43,51 @@ class Md_adminpanel extends Model
             ->get()
             ->getResultArray();
     }
+
+    public function getUserByEmail($email)
+    {
+        $query = $this->db->query("SELECT * FROM tbl_staffapply WHERE email = ? AND isdeleted = 0", [$email]);
+        return $query->getRowArray();
+    }
+
+    public function getUserByUsername($username)
+    {
+        $query = $this->db->query("SELECT * FROM tbl_staffapply WHERE username = ? AND isdeleted = 0", [$username]);
+        return $query->getRowArray();
+    }
+
+    public function registerUser($userData)
+    {
+        return $this->db->table('tbl_stafflogin')->insert($userData);
+    }
+
+    public function registerApply($data)
+    {
+        return $this->db->table('tbl_staffapply')->insert($data);
+    }
+
+
+    // Cek berdasarkan username atau email
+    public function getLoginByIdentity($email)
+    {
+        return $this->db->table('tbl_stafflogin')
+            ->groupStart()
+                ->where('email', $email)
+            ->groupEnd()
+            ->get()->getRowArray();
+    }
+
+    // Ambil detail user dari tbl_staffapply berdasarkan login_id
+    public function getUserDetailByLoginId($loginId)
+    {
+        return $this->db->table('tbl_staffapply')
+            ->where('login_id', $loginId)
+            ->get()->getRowArray();
+    }
+
+
+
+
 
 
 
@@ -188,8 +244,6 @@ public function getCategories()
 
 
 
-
-
   public function getApplicationsCount($days = 7)
   {
       return $this->db->table('tbl_applicationjobs')
@@ -235,10 +289,10 @@ public function getCategories()
     }
 
 
-  public function fn_loadmanagejob($limit = 3, $offset = 0)
+  public function fn_loadmanagejob($limit = 3, $offset = 0,$type)
   {
     $query = $this->db->query(
-        "SELECT * FROM tbl_managementjobs WHERE isdeleted = 0 AND status=0 ORDER BY id DESC LIMIT ? OFFSET ?",
+        "SELECT * FROM tbl_managementjobs WHERE type = '$type' AND  isdeleted = 0 AND status=0 ORDER BY id DESC LIMIT ? OFFSET ?",
         [$limit, $offset]
     );
 
@@ -264,10 +318,12 @@ public function getCategories()
     }
 
 
-    public function searchJobs($keyword)
+    public function searchJobs($keyword,$type)
     {
+
         return $this->db->table('tbl_managementjobs')
             ->where('isdeleted', 0)
+            ->where('type', $type)
             ->where('status', 0) // ✅ hanya job yang aktif
             ->groupStart()
                 ->like('jobs', $keyword)
