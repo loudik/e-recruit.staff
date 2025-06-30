@@ -58,9 +58,6 @@ abstract class BaseController extends Controller
 
         $this->session = service('session');
         $this->data['logoPath'] = base_url('anplogo.png');
-        $this->data['logoUrl'] = base_url('assets/loginpage/log.svg');
-$this->data['registerUrl'] = base_url('assets/loginpage/register.svg');
-
         // $this->data['sidebarMenus'] = $this->loadSidebarMenus();
         // $role_id = $this->session->get('microsoft_id') ?? 0;
         // $this->menu = model('App\Models\Md_administrator')->getMenuByRole($role_id);

@@ -492,7 +492,7 @@ form.sign-in-form {
               Sign up
             </button>
           </div>
-          <img src="<?= esc($logoUrl) ?>" class="image" alt="Logo"> 
+          <img src="<?= base_url('assets/loginpage/log.svg');?>" class="image" alt="" /> 
         </div>
         <div class="panel right-panel">
           <div class="content">
@@ -504,7 +504,7 @@ form.sign-in-form {
               Sign in
             </button>
           </div>
-          <img src="<?= esc($registerUrl) ?>" class="image" alt="Register">
+          <img src="<?= base_url('assets/loginpage/register.svg'); ?>" class="image" alt="" />
         </div>
       </div>
     </div>
