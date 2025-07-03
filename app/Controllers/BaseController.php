@@ -58,11 +58,6 @@ abstract class BaseController extends Controller
 
         $this->session = service('session');
         $this->data['logoPath'] = base_url('anplogo.png');
-    //     $this->data['logoSvg'] = base_url('log.svg');
-    // $this->data['registerSvg'] = base_url('register.svg');
-        // $this->data['sidebarMenus'] = $this->loadSidebarMenus();
-        // $role_id = $this->session->get('microsoft_id') ?? 0;
-        // $this->menu = model('App\Models\Md_administrator')->getMenuByRole($role_id);
     }
 
     public function generateShortUniqueID($length = 16)

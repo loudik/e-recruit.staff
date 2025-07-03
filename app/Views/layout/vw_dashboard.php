@@ -25,9 +25,10 @@
             <div class="pxp-container">
                 <div class="pxp-header-container">
                     <div class="pxp-logo">
-                         <a href="#" class="pxp-animate">
+                         <a href="https://www.anp.tl/" target="_blank" class="pxp-animate">
                             <img src="<?= base_url('anplogo.png') ?>" alt="Logo" style="height: 60px;">
                         </a>
+
 
                     </div>
                     <div class="pxp-nav-trigger navbar d-xl-none flex-fill">
@@ -274,76 +275,90 @@
 
 
         <footer class="pxp-main-footer mt-100">
-            <div class="pxp-main-footer-top pt-100 pb-100" style="background-color: var(--pxpMainColorLight);">
+            <div class="pxp-main-footer-top pt-80 pb-40" style="background-color: var(--pxpMainColorLight);">
                 <div class="pxp-container">
                     <div class="row">
-                        <div class="col-lg-6 col-xl-5 col-xxl-4 mb-4">
-                            <div class="pxp-footer-logo">
-                                <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
-                            </div>
+                        <div class="col-lg-4 col-xl-4 col-xxl-4 mb-4">
+
                             <div class="pxp-footer-section mt-3 mt-md-4">
                                 <h3>Call us</h3>
-                                <div class="pxp-footer-phone">(123) 456-7890</div>
+                                <div class="pxp-footer-phone">+67073099996</div>
                             </div>
+
                             <div class="mt-3 mt-md-4 pxp-footer-section">
                                 <div class="pxp-footer-text">
-                                    90 Fifth Avenue, 3rd Floor<br>
-                                    San Francisco, CA 1980<br>
-                                    office@jobster.com
+                                    City 8 Compound, Rua Has Laran<br>
+                                    Aldeia Fomento II,<br>
+                                    Suco Comoro, Dom Aleixo,<br>
+                                    Dili, Timor-Leste<br>
+                                    <a href="mailto:info@anp.tl">info@anp.tl</a>
+                                </div>
+                            </div>
+
+                            <!-- Connect with Us moved here -->
+                            <div class="pxp-footer-section mt-4">
+                                <h3>Connect with Us</h3>
+                                <ul class="list-unstyled d-flex gap-3 justify-content-start mt-3">
+                                    <li>
+                                        <a href="https://m.facebook.com/profile.php?id=100069366932789" target="_blank" rel="noopener">
+                                            <span class="fa fa-facebook fa-lg"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.instagram.com/anp_timorleste/" target="_blank" rel="noopener">
+                                            <span class="fa fa-instagram fa-lg"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.youtube.com/@anptimor-leste4098" target="_blank" rel="noopener">
+                                            <span class="fa fa-youtube fa-lg"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.linkedin.com/company/anp-timorleste/" target="_blank" rel="noopener">
+                                            <span class="fa fa-linkedin fa-lg"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <!-- Right Section: Map + Connect With Us -->
+                        <div class="col-lg-8 col-xl-7 col-xxl-8 mt-3 mt-md-4">
+                            <div class="pxp-footer-section mb-4">
+                                <h3>Our Location</h3>
+                                <div style="border-radius: 10px; overflow: hidden;">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.2920892185734!2d125.53680527589647!3d-8.567887586917811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d01dda15b85e9a1%3A0xe0b45b7926718d24!2sCity-8!5e0!3m2!1sen!2stl!4v1751528029501!5m2!1sen!2stl" 
+                                         width="100%" 
+                                        height="300" 
+                                        style="border:0; border-radius: 10px;" 
+                                        allowfullscreen="" 
+                                        loading="lazy" 
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-xl-7 col-xxl-8">
-                            <div class="row">
-                                <div class="col-md-6 col-xl-4 col-xxl-3 mb-4">
-                                    <div class="pxp-footer-section">
-                                        <h3>For Candidates</h3>
-                                        <ul class="pxp-footer-list">
-                                            <li><a href="jobs-list-1.html">Find Jobs & Interships</a></li>
-                                            <li><a href="candidate-dashboard.html">Candidate Dashboard</a></li>
-                                            <li><a href="candidate-dashboard-applications.html">My Applications</a></li>
-                                            <li><a href="candidate-dashboard-fav-jobs.html">Favourite Jobs</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4 col-xxl-3 mb-4">
-                                    <div class="pxp-footer-section">
-                                        <h3>For Employers</h3>
-                                        <ul class="pxp-footer-list">
-                                            <li><a href="candidates-list-1.html">Find Candidates</a></li>
-                                            <li><a href="company-dashboard.html">Company Dashboard</a></li>
-                                            <li><a href="company-dashboard-new-job.html">Post a Job</a></li>
-                                            <li><a href="company-dashboard-jobs.html">Manage Jobs</a></li>
-                                            <li><a href="company-dashboard-candidates.html">Candidates</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
+
+            <!-- BOTTOM SECTION -->
             <div class="pxp-main-footer-bottom" style="background-color: var(--pxpMainColorLight);">
                 <div class="pxp-container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-lg-auto">
-                            <div class="pxp-footer-copyright pxp-text-light">© 2025 ANP. All Right Reserved.</div>
-                        </div>
-                        <div class="col-lg-auto">
-                            <div class="pxp-footer-social mt-3 mt-lg-0">
-                                <ul class="list-unstyled">
-                                    <li><a href="#"><span class="fa fa-facebook"></span></a></li>
-                                    <li><a href="#"><span class="fa fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="fa fa-instagram"></span></a></li>
-                                    <li><a href="#"><span class="fa fa-linkedin"></span></a></li>
-                                </ul>
+                            <div class="pxp-footer-copyright pxp-text-light">
+                                © 2025 ANP. All Right Reserved.
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
+
+
 
         <div class="modal fade pxp-user-modal" id="pxp-signin-modal" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">

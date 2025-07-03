@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
   
 
 
@@ -510,9 +511,18 @@ form.sign-in-form {
       </div>
     </div>
     <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
+
+      toastr.options = {
+        "closeButton": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "timeOut": "3000"
+      };
+
 
       const sign_in_btn = document.querySelector("#sign-in-btn");
       const sign_up_btn = document.querySelector("#sign-up-btn");
@@ -541,48 +551,34 @@ form.sign-in-form {
 
 
       function fn_validationlogin() {
-  const email = $('#email').val().trim();
-  const password = $('#pwd').val().trim();
+        const email = $('#email').val().trim();
+        const password = $('#pwd').val().trim();
 
+        $.ajax({
+          url: '<?= base_url('loginpage/validationlogin') ?>',
+          method: 'POST',
+          data: {
+            email: email,
+            password: password
+          },
+          dataType: 'json',
+          success: function(data) {
+            if (data.response === 'success') {
+              toastr.success('Login successful', 'Success');
 
-  $.ajax({
-    url: '<?= base_url('loginpage/validationlogin') ?>',
-    method: 'POST',
-    data: {
-      email: email,
-      password: password
-    },
-    dataType: 'json',
-    success: function(data) {
-      if (data.response === 'success') {
-        Swal.fire({
-          icon: 'success',
-          title: 'Login successful',
-          showConfirmButton: false,
-          timer: 1000
-        }).then(() => {
-          window.location.href = '<?= base_url('/home') ?>';
-        });
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Login Failed',
-          text: data.message || 'Invalid credentials'
+              setTimeout(() => {
+                window.location.href = '<?= base_url('/home') ?>';
+              }, 1500); // kasih delay biar toaster sempat muncul
+            } else {
+              toastr.error(data.message || 'Invalid credentials', 'Login Failed');
+            }
+          },
+          error: function(xhr, status, error) {
+            console.error(xhr.responseText);
+            toastr.error(error, 'Something went wrong');
+          }
         });
       }
-    },
-    error: function(xhr, status, error) {
-      console.error(xhr.responseText);
-      Swal.fire({
-        icon: 'error',
-        title: 'Something went wrong',
-        text: error
-      });
-    }
-  });
-}
-
-
 
 
 
@@ -607,17 +603,22 @@ form.sign-in-form {
             .then(response => response.json())
             .then(data => {
               if (data.response === 'success') {
-                alert(data.message);
-                window.location.href = '<?= base_url('loginpage') ?>';
+                toastr.success(data.message, 'Success');
+
+                // Redirect setelah beberapa detik (misal: 2 detik)
+                setTimeout(() => {
+                  window.location.href = '<?= base_url('loginpage') ?>';
+                }, 2000);
               } else {
-                alert(data.message || 'Registration failed');
+                toastr.error(data.message || 'Registration failed', 'Error');
               }
             })
             .catch(err => {
               console.error(err);
-              alert('Error: ' + err.message);
+              toastr.error('Error: ' + err.message, 'Request Failed');
             });
-        }
+          }
+
 
         async function fn_login() {
           const email = document.getElementById('email').value;
