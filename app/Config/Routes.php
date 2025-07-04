@@ -79,6 +79,8 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('candidate/detail', 'Admin::fn_detailcandidate');
   $routes->get('dashboard/getApplicationChartData', 'Admin::getApplicationChartData');
   $routes->get('dashboard/getGenderStats', 'Admin::getGenderStats');
+  $routes->get('dashboard/getLevelStats', 'Admin::getLevelStats');
+  $routes->get('dashboard/getCandidateStats', 'Admin::getCandidateStats');
   $routes->post('candidate/deletecandidate', 'Admin::fn_deletecandidate');
   $routes->get('changepw', 'Admin::fn_getchangepw');
   $routes->get('profile', 'Admin::fn_getprofile');

@@ -211,6 +211,28 @@ class Admin extends BaseController
         ]);
     }
 
+    public function getLevelStats()
+    {
+        $days = $this->request->getGet('range') ?? 7;
+        $results = $this->Md_adminpanel->getLevelStats($days);
+        if (empty($results)) {
+            $results = $this->Md_adminpanel->getLevelStats(); 
+        }
+
+        $data = [
+            'labels' => [],
+            'values' => [],
+        ];
+
+        foreach ($results as $row) {
+            $levelLabel = ucfirst(strtolower($row['level']));
+            $data['labels'][] = $levelLabel;
+            $data['values'][] = (int) $row['total'];
+        }
+
+        return $this->response->setJSON($data);
+    }
+
 
     public function getGenderStats()
     {
@@ -233,6 +255,30 @@ class Admin extends BaseController
 
         return $this->response->setJSON($data);
     }
+
+    public function getCandidateStats()
+{
+    $days = $this->request->getGet('range') ?? 7;
+    $results = $this->Md_adminpanel->getCandidateTypeStats($days);
+    if (empty($results)) {
+        $results = $this->Md_adminpanel->getCandidateTypeStats(); 
+    }
+
+    // Siapkan data untuk chart
+    $data = [
+        'labels' => [],
+        'values' => [],
+    ];
+
+    foreach ($results as $row) {
+        $label = isset($row['type']) ? ucfirst(strtolower($row['type'])) : 'Unknown';
+        $data['labels'][] = $label;
+        $data['values'][] = (int) $row['total'];
+    }
+
+    return $this->response->setJSON($data);
+}
+
 
     public function fn_action()
     {

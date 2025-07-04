@@ -275,7 +275,7 @@
 
 
         <footer class="pxp-main-footer mt-100">
-            <div class="pxp-main-footer-top pt-80 pb-40" style="background-color: var(--pxpMainColorLight);">
+            <div class="pxp-main-footer-top pt-60 pb-40" style="background-color: var(--pxpMainColorLight);">
                 <div class="pxp-container">
                     <div class="row">
                         <div class="col-lg-4 col-xl-4 col-xxl-4 mb-4">
@@ -349,8 +349,8 @@
                 <div class="pxp-container">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-lg-auto">
-                            <div class="pxp-footer-copyright pxp-text-light">
-                                © 2025 ANP. All Right Reserved.
+                            <div class="pxp-footer-copyright pxp-text-light text-center">
+                               All Contents Copyright © ANP Timor-Leste – 2025. All rights Reserved.
                             </div>
                         </div>
                     </div>

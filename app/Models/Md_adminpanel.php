@@ -288,6 +288,34 @@ public function getCategories()
       return $builder->get()->getResultArray();
     }
 
+    public function getLevelStats($days = null)
+    {
+        $builder = $this->db->table('tbl_managementjobs')
+            ->select('level, COUNT(*) as total')
+            ->where('isdeleted', 0)
+            ->groupBy('level');
+
+        if ($days !== null) {
+            $builder->where('idt >=', date('Y-m-d', strtotime("-{$days} days")));
+        }
+
+        return $builder->get()->getResultArray();
+    }
+
+    public function getCandidateTypeStats($days = null)
+    {
+        $builder = $this->db->table('tbl_managementjobs')
+            ->select('type, COUNT(*) as total')
+            ->where('isdeleted', 0);
+
+        if ($days !== null) {
+            $builder->where('idt >=', date('Y-m-d', strtotime("-{$days} days")));
+        }
+
+        return $builder->groupBy('type')->get()->getResultArray();
+    }
+
+
 
   public function fn_loadmanagejob($limit = 3, $offset = 0,$type)
   {

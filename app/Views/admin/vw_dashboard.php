@@ -119,75 +119,71 @@
                 </div>
 
                 <div class="row mt-4 mt-lg-5">
-                    <div class="col-xl-6">
-                      <h2>Job Applications Activity</h2>
-                      <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
-                          <div class="row justify-content-between align-content-center mb-4">
-                              <div class="col-auto">
-                                  <span class="pxp-dashboard-chart-value"><?= esc($applicationsCount) ?></span>
-                                  <span class="pxp-dashboard-chart-percent <?= $isGrowthUp ? 'text-success' : 'text-danger' ?>">
-                                    <span class="fa <?= $isGrowthUp ? 'fa-long-arrow-up' : 'fa-long-arrow-down' ?>"></span>
-                                    <?= esc(abs($growthPercent)) ?>%
-                                  </span>
-                                  <span class="pxp-dashboard-chart-vs">vs last <?= esc($selectedDays) ?> days</span>
-                              </div>
-                              <div class="col-auto">
-                                  <form method="get">
-                                      <select class="form-select" name="range" id="rangeSelector">
-                                        <option value="7" <?= $selectedDays == 7 ? 'selected' : '' ?>>Last 7 days</option>
-                                        <option value="30" <?= $selectedDays == 30 ? 'selected' : '' ?>>Last 30 days</option>
-                                        <option value="60" <?= $selectedDays == 60 ? 'selected' : '' ?>>Last 60 days</option>
-                                        <option value="90" <?= $selectedDays == 90 ? 'selected' : '' ?>>Last 90 days</option>
-                                        <option value="365" <?= $selectedDays == 365 ? 'selected' : '' ?>>Last 12 months</option>
-                                      </select>
-                                  </form>
-                              </div>
-                          </div>
-                          <canvas id="applicationChart" height="240px"></canvas>
-                      </div>
-                  </div>
+                  
 
-                   <div class="col-xl-6">
-                    <h2>Gender</h2>
+                   <div class="col-xl-3">
                     <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
                       <div class="row justify-content-between align-content-center mb-4">
                         <div class="col-auto">
                           <span class="pxp-dashboard-chart-vs">Total by gender</span>
                         </div>
                       </div>
-
-
                       <canvas id="genderDonutChart" width= "100%" height="auto"></canvas>
                     </div>
                   </div>
-                </div>
 
-              <div class="mt-4 mt-lg-5">
-                  <h2>Recent Candidates</h2>
-                  <div class="table-responsive">
-                      <table class="table align-middle">
-                          <?php foreach ($candidates as $candidate): ?>
-                          <tr>
-                              <td style="width: 3%;">
-                                  <div class="pxp-company-dashboard-candidate-avatar pxp-cover" style="background-image: url(<?= esc($candidate['avatar'] ?? 'images/ph-small.jpg') ?>);"></div>
-                              </td>
-                              <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-name"><?= esc($candidate['fullname']) ?></div></td>
-                              <td style="width: 25%;"><div class="pxp-company-dashboard-candidate-title"><?= esc($candidate['application']) ?></div></td>
-                              <td><div class="pxp-company-dashboard-candidate-location"><span class="fa fa-globe"></span> <?= esc($candidate['email']) ?></div></td>
-                              <td>
-                                  <div class="pxp-dashboard-table-options">
-                                      <ul class="list-unstyled">
-                                          <li><button title="View profile"><span class="fa fa-eye"></span></button></li>
-                                          <li><button title="Send message"><span class="fa fa-envelope-o"></span></button></li>
-                                          <li><button title="Delete"><span class="fa fa-trash-o"></span></button></li>
-                                      </ul>
-                                  </div>
-                              </td>
-                          </tr>
-                          <?php endforeach; ?>
-                      </table>
+                   <div class="col-xl-3">
+                    <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
+                      <div class="row justify-content-between align-content-center mb-4">
+                        <div class="col-auto">
+                          <span class="pxp-dashboard-chart-vs">Total Career Level</span>
+                        </div>
+                      </div>
+                      <canvas id="totallevel" width= "100%" height="auto"></canvas>
+                    </div>
                   </div>
-              </div>
+
+
+                   <div class="col-xl-3">
+                    <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
+                      <div class="row justify-content-between align-content-center mb-4">
+                        <div class="col-auto">
+                          <span class="pxp-dashboard-chart-vs">Total Candidates</span>
+                        </div>
+                      </div>
+                      <canvas id="totalcandidates" width= "100%" height="auto"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="col-xl-3">
+                    <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
+                      <div class="row justify-content-between align-content-center mb-4">
+                        <div class="col-auto">
+                          <span class="pxp-dashboard-chart-vs">Job Applications Activity</span><br><br>
+                          <span class="pxp-dashboard-chart-value"><?= esc($applicationsCount) ?></span>
+                          <span class="pxp-dashboard-chart-percent <?= $isGrowthUp ? 'text-success' : 'text-danger' ?>">
+                          <span class="fa <?= $isGrowthUp ? 'fa-long-arrow-up' : 'fa-long-arrow-down' ?>"></span>
+                            <?= esc(abs($growthPercent)) ?>%
+                          </span>
+                          <span class="pxp-dashboard-chart-vs">vs last <?= esc($selectedDays) ?> days</span>
+                        </div>
+                        <div class="col-auto">
+                          <form method="get">
+                            <select class="form-select" name="range" id="rangeSelector">
+                              <option value="7" <?= $selectedDays == 7 ? 'selected' : '' ?>>Last 7 days</option>
+                              <option value="30" <?= $selectedDays == 30 ? 'selected' : '' ?>>Last 30 days</option>
+                              <option value="60" <?= $selectedDays == 60 ? 'selected' : '' ?>>Last 60 days</option>
+                              <option value="90" <?= $selectedDays == 90 ? 'selected' : '' ?>>Last 90 days</option>
+                              <option value="365" <?= $selectedDays == 365 ? 'selected' : '' ?>>Last 12 months</option>
+                            </select>
+                          </form>
+                        </div>
+                      </div>
+                      <canvas id="applicationChart" height="240px"></canvas>
+                    </div>
+                  </div>
+
+                </div>
             </div>
 
             <?= view('layoutAdmin/footer.php'); ?>
@@ -200,7 +196,9 @@
 
                 const chartCtx = document.getElementById('applicationChart').getContext('2d');
                 const genderCtx = document.getElementById('genderDonutChart').getContext('2d');
-                let applicationChart, genderChart;
+                const levelCtx = document.getElementById('totallevel').getContext('2d');
+                const candidateCtx = document.getElementById('totalcandidates').getContext('2d');
+                let applicationChart, genderChart, levelChart, candidateChart;
 
                 function loadChartData(range) {
                     fetch(`/admin/dashboard/getApplicationChartData?range=${range}`)
@@ -251,7 +249,75 @@
                                     labels: data.labels,
                                     datasets: [{
                                         data: data.values,
-                                        backgroundColor: ['#9ea855', '#a8bdd4'],
+                                        backgroundColor: ['#6FA8DC', '#C9D96F'],
+                                        borderWidth: 1,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    cutout: '60%',
+                                    // maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { position: 'bottom' }
+                                    }
+                                }
+                            });
+                        });
+                }
+
+                // Level Chart
+                function loadlevelData(range = 30) {
+                    fetch(`/admin/dashboard/getLevelStats?range=${range}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.labels.length || !data.values.length) {
+                                document.getElementById('totallevel').style.display = 'none';
+                                return;
+                            }
+                            document.getElementById('totallevel').style.display = 'block';
+
+                            if (levelChart) levelChart.destroy();
+                            levelChart = new Chart(levelCtx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: data.labels,
+                                    datasets: [{
+                                        data: data.values,
+                                        backgroundColor: ['#93C47D', '#6FA8DC', '#F6B26B'],
+                                        borderWidth: 1,
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    cutout: '60%',
+                                    // maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: { position: 'bottom' }
+                                    }
+                                }
+                            });
+                        });
+                }
+
+                // Chart for Total Candidates
+                function loadcandidateData(range = 30) {
+                    fetch(`/admin/dashboard/getCandidateStats?range=${range}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.labels.length || !data.values.length) {
+                                document.getElementById('totalcandidates').style.display = 'none';
+                                return;
+                            }
+                            document.getElementById('totalcandidates').style.display = 'block';
+
+                            if (candidateChart) candidateChart.destroy();
+                            candidateChart = new Chart(candidateCtx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: data.labels,
+                                    datasets: [{
+                                        data: data.values,
+                                        backgroundColor: ['#93C47D', '#6D9EEB'],
                                         borderWidth: 1,
                                     }]
                                 },
@@ -270,6 +336,8 @@
                 // Inisialisasi awal
                 loadChartData(selectedRange);
                 loadGenderData(selectedRange);
+                loadlevelData(selectedRange);
+                loadcandidateData(selectedRange);
 
                 // Trigger dari satu dropdown
                 const selector = document.getElementById('rangeSelector');
@@ -279,6 +347,8 @@
                         const range = this.value;
                         loadChartData(range);
                         loadGenderData(range);
+                        loadlevelData(range);
+                        loadcandidateData(range);
                     });
                 }
             });
