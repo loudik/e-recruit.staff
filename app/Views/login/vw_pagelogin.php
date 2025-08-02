@@ -441,7 +441,13 @@ form.sign-in-form {
               <i class="fas fa-lock"></i>
               <input type="password" name="pwd" id="pwd" placeholder="Password" />
             </div>
-             <button type="button" class="btn solid" onclick="fn_validationlogin()">Login</button>
+              <button type="button" class="btn solid" onclick="fn_validationlogin()">Login</button>
+              <p class="social-text">Or Sign up with social platforms</p>
+            <div class="social-media">
+              <a href="<?= base_url('auth/google')?>" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+            </div>
           </form>
           <form action="#" class="sign-up-form">
             <h2 class="title">Sign up</h2>
@@ -469,15 +475,6 @@ form.sign-in-form {
               <i class="fas fa-eye toggle-eye" onclick="togglePassword('confirm_password', this)" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;color: #888;z-index: 2;"></i>
             </div>
             <button type="button" class="btn" onclick="fn_signup()">Sign up</button>
-            <p class="social-text">Or Sign up with social platforms</p>
-            <div class="social-media">
-              <a href="#" class="social-icon">
-                <i class="fab fa-google"></i>
-              </a>
-              <a href="/auth/microsoft" class="social-icon">
-                <i class="fab fa-microsoft"></i>
-              </a>
-            </div>
           </form>
         </div>
       </div>

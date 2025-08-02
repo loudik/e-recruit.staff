@@ -124,19 +124,19 @@
             <div class="mb-3">
                 <label for="employee1" class="form-label" style="font-weight: bold;">Employee</label>
                 <select id="employee1" name="employee1" class="form-select">
-                <?php foreach ($users as $u): ?>
-                     <?php 
-                            echo '<!-- ID: '.$u['id'].' | Name: '.$u['displayName'].' | Email: '.$u['userPrincipalName'].' -->';
-                        ?>
-                    <option 
-                        value="<?= $u['id']; ?>" 
-                        data-displayname="<?= esc($u['displayName']) ?>" 
-                        data-email="<?= esc($u['userPrincipalName']) ?>"
-                    >
-                        <?= esc($u['displayName']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
+                    <?php foreach ($users as $u): ?>
+                        <?php 
+                                echo '<!-- ID: '.$u['id'].' | Name: '.$u['displayName'].' | Email: '.$u['userPrincipalName'].' -->';
+                            ?>
+                        <option 
+                            value="<?= $u['id']; ?>" 
+                            data-displayname="<?= esc($u['displayName']) ?>" 
+                            data-email="<?= esc($u['userPrincipalName']) ?>"
+                        >
+                            <?= esc($u['displayName']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
 
             </div>
         </div>           
@@ -156,17 +156,37 @@
                     <div class="dropdown-checkbox-toggle" onclick="toggleDropdown()">Select menu...</div>
                     <div class="dropdown-checkbox-list">
                         <?php foreach ($menus as $menu): ?>
+                            <?php if ($menu['parent_id'] == 0): ?>
+                            <!-- Parent menu -->
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox"
                                     name="menuaccess[]" id="menu_<?= $menu['id'] ?>"
                                     value="<?= $menu['id'] ?>"
                                     <?= in_array($menu['id'], $selectedMenus ?? []) ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="menu_<?= $menu['id'] ?>">
-                                    <?= esc($menu['menuname']) ?>
+                                <label class="form-check-label fw-semibold" for="menu_<?= $menu['id'] ?>">
+                                <?= esc($menu['menuname']) ?>
                                 </label>
                             </div>
+
+                            <!-- Submenu jika ada -->
+                            <?php foreach ($menus as $submenu): ?>
+                                <?php if ($submenu['parent_id'] == $menu['id']): ?>
+                                <div class="form-check" style="margin-left: 1.5rem;">
+                                    <input class="form-check-input" type="checkbox"
+                                        name="menuaccess[]" id="menu_<?= $submenu['id'] ?>"
+                                        value="<?= $submenu['id'] ?>"
+                                        <?= in_array($submenu['id'], $selectedMenus ?? []) ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="menu_<?= $submenu['id'] ?>">
+                                    → <?= esc($submenu['menuname']) ?>
+                                    </label>
+                                </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                            <?php endif; ?>
                         <?php endforeach; ?>
-                    </div>
+                        </div>
+
                 </div>
             </div>
 

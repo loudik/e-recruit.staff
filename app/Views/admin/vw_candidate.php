@@ -2,6 +2,20 @@
 <?= view('layoutAdmin/header.php'); ?>
         <?= view('layoutAdmin/sidebar.php'); ?>
         <?= view('layoutAdmin/navbar.php'); ?>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <style>
+          .dataTables_wrapper .dt-buttons {
+  margin-bottom: 10px;
+}
+
+.table thead th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+        </style>
+
     </div>
   
 
@@ -66,111 +80,179 @@
                               </select>
                               <button class="btn btn-primary ms-2" onclick="fn_applyBulk()">Apply</button>
                           </div>
-
                         </div>
-                        
+           
                       </div>
 
                     <div class="table-responsive">
-                      <table class="table table-hover align-middle" id="tblcandidate">
+                      <table class="table table-hover align-middltable table-striped table-hover table-bordered nowrap w-100" id="tblcandidate">
                         <thead>
                           <tr>
-                            <!-- <th><input type="checkbox" id="checkAll"></th> -->
-                            <th style="width: 25%;">No</th>
-                            <th style="width: 25%;">Name</th>
-                            <th style="width: 40%;">Applied for</th>
-                            <th style="width: 15%;">Status</th>
-                            <th style="width: 15%;">Date</th>
-                            <th style="width: 15%;">Action</th>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Applied</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Review</th>
+                            <th>Write</th>
+                            <th>Interview</th>
+                            <th>Total</th>
+                            <th>Action</th>
                           </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                  </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
                 </div>
             </div>
 
 
-            <!-- Modal Edit -->
+             <!-- Modal Edit -->
             <div class="modal fade" id="editcandidateModal" tabindex="-1" aria-labelledby="editcandidateModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                        <div class="pxp-dashboard-content-details">
-                            <h1>View Candidate</h1>
-                            <p class="pxp-text-light">Detail Data Candidate that Applied</p>
-                            <div class="row mt-4 mt-lg-5">
-                              <div class="col-md-6 col-xxl-6">
-                                  <input type="hidden" id="idapprove" name="idapprove" value="" />
-                                  <label for="jobs" class="form-label">Job title</label>
-                                  <input type="text" id="jobs" name="jobs"class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">Fullnames</label>
-                                <input type="text" id="fullname" name="fullname" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="text" id="email" name="email" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">Graduation Year</label>
-                                <input type="text" id="graduation" name="graduation" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="educationlevel" class="form-label">education Level</label>
-                                <input type="text" id="educationlevel" name="educationlevel" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="languague" class="form-label">Languague Skills</label>
-                                <input type="text" id="language" name="language" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">GPA</label>
-                                <input type="text" id="gpa" name="gpa" class="form-control rounded-pill" disabled>
-                              </div>                        
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="sexo" class="form-label">Sexo</label>
-                                <input type="text" id="sexo" name="sexo" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">Address</label>
-                                <input type="text" id="address" name="address" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-md-6 col-xxl-6">
-                                <label for="pob" class="form-label">Phone</label>
-                                <input type="text" id="phone" name="phone" class="form-control rounded-pill" disabled>
-                              </div>
-                              <div class="col-xxl-12 mt-4 mb-4">
-                                <label class="form-label fw-bold">Personal ID</label>
-                                <iframe id="personalid_preview" width="100%" height="800px"></iframe>
-                              </div>
-                              <div class="col-xxl-12 mt-4 mb-4">
-                                <label class="form-label fw-bold">Curriculum Vitae (CV)</label>
-                                <iframe id="cv_preview" width="100%" height="800px"></iframe>
-                              </div>
-                              <div class="col-xxl-6">
-                                <label class="form-label fw-bold">Diploma</label>
-                                <iframe id="diploma_preview" width="100%" height="800px"></iframe>
-                              </div>
-                              <div class="col-xxl-6">
-                                <label class="form-label fw-bold">Transcript</label>
-                                <iframe id="transcript_preview" width="100%" height="800px"></iframe>
-                              </div>
-                              <div class="col-xxl-6">
-                                <label class="form-label fw-bold">Cover Letter</label>
-                                <iframe id="coverletter_preview" width="100%" height="800px"></iframe>
-                              </div>
-                            </div>
-                            <div class="mt-4 mt-lg-5 text-center">
-                              <button class="btn rounded-pill pxp-section-cta" onclick="fn_approve()">Approve</button>
-                              <button class="btn rounded-pill pxp-section-cta bg-danger " onclick="fn_reject()">Reject</button>
-                            </div>
-                          </div>
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="pxp-dashboard-content-details">
+
+                   <!-- Step 0: General Info -->
+                    <div id="step-doc-0">
+                      <h3>View Candidate</h3>
+                      <p class="text-muted">Detail Data Candidate that Applied</p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input type="hidden" id="idapprove" name="idapprove" value="" />
+                          <label for="jobs" class="form-label">Job title</label>
+                          <input type="text" id="jobs" name="jobs" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="fullname" class="form-label">Fullnames</label>
+                          <input type="text" id="fullname" name="fullname" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="email" class="form-label">Email</label>
+                          <input type="text" id="email" name="email" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="graduation" class="form-label">Graduation Year</label>
+                          <input type="text" id="graduation" name="graduation" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="educationlevel" class="form-label">Education Level</label>
+                          <input type="text" id="educationlevel" name="educationlevel" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="language" class="form-label">Language Skills</label>
+                          <input type="text" id="language" name="language" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="sexo" class="form-label">Sexo</label>
+                          <input type="text" id="sexo" name="sexo" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="address" class="form-label">Address</label>
+                          <input type="text" id="address" name="address" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label for="phone" class="form-label">Phone</label>
+                          <input type="text" id="phone" name="phone" class="form-control rounded-pill" disabled>
                         </div>
                       </div>
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(1)">Next</button>
+                      </div>
                     </div>
+
+                    <!-- Step 1: GPA -->
+                    <div id="step-doc-1" class="d-none">
+                      <h3>Step 1: GPA</h3>
+                      <p class="text-muted">Please check GPA and assign score</p>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label for="gpa" class="form-label">GPA</label>
+                          <input type="text" id="gpa" name="gpa" class="form-control rounded-pill" disabled>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label">Point</label>
+                          <input type="number" id="point_gpa" name="point_gpa" class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                        </div>
+                      </div>
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocStep(0)">Back</button>
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(2)">Next</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 2: Personal ID -->
+                    <div id="step-doc-2" class="d-none">
+                      <h3>Step 2: Personal ID</h3>
+                      <iframe id="personalid_preview" width="100%" height="800px"></iframe>
+                      <label class="form-label mt-2">Point</label>
+                      <input type="number" id="point_personalid" name="point_personalid" class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocStep(1)">Back</button>
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(3)">Next</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 3: Curriculum Vitae -->
+                    <div id="step-doc-3" class="d-none">
+                      <h3>Step 3: Curriculum Vitae (CV)</h3>
+                      <iframe id="cv_preview" width="100%" height="800px"></iframe>
+                      <label class="form-label mt-2">Point</label>
+                      <input type="number" id="point_cv" name="point_cv" class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocStep(2)">Back</button>
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(4)">Next</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 4: Diploma -->
+                    <div id="step-doc-4" class="d-none">
+                      <h3>Step 4: Diploma</h3>
+                      <iframe id="diploma_preview" width="100%" height="800px"></iframe>
+                      <label class="form-label mt-2">Point</label>
+                      <input type="number" id="point_diploma" name="point_diploma" class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocStep(3)">Back</button>
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(5)">Next</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 5: Transcript -->
+                    <div id="step-doc-5" class="d-none">
+                      <h3>Step 5: Transcript</h3>
+                      <iframe id="transcript_preview" width="100%" height="800px"></iframe>
+                      <label class="form-label mt-2">Point</label>
+                      <input type="number" id="point_transcript" name="point_transcript" class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                      <div class="mt-4 text-end">
+                        <button class="btn btn-sm btn-secondary" onclick="showDocStep(4)">Back</button>
+                        <button class="btn btn-sm btn-primary" onclick="showDocStep(6)">Next</button>
+                      </div>
+                    </div>
+
+                    <!-- Step 6: Cover Letter -->
+                    <div id="step-doc-6" class="d-none">
+                      <h3>Step 6: Cover Letter</h3>
+                      <iframe id="coverletter_preview" width="100%" height="800px"></iframe>
+                      <div class="mt-3">
+                        <label class="form-label">Point</label>
+                        <input type="number" id="point_coverletter" name="point_coverletter"
+                          class="form-control" style="width: 100px;" min="0" max="12" value="0" oninput="updateTotalPoint()">
+                        <div class="fw-bold mt-4">
+                          Total Point: <span id="totalPoint">0</span>
+                        </div>
+                      </div>
+                      <div class="mt-4 text-center">
+                        <button class="btn btn-success" onclick="fn_approve()">Approve</button>
+                        <button class="btn btn-danger" onclick="fn_reject()">Reject</button>
+                      </div>
+                    </div>
+
+
                   </div>
+                </div>
+              </div>
+            </div>
 
 
 
@@ -217,7 +299,7 @@
                               </div>
 
                               <div class="col-md-6 col-xxl-6">
-                                  <input type="hidden" id="detailidapprove" name="idapprove" value="" />
+                                  <input type="hidden" id="detailidapprove" name="detailidapprove" value="" />
                                   <label for="jobs" class="form-label">Job title</label>
                                   <input type="text" id="detailjobs" name="jobs"class="form-control rounded-pill" disabled>
                               </div>
@@ -306,6 +388,79 @@
             <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
             <script type="text/javascript"> 
 
+             let currentDocStep = 0;
+             const totalSteps = 6;
+
+              function showDocStep(step) {
+                for (let i = 0; i <= totalSteps; i++) {
+                  const section = document.getElementById(`step-doc-${i}`);
+                  if (section) {
+                    section.classList.add('d-none');
+                  }
+                }
+                const activeStep = document.getElementById(`step-doc-${step}`);
+                if (activeStep) {
+                  activeStep.classList.remove('d-none');
+                  currentDocStep = step;
+                }
+              }
+
+              function updateTotalPoint(){
+                const total =
+                  getPoint('point_gpa') +
+                  getPoint('point_personalid') +
+                  getPoint('point_cv') +
+                  getPoint('point_diploma') +
+                  getPoint('point_transcript') +
+                  getPoint('point_coverletter');
+                document.getElementById('totalPoint').innerText = total;
+              }
+
+              function getPoint(id) {
+                const input = document.getElementById(id);
+                const val = parseInt(input?.value);
+                return isNaN(val) ? 0 : val;
+              }
+
+              function autoEvaluateGPA() {
+                const gpaVal = parseFloat(document.getElementById("gpa").value);
+                const gpaPoint = document.getElementById("point_gpa");
+                if (!isNaN(gpaVal)) {
+                  if (gpaVal >= 3.0) gpaPoint.value = 12;
+                  else if (gpaVal >= 2.5) gpaPoint.value = 10;
+                  else gpaPoint.value = 5;
+                }
+              }
+
+              function checkIfExistsAndSetPoint(frameId, pointInputId) {
+                const frame = document.getElementById(frameId);
+                const pointInput = document.getElementById(pointInputId);
+                if (frame && frame.src && frame.src !== '' && !frame.src.endsWith('/')) {
+                  pointInput.value = 12;
+                }
+              }
+
+              document.addEventListener("DOMContentLoaded", function () {
+                autoEvaluateGPA();
+                checkIfExistsAndSetPoint("personalid_preview", "point_personalid");
+                checkIfExistsAndSetPoint("diploma_preview", "point_diploma");
+                checkIfExistsAndSetPoint("transcript_preview", "point_transcript");
+                updateTotalPoint();
+                [
+                  'point_gpa',
+                  'point_personalid',
+                  'point_cv',
+                  'point_diploma',
+                  'point_transcript',
+                  'point_coverletter'
+                ].forEach(id => {
+                  const el = document.getElementById(id);
+                  if (el) {
+                    el.addEventListener('input', updateTotalPoint);
+                  }
+                });
+              });
+
 
               $(document).ready(function(){
                 fn_getcandidate();
@@ -324,85 +479,96 @@
                       }
                       // Inisialisasi ulang DataTable
                       let table = $('#tblcandidate').DataTable({
-                        dom: 'Bfrtip',
+                        dom: '<"d-flex justify-content-between align-items-center mb-3"Bf>rt<"d-flex justify-content-between align-items-center mt-2"lip>',
                         responsive: true,
-                        searching: true,
-                        paging: true,
-                      
+                        scrollX: true,
+                        buttons: [
+                          { extend: 'excelHtml5', className: 'btn btn-success btn-sm me-1' },
+                          { extend: 'csvHtml5', className: 'btn btn-primary btn-sm me-1' },
+                          { extend: 'pdfHtml5', className: 'btn btn-danger btn-sm' }
+                        ],
                         data: data.data,
                         columnDefs: [{ defaultContent: "-", targets: "_all" }],
                         columns: [
-                          //  {
-                          //   data: 'id',
-                          //   render: function (data, type, row) {
-                          //     return `<input type="checkbox" class="row-check" value="${data}">`;
-                          //   },
-                          //   orderable: false
-                          // },
                           {
-                                data: null,
-                                render: function (data, type, row, meta) {
-                                    return meta.row + 1;
-                                },
-                                title: 'No', 
-                                orderable: false
+                            data: null,
+                            className: 'text-center',
+                            render: (data, type, row, meta) => meta.row + 1,
+                            title: 'No',
+                            orderable: false
                           },
-                          { data: 'fullname' },
-                          { data: 'application' },
+                          { data: 'fullname'
+                          },
+                          { data: 'application'},
                           {
                             data: 'isstatus',
+                            className: 'text-center',
                             render: function (data) {
-                              if (data === '1') {
-                                return '<span class="badge rounded-pill bg-primary">Confirm</span>';
-                              } else if (data === '2') {
-                                return '<span class="badge rounded-pill bg-success">Approve</span>';
-                              } else if (data === '3') {
-                                return '<span class="badge rounded-pill bg-danger">Reject</span>';
-                              } else {
-                                return '<span class="badge badge-secondary">N/A</span>';
-                              }
-                            }
+                              if (data === '1') return '<span class="badge bg-primary">Confirm</span>';
+                              if (data === '2') return '<span class="badge bg-success">Approve</span>';
+                              if (data === '3') return '<span class="badge bg-danger">Reject</span>';
+                              return '<span class="badge bg-secondary">N/A</span>';
+                            },
+                            // title: 'Status'
                           },
                           {
                             data: 'idt',
-                            render: function(data) {
-
+                            className: 'text-center',
+                            render: function (data) {
                               const date = new Date(data);
-                              const year = date.getFullYear();
-                              const month = ('0' + (date.getMonth() + 1)).slice(-2);
-                              const day = ('0' + date.getDate()).slice(-2);
-                              return `${year}${month}${day}`;
+                              return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
+                            },
+                            // title: 'Date'
+                          },
+                          {
+                            data: 'reviewpoint',
+                            className: 'text-center',
+                            // title: 'Review',
+                            render: function (data) {
+                              return data ? data : '0';
                             }
                           },
                           {
+                            data: 'writepoint',
+                            className: 'text-center',
+                            // title: 'Write',
+                            render: function (data) {
+                              return data ? data : '0';
+                            }
+                          },
+                          {
+                            data: 'interviewpoint',
+                            className: 'text-center',
+                            // title: 'Interview',
+                            render: function (data) {
+                              return data ? data : '0';
+                            }
+                          },
+                          {
+                            data: 'totalpoint',
+                            className: 'text-center',
+                            // title: 'Total',
+                            render: function (data) {
+                              return data ? data : '0';
+                            }
+                          },
+                          {
+                            className: 'text-center',
+                            title: 'Action',
                             render: function (data, type, row) {
-                              if (row.isstatus === '2' || row.isstatus === '3') {
-                                return `
-                                  <div style="display: flex; justify-content: center; white-space: nowrap;">
-                                    <button title="Details" class="btn btn-sm btn-info" onclick="fn_detail(${row.id})">
-                                      <span class="fa fa-info-circle"></span>
-                                    </button>
-                                  </div>
+                              const viewBtn = `<button class="btn btn-sm btn-primary me-1" title="View" onclick="fn_view(${row.id})"><i class="fa fa-eye"></i></button>`;
+                              const delBtn = `<button class="btn btn-sm btn-danger" title="Delete" onclick="fn_deletecandidate(${row.id})"><i class="fa fa-trash"></i></button>`;
+                              const detailBtn = `<button class="btn btn-sm btn-info" title="Details" onclick="fn_detail(${row.id})"><i class="fa fa-info-circle"></i></button>`;
 
-                                `;
-                              }
-
-                              return `
-                                <div style="white-space: nowrap;">
-                                  <button title="Edit" class="btn btn-sm btn-primary" onclick="fn_view(${row.id})">
-                                    <span class="fa fa-eye"></span>
-                                  </button>
-                                  <button title="Delete" class="btn btn-sm btn-danger" onclick="fn_deletecandidate(${row.id})">
-                                    <span class="fa fa-trash-o"></span>
-                                  </button>
-                                </div>
-                              `;
+                              return row.isstatus === '2' || row.isstatus === '3'
+                                ? detailBtn
+                                : viewBtn + delBtn;
                             }
                           }
-
-
                         ]
                       });
+
+                      
                       $('#searchInput').off('keyup').on('keyup', function () {
                         table.column(0).search(this.value).draw();
                       });
@@ -410,16 +576,25 @@
                       $('#tblcandidate_filter input')
                         .addClass('form-control-sm')     
                         .css('width', '180px');       
-                        
-                      $('#checkAll').on('change', function () {
-                        $('.row-check').prop('checked', this.checked);
-                        $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
-                      });
 
-                      $('#bulkApplyBtn').prop('disabled', true); // awalnya nonaktif
-                      $(document).on('change', '.row-check', function () {
-                        $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
-                      });
+                        $('#tblcandidate_paginate .paginate_button')
+                          .addClass('btn btn-sm');
+
+                        $('#tblcandidate_info')
+                          .addClass('small');
+
+                        $('#tblcandidate_paginate')
+                          .addClass('d-flex gap-1');
+                        
+                        $('#checkAll').on('change', function () {
+                          $('.row-check').prop('checked', this.checked);
+                          $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
+                        });
+
+                        $('#bulkApplyBtn').prop('disabled', true); // awalnya nonaktif
+                        $(document).on('change', '.row-check', function () {
+                          $('#bulkApplyBtn').prop('disabled', $('.row-check:checked').length === 0);
+                        });
                        
                     } else {
                       alert('No data found');
@@ -432,10 +607,8 @@
               }
 
               function fn_view(id) {
-                console.log("ID to view:", id);
                 $('#editcandidateModal').modal('show');
                 var basePath = "<?= base_url('admin/file/viewbyfilename/') ?>";
-                 
                 
                 $.ajax({
                   url: "<?= base_url('admin/candidate/view') ?>",
@@ -444,7 +617,6 @@
                   dataType: "json",
                   success: function (data) {
                     console.log("Response data:", data);
-                  
                     if (data.response === 'success') {
                      
                       $('#cv_preview').attr('src', basePath + data.data.cv);
@@ -452,7 +624,6 @@
                       $('#transcript_preview').attr('src', basePath + data.data.transcript);
                       $('#coverletter_preview').attr('src', basePath + data.data.coverletter);
                       $('#personalid_preview').attr('src', basePath + data.data.personalid);
-
 
                       $('#idapprove').val(data.data.id); 
                       $('#jobs').val(data.data.application);
@@ -480,19 +651,20 @@
 
               function fn_approve() {
                 const id = $('#idapprove').val();
-                console.log("ID to approve:", id);
+                console.log("Value of #idapprove:", id); 
+                const totalPoint = $('#totalPoint').text();
+                
                 if (!id) {
                   alert('No ID found for approval.');
                   return;
                 }
                 if (confirm("Are you sure you want to approve this candidate?")) {
-                  fn_approveCandidate(id);
+                  fn_approveCandidate(id, totalPoint);
                 }
 
               }
 
-              function fn_approveCandidate(id) {
-                console.log("ID to approve:", id);
+              function fn_approveCandidate(id,totalPoint) {
                 if (!id) {
                   alert('No ID found for approval.');
                   return;
@@ -501,7 +673,10 @@
                 $.ajax({
                   url: "<?= base_url('admin/candidate/approve') ?>",
                   type: "POST",
-                  data: { id: id},
+                  data: { 
+                    id: id,
+                    total_point: totalPoint 
+                  },
                   dataType: "json",
                   success: function (data) {
                     

@@ -22,8 +22,8 @@
                             <nav class="pxp-nav-mobile">
                                 <ul class="navbar-nav justify-content-end flex-grow-1">
                                     <li class="pxp-dropdown-header">Admin tools</li>
-                                   <?= session()->get('treemenu') ?? '' ?>
-                                    
+                                    <?= session()->get('treemenu') ?? '' ?>
+                                   
                                 </ul>
                             </nav>
                         </div>
@@ -67,21 +67,21 @@
                             <div class="pxp-company-dashboard-jobs-search mb-3">
                                 <div class="pxp-company-dashboard-jobs-search-search-form">
                                     <div class="input-group">
-                                        <span class="input-group-text"><span class="fa fa-search"></span></span>
-                                        <input type="text" class="form-control" id="searchInput" placeholder="Search jobs...">
+                                        <!-- <span class="input-group-text"><span class="fa fa-search"></span></span> -->
+                                        <!-- <input type="text" class="form-control" id="searchInput" placeholder="Search jobs..."> -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle" id="tblmanagejobs">
+                        <table class="table table-hover align-middltable table-striped table-hover table-bordered nowrap w-100" id="tblmanagejobs">
                             <thead>
                                 <tr>
                                     <th style="width: 10%;">No</th>
                                     <th style="width: 35%;">Job</th>
                                     <th style="width: 30%;">Group</th>
-                                    <th style="width: 30%;">Category</th>
+                                    <!-- <th style="width: 30%;">Category</th> -->
                                     <th style="width: 12%;">Type</th>
                                     <th style="width: 15%;">Applications</th>
                                     <th style="width: 15%;">Status</th>
@@ -265,11 +265,16 @@
                                 $('#tblmanagejobs').DataTable().clear().destroy();
                             }
                         let table = $('#tblmanagejobs').DataTable({
-                        dom: 'Bfrtip',
+                        dom: '<"d-flex justify-content-between align-items-center mb-3"Bf>rt<"d-flex justify-content-between align-items-center mt-2"lip>',
                         responsive: true,
-                        searching: false,
-                        paging: true,
-                      
+                        searching: true,
+                        // scrollX: true,
+                        
+                        buttons: [
+                          { extend: 'excelHtml5', className: 'btn btn-success btn-sm me-1' },
+                          { extend: 'csvHtml5', className: 'btn btn-primary btn-sm me-1' },
+                          { extend: 'pdfHtml5', className: 'btn btn-danger btn-sm' }
+                        ],                 
                         data: data.data,
                         columnDefs: [{ defaultContent: "-", targets: "_all" }],
                         columns: [
@@ -283,7 +288,7 @@
                             },
                             { data: 'jobs' },
                             { data: 'groupname' },
-                            { data: 'category' },
+                            // { data: 'category' },
                             { data: 'type' },
                             { data: 'applicants' },
                             {
@@ -323,6 +328,19 @@
                         ]
 
                       });
+
+                      $('#tblmanagejobs').addClass('table table-sm table-striped table-bordered align-middle w-100');
+                      
+
+                      $('#tblmanagejobs_filter input')
+                        .addClass('form-control-sm')     
+                        .css('width', '180px');  
+                        
+                        $('#tblmanagejobs_info')
+                          .addClass('small');
+
+                        $('#tblmanagejobs_paginate')
+                          .addClass('d-flex gap-1');
                       
                     } else {
                       alert('No data found');

@@ -20,9 +20,7 @@ class Report extends BaseController
     {
         $start = $this->request->getGet('start');
         $end = $this->request->getGet('end');
-
         $data = $this->Md_report->fn_getreport($start, $end);
-
         return $this->response->setJSON([
             'response' => 'success',
             'data'     => $data

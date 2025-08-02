@@ -343,6 +343,8 @@
 
                       $('#tblcandidate').DataTable({
                           dom: 'Bfrtip',
+                          // responsive: true,
+                          scrollX: true,
                           data: data.data,
                           buttons: [
                               {

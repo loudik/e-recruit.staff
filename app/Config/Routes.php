@@ -13,8 +13,12 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/Oauth', 'Oauth::index');
 $routes->get('logout', 'Oauth::logout');
 $routes->get('logoutstaff', 'Home::logout');
-
 $routes->get('/home', 'Home::index');
+
+// Login Google
+$routes->get('auth/google', 'Authgoogle::fn_getgoogle');
+$routes->get('auth/google/callback', 'Authgoogle::fn_submitusergoogle');
+
 
 // $routes->group('home', ['filter' => 'homeaccess'], function ($routes) {
 //   $routes->get('getformregistration', 'Formapply::fn_getdataregistration');
@@ -41,14 +45,6 @@ $routes->post('loginpage/register', 'Home::fn_register');
 $routes->post('loginpage/validationlogin', 'Home::fn_validationlogin');
 
 
-
-
-
-
-
-
-
-
 // Login
 
 $routes->group('', ['filter' => 'afterlogin'], function ($routes) {
@@ -56,14 +52,7 @@ $routes->get('/login', 'Login::fn_getlogin');
 $routes->get('auth/callback', 'Oauth::callback');
 $routes->get('auth/login', 'Oauth::login');
 $routes->post('auth/login', 'Oauth::fn_loginform');
-
-
 });
-
-
-
-
-
 
 
 $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {

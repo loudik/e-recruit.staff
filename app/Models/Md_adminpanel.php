@@ -22,6 +22,9 @@ class Md_adminpanel extends Model
 }
 
 
+
+
+
   public function fn_getcategory()
   {
     $query = $this->db->query("SELECT * FROM tbl_unit where isdeleted = 0  order by unitname asc");
@@ -53,6 +56,12 @@ class Md_adminpanel extends Model
     public function getUserByUsername($username)
     {
         $query = $this->db->query("SELECT * FROM tbl_staffapply WHERE username = ? AND isdeleted = 0", [$username]);
+        return $query->getRowArray();
+    }
+
+    public function getUserByEmailStaff($email)
+    {
+        $query = $this->db->query("SELECT * FROM tbl_stafflogin WHERE email = ? AND isdeleted = 0", [$email]);
         return $query->getRowArray();
     }
 
@@ -502,11 +511,12 @@ public function getCategories()
       return null; 
   }
 
-public function fn_approvecandidate($id)
+public function fn_approvecandidate($id,$totalPoint)
 {
     $data = [
       'isstatus' => 2,
       'reason' => 'Candidate approved after successful review of qualifications and documentation',
+      'reviewpoint' => $totalPoint, 
       'uby' => '30580',
       'udt' => date('Y-m-d H:i:s')
     ];

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Md_login;
+use Google\Client as GoogleClient;
 
 class Login extends BaseController
 {
@@ -14,6 +15,21 @@ class Login extends BaseController
       $title = 'Page Login';
       return view('login/vw_login', ['title' => $title]);
     }
+
+    public function fn_getgoogle()
+    {
+        $config = config('GoogleOAuth');
+
+        $client = new GoogleClient();
+        $client->setClientId($config->clientId);
+        $client->setClientSecret($config->clientSecret);
+        $client->setRedirectUri($config->redirectUri);
+        $client->setScopes($config->scopes);
+
+        return redirect()->to($client->createAuthUrl());
+    }
+
+    
 
 
 

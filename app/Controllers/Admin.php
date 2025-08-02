@@ -23,7 +23,7 @@ class Admin extends BaseController
     public function fn_getadministrator($microsoftId = null)
     {
         
-         $microsoftId = session()->get('microsoft_id');
+        $microsoftId = session()->get('microsoft_id');
         $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
         if (!$access) {
             echo "Data tidak ditemukan untuk Microsoft ID: $microsoftId"; exit;
@@ -429,7 +429,8 @@ class Admin extends BaseController
     public function fn_approvecandidate()
     {
         $id = $this->request->getPost('id');
-        $result = $this->Md_adminpanel->fn_approvecandidate($id);
+        $totalPoint = $this->request->getPost('total_point'); 
+        $result = $this->Md_adminpanel->fn_approvecandidate($id, $totalPoint);
 
         if ($result) {
             return $this->response->setJSON([

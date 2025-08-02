@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\Md_adminpanel;
+use Google\Client as GoogleClient;
 // use App\Models\Md_home;
 
 class Home extends BaseController
@@ -143,19 +144,27 @@ class Home extends BaseController
             ];
 
             $loginId = $this->Md_adminpanel->registerUser($userLogin);
+            if($loginId){
+                $loginIdEmailStaff = $this->Md_adminpanel->getUserByEmailStaff($email);
+                $userApply = [
+                    'login_id'         => $loginIdEmailStaff["id"],
+                    'fullname'         => $fullname,
+                    'username'         => $username,
+                    'email'            => $email,
+                    'password'         => $hashedPassword
+                ];
+    
+                $registerStaffApply = $this->Md_adminpanel->registerApply($userApply);
 
-            // Simpan ke tbl_staffapply
-            $userApply = [
-                'login_id'         => $loginId,
-                'fullname'         => $fullname,
-                'username'         => $username,
-                'email'            => $email,
-                'password'         => $hashedPassword
-            ];
+                if (!$registerStaffApply) {
+                    return $this->response->setJSON(['response' => 'error', 'message' => 'Failed to register user details.']);
+                }
+    
+                return $this->response->setJSON(['response' => 'success', 'message' => 'Registration successful. Please log in.']);
+            }else{
+                return $this->response->setJSON(['response' => 'error', 'message' => 'Registration failed. Please try again later.']);
+            }
 
-            $this->Md_adminpanel->registerApply($userApply);
-
-            return $this->response->setJSON(['response' => 'success', 'message' => 'Registration successful. Please log in.']);
         }
 
 
@@ -175,6 +184,12 @@ class Home extends BaseController
         $user = $this->Md_adminpanel->getLoginByIdentity($email);
 
 
+        if(!$user['password']){
+            return $this->response->setJSON([
+                'response' => 'error',
+                'message'  => 'Your user record login with Gmail, please login with Google.'
+            ]);
+        }
 
         if (!$user  || $user['isstatus'] != 1) {
             return $this->response->setJSON([

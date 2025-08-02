@@ -121,18 +121,18 @@
                 <div class="row mt-4 mt-lg-5">
                   
 
-                   <div class="col-xl-3">
+                   <div class="col-12 col-sm-6 col-lg-4 col-xl-6 mb-4">
                     <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
                       <div class="row justify-content-between align-content-center mb-4">
                         <div class="col-auto">
-                          <span class="pxp-dashboard-chart-vs">Total by gender</span>
+                          <span class="pxp-dashboard-chart-vs">Total gender</span>
                         </div>
                       </div>
                       <canvas id="genderDonutChart" width= "100%" height="auto"></canvas>
                     </div>
                   </div>
 
-                   <div class="col-xl-3">
+                   <div class="col-12 col-sm-6 col-lg-4 col-xl-6 mb-4">
                     <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
                       <div class="row justify-content-between align-content-center mb-4">
                         <div class="col-auto">
@@ -144,7 +144,7 @@
                   </div>
 
 
-                   <div class="col-xl-3">
+                   <div class="col-12 col-sm-6 col-lg-4 col-xl-6 mb-4">
                     <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
                       <div class="row justify-content-between align-content-center mb-4">
                         <div class="col-auto">
@@ -155,7 +155,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xl-3">
+                  <div class="col-12 col-sm-6 col-lg-4 col-xl-6 mb-4">
                     <div class="mt-3 mt-lg-4 pxp-dashboard-chart-container">
                       <div class="row justify-content-between align-content-center mb-4">
                         <div class="col-auto">
@@ -179,10 +179,9 @@
                           </form>
                         </div>
                       </div>
-                      <canvas id="applicationChart" height="240px"></canvas>
+                      <canvas id="applicationChart" width= "100%" height="60px"></canvas>
                     </div>
                   </div>
-
                 </div>
             </div>
 

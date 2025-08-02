@@ -9,6 +9,17 @@
     <script src="<?= base_url('assets/js/nav.js'); ?>"></script>
     <script src="<?= base_url('assets/js/Chart.min.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+
+    <script>
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        if (submenu) {
+            submenu.classList.toggle('d-none');
+        }
+    }
+</script>
+
+
     
 </body>
 </html>

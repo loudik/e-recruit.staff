@@ -73,9 +73,7 @@ class Oauth extends Controller
             // ✅ Simpan token ke session
             session()->set('microsoft_token', $accessToken);
             session()->set('microsoft_refresh_token', $refreshToken);
-
-
-
+            
             $client        = \Config\Services::curlrequest();
             $defaultAvatar = base_url('assets/images/customer-4.png');
 
@@ -104,8 +102,6 @@ class Oauth extends Controller
             
 
             $menuData = $this->loadSidebarMenus($userGraph['id']);
-
-
             session()->set([
                 'phone'         => $userGraph['businessPhones'],
                 'name'          => $userGraph['displayName'],
@@ -187,7 +183,10 @@ class Oauth extends Controller
         }
 
         $Md_administrator = model('App\Models\Md_administrator');
-        return $Md_administrator->getMenusByRole($microsoft_id);
+        $menuData = $Md_administrator->getMenusByRole($microsoft_id);
+        session()->set('treemenu', $menuData['treemenu']);
+        session()->set('menu_routes', $menuData['routes']);
+        return $menuData;
     }
 
    
@@ -230,6 +229,8 @@ class Oauth extends Controller
 
         return redirect()->to($authUrl);
     }
+
+    
 
 
     public function logout()
