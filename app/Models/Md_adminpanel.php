@@ -326,15 +326,15 @@ public function getCategories()
 
 
 
-  public function fn_loadmanagejob($limit = 3, $offset = 0,$type)
-  {
-    $query = $this->db->query(
-        "SELECT * FROM tbl_managementjobs WHERE type = '$type' AND  isdeleted = 0 AND status=0 ORDER BY id DESC LIMIT ? OFFSET ?",
-        [$limit, $offset]
-    );
+  public function fn_loadmanagejob($type, $limit = 3, $offset = 0)
+    {
+        $query = $this->db->query(
+            "SELECT * FROM tbl_managementjobs WHERE type = ? AND isdeleted = 0 AND status = 0 ORDER BY id DESC LIMIT ? OFFSET ?",
+            [$type, $limit, $offset]
+        );
+        return $query->getResultArray(); 
+    }
 
-    return $query->getResultArray(); 
-  }
 
     public function getSortedJobs($sort = '0', $limit = 3, $offset = 0)
     {
