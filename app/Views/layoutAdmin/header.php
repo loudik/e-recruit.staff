@@ -18,58 +18,57 @@
 
         <title>Pannel Access</title>
 
-        <style>
-        ul.list-unstyled {
-            padding-left: 0;
-        }
+       <style>
+    ul.list-unstyled {
+        padding-left: 0;
+    }
 
-        ul.list-unstyled li {
-            margin-bottom: 6px;
-        }
+    ul.list-unstyled li {
+        margin-bottom: 6px;
+    }
 
-        ul.list-unstyled li a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #111;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: background-color 0.2s ease;
-        }
+    ul.list-unstyled li a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #111;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 6px;
+        transition: background-color 0.2s ease;
+    }
 
-        ul.list-unstyled li a:hover {
-            background-color: #f0f0f0;
-            color: #007bff;
-        }
+    ul.list-unstyled li a:hover {
+        background-color: #f0f0f0;
+        color: #007bff;
+    }
 
-        ul.list-unstyled li a span.fa {
-            min-width: 20px;
-            text-align: center;
-        }
+    ul.list-unstyled li a span.fa {
+        min-width: 20px;
+        text-align: center;
+    }
 
-        /* Submenu hidden default */
-        ul.list-unstyled .submenu {
-            padding-left: 20px;
-            border-left: 1px dotted #ccc;
-            margin-top: 6px;
-        }
+    /* Submenu styling */
+    ul.list-unstyled .submenu {
+        padding-left: 20px;
+        border-left: 1px dotted #ccc;
+        margin-top: 6px;
+    }
 
-        ul.list-unstyled .submenu li a {
-            font-size: 0.95rem;
-            color: #555;
-            padding: 6px 12px;
-            margin-bottom: 4px;
-        }
+    ul.list-unstyled .submenu li a {
+        font-size: 0.95rem;
+        color: #555;
+        padding: 6px 12px;
+        margin-bottom: 4px;
+    }
 
-        /* Hide by default */
-        .d-none {
-            display: none;
-        }
+    /* Hide by default */
+    .d-none {
+        display: none;
+    }
 
-        
-    /* Tambahan styling agar submenu terlihat lebih dalam */
+    /* Submenu indent */
     ul ul {
         margin-left: 20px;
         padding-left: 10px;
@@ -80,17 +79,44 @@
         margin-bottom: 5px;
     }
 
-    a.menu-toggle {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
     .submenu {
         margin-left: 20px;
     }
-    </style>
+
+    .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ini yang meratakan kiri-kanan */
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    gap: 10px;
+    text-decoration: none;
+    color: #111;
+    transition: background-color 0.2s ease;
+    }
+
+    .menu-toggle:hover {
+        background-color: #f0f0f0;
+        color: #007bff;
+    }
+
+    .menu-toggle .menu-label {
+        flex-grow: 1; /* Dorong toggle-icon ke kanan */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .toggle-icon {
+        font-size: 0.9rem;
+        margin-left: auto; 
+    }
+
+    
+
+</style>
+
 
 
     </head>

@@ -45,20 +45,6 @@ class Home extends BaseController
         // Hitung jumlah internship
         // $this->data['jobTypes'] = $this->Md_adminpanel->getJobTypeCount();
         $jobTypes = $this->Md_adminpanel->getJobTypeCount();
-        // $internshipCount = 0;
-        // $staffCount = 0;
-
-
-
-        // foreach ($jobTypes as $job) {
-        //     if (strtolower($job['type']) === 'internships') {
-        //         $internshipCount = $job['count'];
-        //         // break;
-        //     }if(strtolower($job['type']) === 'Staff') {
-        //         $staffCount = $job['count'];
-        //         // break;
-        //     }
-        // }
 
         $key= "";
         $count= "";
@@ -239,7 +225,7 @@ class Home extends BaseController
         $perPage = 3;
         $offset = ($page - 1) * $perPage;
 
-        $jobs = $this->Md_adminpanel->fn_loadmanagejob($perPage, $offset,$type);
+        $jobs = $this->Md_adminpanel->fn_loadmanagejob($type,$perPage, $offset);
         $total = $this->Md_adminpanel->fn_countmanagejob();
 
         return $this->response->setJSON([

@@ -133,7 +133,7 @@ class Md_administrator extends Model
 
         if (empty($menuIds)) {
             return [
-                'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span> Dashboard</a></li>',
+                'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span>Dashboard</a></li>',
                 'routes'   => ['admin/dashboard'],
             ];
         }
@@ -302,11 +302,21 @@ class Md_administrator extends Model
             $html .= '<li>';
 
             if ($hasChildren) {
-                // Tambahkan class untuk toggle
-                $html .= '<a href="#" class="menu-toggle"><span class="' . $icon . '"></span> ' . $name . '</a>';
-                $html .= $this->renderMenuTree($menu['children'], $baseUrl);
+                $html .= '
+                    <a href="#" class="menu-toggle">
+                        <span class="' . $icon . '"></span>
+                        <span class="menu-label">' . $name . '</span>
+                        <span class="fa fa-chevron-down toggle-icon"></span>
+                    </a>
+                    <ul class="list-unstyled submenu d-none">
+                        ' . $this->renderMenuTree($menu['children'], $baseUrl) . '
+                    </ul>';
             } else {
-                $html .= '<a href="' . $baseUrl . $url . '"><span class="' . $icon . '"></span> ' . $name . '</a>';
+                $html .= '
+                    <a href="' . $baseUrl . $url . '">
+                        <span class="' . $icon . '"></span>
+                        <span class="menu-label">' . $name . '</span>
+                    </a>';
             }
 
             $html .= '</li>';
@@ -315,5 +325,7 @@ class Md_administrator extends Model
         $html .= '</ul>';
         return $html;
     }
+
+
 
 }
