@@ -19,13 +19,10 @@ $routes->get('/home', 'Home::index');
 $routes->get('auth/google', 'Authgoogle::fn_getgoogle');
 $routes->get('auth/google/callback', 'Authgoogle::fn_submitusergoogle');
 
+// Jobs
+$routes->get('/vacancy', 'Admin::fn_getvacancy');
+$routes->get('/vacancy/submitvacancyform', 'Admin::fn_submitvacancyform');
 
-// $routes->group('home', ['filter' => 'homeaccess'], function ($routes) {
-//   $routes->get('getformregistration', 'Formapply::fn_getdataregistration');
-//   $routes->post('submitdataregistration', 'Formapply::fn_submitdataregistration');
-//   $routes->post('comfirmemail', 'Formapply::fn_comfirmemail');
-//   $routes->post('comfirmotp', 'Formapply::fn_comfirmotp');
-// });
 
 // FORM REGISTRATION
 $routes->get('/getformregistration', 'Formapply::fn_getdataregistration');

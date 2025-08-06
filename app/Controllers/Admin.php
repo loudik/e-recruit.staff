@@ -12,13 +12,29 @@ class Admin extends BaseController
         $this->Md_adminpanel = new Md_adminpanel();
         $this->Md_administrator = new Md_administrator();
     }
-    // public function fn_getadministrator()
-    // {         
-    //  $this->data['title'] = 'Dashboard Admin Panel';
-    //  $this->data['menus'] = $this->Md_administrator->getAllMenus();
-    //  $this->data['users'] = [];
-    //   return view('admin/vw_administrator', $this->data);
-    // }
+
+    public function fn_getvacancy()
+    {
+        $this->data['title'] = 'Vacancy';
+        // $this->data['menu'] = $this->menu;
+        // $this->data['vacancies'] = $this->Md_adminpanel->fn_getvacancy();
+        return view('admin/vw_identifyvac');
+    }
+
+    public function fn_submitvacancyform()
+    {
+        $data = $this->request->getJSON(true);
+        if (!$data) {
+            return $this->response->setJSON(['error' => 'Invalid data'])->setStatusCode(400);
+        }
+
+        // Validasi data yang diterima
+
+
+        $this->Md_adminpanel->saveVacancyData($data);
+
+        return $this->response->setJSON(['success' => true, 'message' => 'Form submitted successfully']);
+    }
 
     public function fn_getadministrator($microsoftId = null)
     {

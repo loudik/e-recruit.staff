@@ -306,14 +306,14 @@ class Md_administrator extends Model
                     <a href="#" class="menu-toggle">
                         <span class="' . $icon . '"></span>
                         <span class="menu-label">' . $name . '</span>
-                        <span class="fa fa-chevron-down toggle-icon"></span>
+                        <span class="fa fa-chevron-right  toggle-icon"></span>
                     </a>
                     <ul class="list-unstyled submenu d-none">
                         ' . $this->renderMenuTree($menu['children'], $baseUrl) . '
                     </ul>';
             } else {
                 $html .= '
-                    <a href="' . $baseUrl . $url . '">
+                    <a href="' . $baseUrl . $url . '" class="menu-link">
                         <span class="' . $icon . '"></span>
                         <span class="menu-label">' . $name . '</span>
                     </a>';

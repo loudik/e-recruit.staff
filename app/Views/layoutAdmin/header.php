@@ -19,103 +19,108 @@
         <title>Pannel Access</title>
 
        <style>
-    ul.list-unstyled {
-        padding-left: 0;
-    }
-
-    ul.list-unstyled li {
-        margin-bottom: 6px;
-    }
-
-    ul.list-unstyled li a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #111;
-        text-decoration: none;
-        font-weight: 500;
-        padding: 8px 12px;
-        border-radius: 6px;
-        transition: background-color 0.2s ease;
-    }
-
-    ul.list-unstyled li a:hover {
-        background-color: #f0f0f0;
-        color: #007bff;
-    }
-
-    ul.list-unstyled li a span.fa {
-        min-width: 20px;
-        text-align: center;
-    }
-
-    /* Submenu styling */
-    ul.list-unstyled .submenu {
-        padding-left: 20px;
-        border-left: 1px dotted #ccc;
-        margin-top: 6px;
-    }
-
-    ul.list-unstyled .submenu li a {
-        font-size: 0.95rem;
-        color: #555;
-        padding: 6px 12px;
-        margin-bottom: 4px;
-    }
-
-    /* Hide by default */
-    .d-none {
-        display: none;
-    }
-
-    /* Submenu indent */
-    ul ul {
-        margin-left: 20px;
-        padding-left: 10px;
-        border-left: 1px dashed #ccc;
-    }
-
-    ul li {
-        margin-bottom: 5px;
-    }
-
-    .submenu {
-        margin-left: 20px;
-    }
-
-    .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* ini yang meratakan kiri-kanan */
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 8px;
-    gap: 10px;
-    text-decoration: none;
-    color: #111;
-    transition: background-color 0.2s ease;
-    }
-
-    .menu-toggle:hover {
-        background-color: #f0f0f0;
-        color: #007bff;
-    }
-
-    .menu-toggle .menu-label {
-        flex-grow: 1; /* Dorong toggle-icon ke kanan */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .toggle-icon {
-        font-size: 0.9rem;
-        margin-left: auto; 
-    }
-
     
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px; /* Jarak antar item */
+    }
+
+.menu li {
+  margin-bottom: 0;
+}
+
+.menu-toggle, .menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background-color: #f4f3ff;
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.menu-toggle:hover,.menu-link:hover {
+  background-color: #eae6ff;
+  color: #3f51b5;
+}
+
+.menu-label {
+  flex: 1;
+  margin-left: 10px;
+  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.menu-toggle.active .toggle-icon {
+  transform: rotate(90deg);
+}
+
+/* Submenu */
+.submenu {
+  list-style: none;
+  margin-top: 8px;
+  margin-left: 0;
+  padding-left: 10px;
+  border-left: 2px dotted #e0dffe;
+  position: relative;
+}
+
+.submenu li {
+  position: relative;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+/* .submenu li::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 6px;
+  width: 6px;
+  height: 6px;
+  background-color: #d8cbff;
+  border-radius: 50%;
+} */
+
+.submenu li a {
+  font-size: 0.95rem;
+  color: #6c757d; /* abu-abu soft */
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.submenu li a:hover {
+  color: #4a4a4a;
+  /* text-decoration: underline; */
+}
+
+.d-none {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .toggle-icon {
+    transition: transform 0.2s ease;
+    margin-left: 10px;
+
+  }
+}
+
+
 
 </style>
+
 
 
 

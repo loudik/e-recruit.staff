@@ -13,7 +13,14 @@
             const submenu = this.nextElementSibling;
             if (submenu && submenu.classList.contains('submenu')) {
                 submenu.classList.toggle('d-none');
-                this.classList.toggle('open'); // Untuk rotate chevron
+
+                // Toggle rotate class
+                this.classList.toggle('open');
+
+                // Toggle chevron icon
+                const icon = this.querySelector('.toggle-icon');
+                icon.classList.toggle('fa-chevron-right');
+                icon.classList.toggle('fa-chevron-down');
             }
         });
     });
