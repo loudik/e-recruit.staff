@@ -21,6 +21,9 @@ class AddIdGroupToTblUnit extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('tbl_unit', 'idgroup');
+        if ($this->db->fieldExists('idgroup', 'tbl_unit')) {
+            $this->forge->dropColumn('tbl_unit', 'idgroup');
+        }
     }
+
 }
