@@ -32,7 +32,7 @@
                                 </div>
                                 <!-- Image block -->
                                 <div class="">
-                                    <img src="<?= base_url('uploads/login/login-img.svg') ?>" alt="login-img">
+                                    <img src="<?= base_url('assets/images/login-1.svg') ?>" alt="login-img">
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                       <a class="btn btn-lg btn-light w-100" href="<?= site_url('auth/login') ?>" aria-label="Sign in with Microsoft 365">
                                         <span class="d-inline-flex align-items-center justify-content-center gap-2">
                                           <img
-                                            src="<?= base_url('uploads/login/microsoft.svg') ?>"
+                                            src="<?= base_url('assets/images/microsoft.svg') ?>"
                                             alt=""
                                             width="20" height="20"
                                             style="display:inline-block;"

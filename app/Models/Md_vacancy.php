@@ -34,9 +34,10 @@ class Md_vacancy extends Model
         $date     = trim($payload['date'] ?? '');
         $ans      = $payload['answers']  ?? [];
         $appr     = $payload['approver'] ?? [];
+        $rec      = $payload['receiver'] ?? [];
         $iby      = (string) ($payload['submitter_upn'] ?? '');
 
-        if ($position === '' || $date === '' || empty($appr['ms_id'])) {
+        if ($position === '' || $date === '' || empty($appr['ms_id']) || empty($rec['ms_id'])) {
             throw new \InvalidArgumentException('Position, Date, dan Approver wajib diisi');
         }
 
@@ -61,6 +62,13 @@ class Md_vacancy extends Model
             'apvposition' => $appr['jobTitle'] ?? null,
             'apv_ms_id'   => $appr['ms_id']    ?? null,
             'apv_email'   => $appr['email']    ?? null,
+
+            'recname'     => $rec['name']     ?? null,
+            'recposition' => $rec['jobTitle'] ?? null,
+            'rec_ms_id'   => $rec['ms_id']    ?? null,
+            'rec_email'   => $rec['email']    ?: null,
+
+
 
             'status'             => 0, // PENDING
             'approval_token'     => $token,

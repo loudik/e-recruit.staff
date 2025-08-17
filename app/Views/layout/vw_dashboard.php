@@ -90,23 +90,34 @@
               </div>
             </div>
 
-            <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
-              <div class="u-info me-2">
-                <p class="mb-0 text-end line-height-sm "><span class="font-weight-bold">Guest</span></p>
-                <small>Candidate</small>
-              </div>
-              <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static">
-                <img class="avatar lg rounded-circle img-thumbnail" src="<?= base_url('assets/images/profile_av.svg') ?>" alt="profile">
-              </a>
-              <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0">
-                <div class="card border-0 w280">
-                  <div class="list-group m-2 ">
-                    <a href="#" class="list-group-item list-group-item-action border-0 "><i class="icofont-ui-user fs-5 me-3"></i>Profile</a>
-                    <a href="#" class="list-group-item list-group-item-action border-0 "><i class="icofont-logout fs-5 me-3"></i>Signout</a>
+            <?php
+              $displayName = session('fullname') ?? session('ms_name') ?? 'Guest';
+              $avatar      = session('avatar_url') ?? base_url('assets/images/profile_av.svg');
+              ?>
+              <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
+                <div class="u-info me-2">
+                  <p class="mb-0 text-end line-height-sm ">
+                    <span class="font-weight-bold"><?= esc($displayName) ?></span>
+                  </p>
+                  <small>Candidate</small>
+                </div>
+                <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static">
+                  <img class="avatar lg rounded-circle img-thumbnail" src="<?= esc($avatar) ?>" alt="profile">
+                </a>
+                <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0">
+                  <div class="card border-0 w280">
+                    <div class="list-group m-2 ">
+                      <a href="#" class="list-group-item list-group-item-action border-0 ">
+                        <i class="icofont-ui-user fs-5 me-3"></i>Profile
+                      </a>
+                      <a href="<?= site_url('logoutstaff') ?>" class="list-group-item list-group-item-action border-0 ">
+                        <i class="icofont-logout fs-5 me-3"></i>Signout
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+
 
             <div class="setting ms-2">
               <a href="#" data-bs-toggle="modal" data-bs-target="#Settingmodal"><i class="icofont-gear-alt fs-5"></i></a>
@@ -142,7 +153,7 @@
 
   <div class="carousel-inner rounded-3 overflow-hidden shadow-sm">
     <div class="carousel-item active">
-      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Join our team">
+      <img src="<?= site_url('assets/images/img1.png') ?>" class="d-block w-100 hero-img" alt="Join our team">
       <div class="carousel-caption text-start d-none d-md-block">
         <h5 class="fw-bold">We’re Hiring</h5>
         <p>Grow your career with us.</p>
@@ -151,7 +162,7 @@
     </div>
 
     <div class="carousel-item">
-      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Engineering">
+      <img src="<?= site_url('assets/images/img1.png') ?>" class="d-block w-100 hero-img" alt="Engineering">
       <div class="carousel-caption d-none d-md-block">
         <h5 class="fw-bold">Engineering & IT</h5>
         <p>Build products that matter.</p>
@@ -160,7 +171,7 @@
 
     <div class="carousel-item">
       <!-- perbaikan syntax slide ke-3 -->
-      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Culture">
+      <img src="<?= site_url('assets/images/img1.png') ?>" class="d-block w-100 hero-img" alt="Culture">
       <div class="carousel-caption text-end d-none d-md-block">
         <h5 class="fw-bold">Great Culture</h5>
         <p>Flexible, collaborative, impactful.</p>
@@ -170,9 +181,9 @@
     <div class="carousel-item">
       <!-- PAKAI salah satu src di bawah -->
       <!-- Jika file sudah dipindah ke public: -->
-      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote">
+      <img src="<?= site_url('assets/images/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote">
       <!-- Jika masih di writable via route: -->
-      <!-- <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote"> -->
+      <!-- <img src="<?= site_url('assets/images/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote"> -->
       <div class="carousel-caption d-none d-md-block">
         <h5 class="fw-bold">Remote Friendly</h5>
         <p>Bekerja dari mana saja.</p>

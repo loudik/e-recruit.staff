@@ -61,6 +61,7 @@ class Admin extends BaseController
     $dateRaw  = trim($body['date'] ?? '');
     $ans      = $body['answers'] ?? [];
     $appr     = $body['approver'] ?? [];
+    $rec      = $body['receiver'] ?? [];
 
     // Normalisasi tanggal
     $date = '';
@@ -68,7 +69,7 @@ class Admin extends BaseController
         try { $date = (new \DateTime($dateRaw))->format('Y-m-d'); } catch (\Throwable $e) {}
     }
 
-    if ($position === '' || $date === '' || empty($appr['ms_id'])) {
+    if ($position === '' || $date === '' || empty($appr['ms_id']) || empty($rec['ms_id'])) {
         return $this->response->setStatusCode(422)->setJSON([
             'ok'=>false,
             'message'=>'Position, Date, dan Approver wajib diisi'
@@ -97,6 +98,12 @@ class Admin extends BaseController
                 'jobTitle' => $appr['jobTitle'] ?? null,
                 'ms_id'    => $appr['ms_id']    ?? null,
                 'email'    => $apprEmail        ?: null,
+            ],
+            'receiver' => [
+                'name'     => $rec['name']     ?? null,
+                'jobTitle' => $rec['jobTitle'] ?? null,
+                'ms_id'    => $rec['ms_id']    ?? null,
+                'email'    => $rec['email']    ?: null,
             ],
             'submitter_upn' => (string) (session('microsoft_upn') ?: session('microsoft_id')),
         ]);
@@ -223,47 +230,47 @@ class Admin extends BaseController
         }
 
         public function approve()
-            {
-                $id    = (int) $this->request->getGet('doc');
-                $token = (string) $this->request->getGet('token');
+        {
+            $id    = (int) $this->request->getGet('doc');
+            $token = (string) $this->request->getGet('token');
 
-                if (!$id || !$token) {
-                    return $this->response->setStatusCode(400)->setBody('Bad request');
-                }
-
-                $row = $this->Md_vacancy->find($id);
-                if (!$row || (int)$row['status'] !== 0) {
-                    return $this->response->setStatusCode(404)->setBody('Not found or already handled');
-                }
-                if (!hash_equals((string)$row['approval_token'], $token)) {
-                    return $this->response->setStatusCode(403)->setBody('Invalid token');
-                }
-                if (!empty($row['approval_token_exp']) && Time::now()->isAfter(Time::parse($row['approval_token_exp']))) {
-                    return $this->response->setStatusCode(410)->setBody('Token expired');
-                }
-
-                // Buat QR verify URL bertanda tangan
-                $role = 'approved';
-                $uid  = (string) ($row['apv_ms_id'] ?? '');
-                $ts   = time();
-                $sig  = $this->sign("$id|$role|$uid|$ts", $this->signKey);
-                $qrUrl = site_url('verify/signature?doc='.$id.'&role='.$role.'&uid='.$uid.'&ts='.$ts.'&sig='.$sig);
-
-                // Update status: APPROVED
-                $this->Md_vacancy->update($id, [
-                    'status'           => 1,
-                    'approved_at'      => Time::now()->toDateTimeString(),
-                    'qr_text_approved' => $qrUrl,
-                    'udt'              => Time::now()->toDateTimeString(),
-                    'uby'              => (string) (session('microsoft_upn') ?: session('microsoft_id')),
-                ]);
-
-                return view('vacancyapproval/approved', [
-                    'title'  => 'Vacancy Approved',
-                    'doc'    => $id,
-                    'qrText' => $qrUrl,
-                ]);
+            if (!$id || !$token) {
+                return $this->response->setStatusCode(400)->setBody('Bad request');
             }
+
+            $row = $this->Md_vacancy->find($id);
+            if (!$row || (int)$row['status'] !== 0) {
+                return $this->response->setStatusCode(404)->setBody('Not found or already handled');
+            }
+            if (!hash_equals((string)$row['approval_token'], $token)) {
+                return $this->response->setStatusCode(403)->setBody('Invalid token');
+            }
+            if (!empty($row['approval_token_exp']) && Time::now()->isAfter(Time::parse($row['approval_token_exp']))) {
+                return $this->response->setStatusCode(410)->setBody('Token expired');
+            }
+
+            // Buat QR verify URL bertanda tangan
+            $role = 'approved';
+            $uid  = (string) ($row['apv_ms_id'] ?? '');
+            $ts   = time();
+            $sig  = $this->sign("$id|$role|$uid|$ts", $this->signKey);
+            $qrUrl = site_url('verify/signature?doc='.$id.'&role='.$role.'&uid='.$uid.'&ts='.$ts.'&sig='.$sig);
+
+            // Update status: APPROVED
+            $this->Md_vacancy->update($id, [
+                'status'           => 1,
+                'approved_at'      => Time::now()->toDateTimeString(),
+                'qr_text_approved' => $qrUrl,
+                'udt'              => Time::now()->toDateTimeString(),
+                'uby'              => (string) (session('microsoft_upn') ?: session('microsoft_id')),
+            ]);
+
+            return view('admin/vw_vacancyapprove', [
+                'title'  => 'Vacancy Approved',
+                'doc'    => $id,
+                'qrText' => $qrUrl,
+            ]);
+        }
 
         
 

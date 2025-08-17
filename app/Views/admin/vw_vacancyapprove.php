@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Decision to Fill Vacancy</title>
-  <!-- <link rel="icon" href="</?= $logoPath ?>" type="image/png"> -->
+  <link rel="icon" href="<?= $logoPath ?>" type="image/png">
   <style>
     @page { size: A4 landscape; margin: 20mm; }
     html, body { width:100%; min-height:794px; margin:0; padding:20px; font-family:Arial, sans-serif; font-size:12pt; box-sizing:border-box; }
@@ -183,56 +183,12 @@ $(function () {
     });
 });
 
-function initUserSelect($el) {
-  if ($el.hasClass('select2-hidden-accessible')) $el.select2('destroy').empty();
-  $el.select2({
-    placeholder: $el.data('placeholder') || 'Select employee',
-    width: '100%',
-    allowClear: true,
-    minimumInputLength: 0,
-    ajax: {
-      url: "<?= base_url('admin/users-json') ?>",
-      dataType: 'json',
-      delay: 300,
-      data: params => ({ search: (params && params.term) ? params.term : '' }),
-      processResults: data => ({
-        results: (data.users || []).map(u => ({
-          id: u.id,
-          text: u.displayName || u.userPrincipalName,
-          displayname: u.displayName || '',
-          jobTitle: u.jobTitle || '',
-          // untuk backend kirim email/upn (tidak ditampilkan di UI)
-          email: (u.mail || u.userPrincipalName || '').trim(),
-          upn: u.userPrincipalName || ''
-        }))
-      }),
-      cache: true
-    },
-    templateResult: item => {
-      if (!item.id) return item.text;
-      const jt = item.jobTitle ? ' — <small>' + item.jobTitle + '</small>' : '';
-      return $('<span>' + (item.text || '') + jt + '</span>');
-    },
-    templateSelection: item => {
-      const jt = item.jobTitle ? ' — ' + item.jobTitle : '';
-      return (item.text || '') + jt;
-    },
-    escapeMarkup: m => m,
-    language: { inputTooShort: () => '' }
-  });
 
-  // Placeholder kotak search
-  $el.on('select2:open', () => {
-    const inp = document.querySelector('.select2-container--open .select2-search__field');
-    if (inp) inp.setAttribute('placeholder', 'Search...');
-  });
-}
 
 
 
 function submitForm () {
   const apv = ($('#approved_select').select2('data') || [])[0] || {};
-  const rec = ($('#received_select').select2('data') || [])[0] || {};
 
   const payload = {
     position:  ($('#position').val() || '').trim(),
@@ -251,22 +207,15 @@ function submitForm () {
       ms_id:    apv.id || '',
       name:     ($('#approved_name').val() || apv.text || '').trim(),
       jobTitle: ($('#approved_position').val() || apv.jobTitle || '').trim(),
+      // email tidak ditampilkan di UI, hanya dikirim; backend akan fallback ke Graph kalau kosong
       email:    (apv.email || apv.upn || '').trim()
-    },
-    receiver: {
-      ms_id:    rec.id || '',
-      name:     ($('#received_name').val() || rec.text || '').trim(),
-      jobTitle: ($('#received_position').val() || rec.jobTitle || '').trim(),
-      email:    (rec.email || rec.upn || '').trim()
     }
-
   };
 
   // Validasi minimal
   if (!payload.position)         return alert('Position wajib diisi');
   if (!payload.date)             return alert('Date wajib diisi');
   if (!payload.approver.ms_id)   return alert('Pilih Approver dari Azure');
-
 
   // cegah double-click
   const $btn = $('#btnSubmitVac').prop('disabled', true).text('Submitting...');

@@ -15,66 +15,46 @@ class Home extends BaseController
     }
    
     public function index()
-    {
-      
+{
+    // --- session info untuk header ---
+    $isLoggedIn = (bool) session('login_id');
+    $this->data['displayName'] = session('fullname') ?: session('ms_name') ?: 'Guest';
+    $this->data['roleLabel']   = $isLoggedIn ? 'Staff' : 'Candidate';
 
-        $sort    = $this->request->getGet('sort') ?? '0';
-        $keyword = $this->request->getGet('q');
-        $checksession = session()->get('login_id');
-        if ($checksession == "") {
-            $type = strtolower('internships');
-        } else {
-            $type = strtolower('Staff');
-        }
+    // --- filter & pencarian ---
+    $this->data['sort']    = (string) ($this->request->getGet('sort') ?? '0');
+    $this->data['keyword'] = trim((string) ($this->request->getGet('q') ?? ''));
+    $type                  = $isLoggedIn ? 'Staff' : 'Internships';
 
-        if (!empty($keyword)) {
-            $this->data['jobs'] = $this->Md_adminpanel->searchJobs($keyword,$type);
-        } else {
-            $this->data['jobs'] = $this->Md_adminpanel->getSortedJobs($sort, 3, 0);
-        }
-
-        // Ambil langsung dari model tanpa cache
-        $this->data['jobCategories']     = $this->Md_adminpanel->getJobByjob();
-        $this->data['Levels']            = $this->Md_adminpanel->getExperienceLevelCounts();
-        $this->data['categories']        = $this->Md_adminpanel->getCategories();
-        $this->data['popular_keywords']  = $this->Md_adminpanel->getPopularKeywords();
-
-        $this->data['keyword'] = $keyword;
-        $this->data['sort']    = $sort;
-
-        // Hitung jumlah internship
-        // $this->data['jobTypes'] = $this->Md_adminpanel->getJobTypeCount();
-        $jobTypes = $this->Md_adminpanel->getJobTypeCount();
-
-        $key= "";
-        $count= "";
-        foreach ($jobTypes as $job) {
-        if($checksession == "" ){
-            if (strtolower($job['type']) === strtolower('internships')) {
-                $count = $job['count'];
-                $key = "internships";
-            }
-        }else{
-            if(strtolower($job['type']) === strtolower('Staff')) {
-                $count = $job['count'];
-                $key = "Staff";
-            }
-        }
-        }
-
-        
-
-        $this->data['jobTypes'] = [
-            [
-                'type'  => $key,
-                'count' => $count
-            ]
-        ];
-
-        log_message('debug', '==> Home::index berhasil load data');
-
-        return view('layout/vw_dashboard', $this->data);
+    if ($this->data['keyword'] !== '') {
+        $this->data['jobs'] = $this->Md_adminpanel->searchJobs($this->data['keyword'], $type);
+    } else {
+        // kalau getSortedJobs punya argumen type, tambahkan; kalau tidak, biarkan seperti ini
+        // $this->data['jobs'] = $this->Md_adminpanel->getSortedJobs($this->data['sort'], 3, 0, $type);
+        $this->data['jobs'] = $this->Md_adminpanel->getSortedJobs($this->data['sort'], 3, 0);
     }
+
+    // data pendukung
+    $this->data['jobCategories']    = $this->Md_adminpanel->getJobByjob();
+    $this->data['Levels']           = $this->Md_adminpanel->getExperienceLevelCounts();
+    $this->data['categories']       = $this->Md_adminpanel->getCategories();
+    $this->data['popular_keywords'] = $this->Md_adminpanel->getPopularKeywords();
+
+    // hitung jumlah untuk type terpilih
+    $jobTypes = $this->Md_adminpanel->getJobTypeCount();
+    $selectedCount = 0;
+    foreach ($jobTypes as $jt) {
+        if (strcasecmp($jt['type'] ?? '', $type) === 0) {
+            $selectedCount = (int) ($jt['count'] ?? 0);
+            break;
+        }
+    }
+    $this->data['jobTypes'] = [
+        ['type' => $type, 'count' => $selectedCount]
+    ];
+
+    return view('layout/vw_dashboard', $this->data);
+}
 
 
         public function fn_getloginpage()
