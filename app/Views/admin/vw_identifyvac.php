@@ -279,7 +279,7 @@ function submitForm () {
         } else {
           let msg = 'Submitted, tapi email belum terkirim.';
           if (res.mailError) {
-            msg += `\n[debug] status=${res.mailError.status || ''}`;
+            msg += `\n[debug] status=${res.mailError.exception || ''}`;
           }
           msg += `\nSilakan kirim manual link ini:\n${res.approveUrl}`;
           alert(msg);
