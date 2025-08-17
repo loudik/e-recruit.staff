@@ -1,347 +1,162 @@
 <!doctype html>
-<html lang="en" class="pxp-root">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-        
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
-        <!-- Toastr CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-        <link href="<?php echo base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/font-awesome.min.css') ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.carousel.min.css') ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/owl.theme.default.min.css') ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/animate.css') ?>">
-        <link rel="stylesheet" href="<?php echo base_url('assets/css/style.css') ?>">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-        <title>Form Recruitment GIP</title>
-        <style>
+<html class="no-js" lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Jobs – Apply</title>
 
-          @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-          }
+  <link rel="icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+  <link rel="stylesheet" href="<?= base_url('assets/css/ebazar.style.min.css') ?>">
+  <style>
+    #applySection .card-header{background:var(--bs-light)}
+  </style>
+</head>
+<body>
+<div id="ebazar-layout" class="theme-blue">
+  <div class="main px-lg-4 px-md-4">
 
-          body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-          }
-
-
-        .pxp-dashboard-content {
-          width: 100%;
-          max-width: 850px;
-          margin: 60px auto; 
-          padding: 20px;
-        }
-
-        .pxp-dashboard-content-details {
-          width: 100%;
-          max-width: 800px;
-          margin: 0 auto; 
-          padding: 40px;
-        }
-        </style>
-    </head>
-    <body style="background-color: var(--pxpMainColorLight);">
-        <div class="pxp-dashboard-content">
-          <div class="pxp-dashboard-content-details">
-            <h3>Form Of Candidate GIP</h3>
-            <p class="pxp-text-light">Please Complete All Required</p>
-            <div class="row mt-4 mt-lg-5">
-              <div class="col-xxl-6">
-                <div class="mb-3">
-                  <label for="jobs" class="form-label">Jobs</label>
-                    <input type="hidden" id="job_id" value="<?= esc($job['id']) ?>"> 
-                    <input type="hidden" id="trxid" value="<?= esc($job['idtrx']) ?>"> 
-                    <input type="text" id="jobs" class="form-control rounded-pill" value="<?= esc($job['jobs']) ?>" readonly>
-                </div>
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Fullnames</label>
-                <input type="text" id="fullname" name="fullname" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" id="email" name="email" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Graduation Year</label>
-                <select id="graduation" name="graduation" class="form-select rounded-pill">
-                    
-                  </select>
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <div class="mb-3">
-                  <label for="educationlevel" class="form-label">education Level</label>
-                  <select id="educationlevel" name="educationlevel" class="form-select rounded-pill">
-                    <option value="D3">D3</option>
-                    <option value="S1">S1</option>
-                    <option value="S2">S2</option>
-                    <option value="S3">S3</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <div class="mb-3">
-                  <label for="sexo" class="form-label">Languague English Level</label>
-                  <select id="language" name="languague" class="form-select rounded-pill">
-                    <option value="Good">Good</option>
-                    <option value="Average">Average</option>
-                    <option value="Bad">Bad</option>
-                    <option value="Very Bad">Very Bad</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">GPA</label>
-                <input type="text" id="gpa" name="gpa" class="form-control rounded-pill">
-              </div>                        
-              <div class="col-md-6 col-xxl-6">
-                <div class="mb-3">
-                  <label for="sexo" class="form-label">Sexo</label>
-                  <select id="sexo" name="sexo" class="form-select rounded-pill">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Address</label>
-                <input type="text" id="address" name="address" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Phone</label>
-                <input type="text" id="phone" name="phone" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="personalid" class="form-label">Personal ID <small class="text-muted">(e.g., Passport or National ID)</small></label>
-                <input type="file" id="personalid" name="personalid" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Curriculum Vitae(CV)<small class="text-muted">(must be in English)</small></label>
-                <input type="file" id="cv" name="cv" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Diploma<small class="text-muted">(must be in English)</small></label>
-                <input type="file" id="diploma" name="diploma" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="pob" class="form-label">Transkrip<small class="text-muted">(must be in English)</small></label>
-                <input type="file" id="transcript" name="transcript" class="form-control rounded-pill">
-              </div>
-              <div class="col-md-6 col-xxl-6">
-                <label for="coverletter" class="form-label">Cover Letter <small class="text-muted">(must be in English)</small></label>
-                <input type="file" id="coverletter" name="coverletter" class="form-control rounded-pill">
-              </div>
+    <div class="header">
+      <nav class="navbar py-4">
+        <div class="container-xxl">
+          <div class="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
+            <div class="d-flex">
+              <a class="nav-link text-primary collapsed" href="<?= base_url() ?>" title="Home">
+                <i class="icofont-home fs-5"></i>
+              </a>
             </div>
-            <div class="mt-4 mt-lg-5">
-              <button class="btn btn-sm rounded-pill pxp-section-cta" onclick="fn_savedata()" >submit</button>
-              <button type="button" class="btn btn-sm rounded-pill pxp-section-cta bg-danger" onclick="fn_cancel()">Cancel</button>
+            <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
+              <div class="u-info me-2">
+                <p class="mb-0 text-end line-height-sm"><span class="font-weight-bold">Guest</span></p>
+                <small>Candidate</small>
+              </div>
+              <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static">
+                <img class="avatar lg rounded-circle img-thumbnail" src="<?= base_url('assets/images/profile_av.svg') ?>" alt="profile">
+              </a>
             </div>
           </div>
-
-
-          <div class="modal fade" id="modalLoading" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content bg-transparent border-0 shadow-none text-center">
-                <div class="mt-3 text-white fw-bold" style="
-                  animation: blink 1.5s infinite;
-                  -webkit-animation: blink 1.5s infinite;
-                ">
-                  Please wait...
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Success Message -->
-          
-
-
-          <!-- Modal Sign In -->
-          <div class="modal fade pxp-user-modal" id="modalemail" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="pxp-user-modal-fig text-center">
-                    <img src="<?= base_url('assets/images/signin-fig.png'); ?>" alt="Sign in">
-                  </div>
-                  <h5 class="modal-title text-center mt-4" id="signinModal">Please Confirm Your OTP</h5>
-                  <form class="mt-4" onsubmit="return fn_comfirm(event)">
-                    <div class="form-floating mb-3">
-                      <input type="text" class="form-control" id="otp" placeholder="OTP" required>
-                      <label for="otp">Input OTP</label>
-                      <span class="fa fa-envelope-o"></span>
-                    </div>
-                    <div class="mt-2 mb-2 mt-lg-5 text-center">
-                      <button type="submit" class="btn rounded-pill pxp-section-cta">Confirm</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+          <div class="order-0 col-lg-6 col-md-6 col-sm-12 col-12 mb-3 mb-md-0">
+            <h3 class="fw-bold mb-0">Apply</h3>
+            <div class="text-muted">Complete your application below.</div>
           </div>
         </div>
-        <!-- Toastr JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      </nav>
+    </div>
 
-        <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
-        <script src="<?= base_url('assets/js/nav.js') ?>"></script>
-        <script src="<?= base_url('assets/js/Chart.min.js') ?>"></script>
-        <script src="<?= base_url('assets/js/main.js') ?>"></script>
-        <script>
-        const select = document.getElementById('graduation');
-        const currentYear = new Date().getFullYear();
-        const startYear = 2000;
+    <section id="applySection" class="body d-flex py-3 pt-0">
+      <div class="container-xxl">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <div>
+              <h5 class="mb-0">Apply Now</h5>
+              <small class="text-muted">Isi form berikut untuk melamar.</small>
+            </div>
+            <div class="text-end">
+              <div class="small text-muted">Position</div>
+              <div class="fw-bold" id="applyPreviewTitle"><?= esc($jobTitle ?? '-') ?></div>
+              <div class="small" id="applyPreviewMeta">
+                Type: <?= esc($jobType ?? '–') ?> • Location: <?= esc($jobLoc ?? '–') ?>
+              </div>
+            </div>
+          </div>
 
-        for (let year = currentYear; year >= startYear; year--) {
-          const option = document.createElement('option');
-          option.value = year;
-          option.textContent = year;
-          select.appendChild(option);
-        }
+          <div class="card-body">
+            <?php if (session()->getFlashdata('apply_success')): ?>
+              <div class="alert alert-success"><?= session()->getFlashdata('apply_success') ?></div>
+            <?php elseif (session()->getFlashdata('apply_error')): ?>
+              <div class="alert alert-danger"><?= session()->getFlashdata('apply_error') ?></div>
+            <?php endif; ?>
 
+            <form id="applyForm" action="<?= site_url('jobs/apply') ?>" method="post" enctype="multipart/form-data" novalidate>
+              <?= csrf_field() ?>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" name="full_name" value="<?= esc(old('full_name')) ?>" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" name="email" value="<?= esc(old('email')) ?>" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Phone</label>
+                  <input type="text" class="form-control" name="phone" value="<?= esc(old('phone')) ?>" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Location</label>
+                  <input type="text" class="form-control" name="location" id="applyJobLoc"
+                         value="<?= esc(old('location', $jobLoc ?? '')) ?>" required>
+                </div>
 
-        function fn_cancel() {
-            window.history.back(); // kembali ke halaman sebelumnya
-            // atau redirect langsung:
-            // window.location.href = "<?= base_url('/') ?>";
-        }
+                <div class="col-md-8">
+                  <label class="form-label">Position</label>
+                  <input type="text" class="form-control" name="job_title" id="applyJobTitle"
+                         value="<?= esc(old('job_title', $jobTitle ?? '')) ?>" readonly required>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Type</label>
+                  <input type="text" class="form-control" name="job_type" id="applyJobType"
+                         value="<?= esc(old('job_type', $jobType ?? '')) ?>" readonly>
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Ref (optional)</label>
+                  <input type="text" class="form-control" name="reference" value="<?= esc(old('reference')) ?>">
+                </div>
 
+                <div class="col-md-12">
+                  <label class="form-label">LinkedIn (optional)</label>
+                  <input type="url" class="form-control" name="linkedin"
+                         value="<?= esc(old('linkedin')) ?>" placeholder="https://linkedin.com/in/username">
+                </div>
 
+                <div class="col-md-12">
+                  <label class="form-label">Resume / CV (PDF/DOC/DOCX)</label>
+                  <input type="file" class="form-control" name="resume" accept=".pdf,.doc,.docx" required>
+                </div>
 
-            
-      function fn_savedata() {
-        const loadingModal = new bootstrap.Modal(document.getElementById('modalLoading'));
-        loadingModal.show();
+                <div class="col-md-12">
+                  <label class="form-label">Cover Letter</label>
+                  <textarea class="form-control" rows="5" name="cover_letter"
+                            placeholder="Singkatkan motivasi & pengalaman relevan…"><?= esc(old('cover_letter')) ?></textarea>
+                </div>
+              </div>
 
-        var formData = new FormData();
-        // formData.append('jobs', $('#jobs').val());
-        formData.append('jobs', $('#job_id').val());
-        formData.append('trxid', $('#trxid').val()); 
-        formData.append('fullname', $('#fullname').val());
-        formData.append('email', $('#email').val());
-        formData.append('sexo', $('#sexo').val());
-        formData.append('address', $('#address').val());
-        formData.append('phone', $('#phone').val());
-        formData.append('educationlevel', $('#educationlevel').val());
-        formData.append('graduation', $('#graduation').val());
-        formData.append('gpa', $('#gpa').val());
-        formData.append('language', $('#language').val());
+              <div class="mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Submit Application</button>
+                <a href="<?= site_url('jobs') ?>" class="btn btn-white border">Kembali ke Jobs</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        if ($('#personalid')[0].files.length > 0) {
-            formData.append('personalid', $('#personalid')[0].files[0]);
-        }
-        if ($('#cv')[0].files.length > 0) {
-            formData.append('cv', $('#cv')[0].files[0]);
-        }
+  </div><!-- /main -->
+</div><!-- /layout -->
 
-        if ($('#coverletter')[0].files.length > 0) {
-            formData.append('coverletter', $('#coverletter')[0].files[0]);
-        }
-        if ($('#diploma')[0].files.length > 0) {
-            formData.append('diploma', $('#diploma')[0].files[0]);
-        }
-        if ($('#transcript')[0].files.length > 0) {
-          formData.append('transcript', $('#transcript')[0].files[0]);
-        }
+<script src="<?= base_url('assets/bundles/libscripts.bundle.js') ?>"></script>
+<script>
+// scroll ke form saat page terbuka
+window.addEventListener('load', function(){
+  const target = document.getElementById('applySection');
+  if(target){ target.scrollIntoView({behavior:'smooth'}); }
+});
 
-        $.ajax({
-            url: '<?= base_url('submitdataregistration') ?>',
-            type: 'POST',
-            dataType: 'json',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-            
-                if (response.response === 'success') {
-                    var myModal = new bootstrap.Modal(document.getElementById('modalemail'));
-                    myModal.show();
-                } else {
-                    alert('Failed: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                alert('Error saving data: ' + xhr.status + ' - ' + error);
-            }
-        });
-      }
-
-      function fn_comfirm(event) {
-        event.preventDefault();
-
-        var otp = $('#otp').val().trim();
-        if (!otp) {
-            alert('Please enter your OTP.');
-            return false;
-        }
-
-        var formData = new FormData();
-        formData.append('otp', otp);
-
-        $.ajax({
-            url: '<?= base_url('comfirmotp') ?>',
-            type: 'POST',
-            dataType: 'json',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-            if (response.response === 'success') {
-                // ✅ Tutup modal OTP
-                $('#modalemail').modal('hide');
-                $('#modalLoading').modal('hide');
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Congratulations!',
-                    text: response.message,
-                    confirmButtonText: 'OK',
-                    timer: 3000,
-                    timerProgressBar: true
-                }).then(() => {
-                    location.reload(); // atau redirect jika perlu
-                });
-            } else if (response.trxid === 'TRXID-RESET-SESSION') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Session Expired',
-                    text: response.message,
-                    confirmButtonText: 'Reload'
-                }).then(() => {
-                    location.reload();
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Verification Failed',
-                    text: response.message
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            Swal.fire({
-                icon: 'error',
-                title: 'AJAX Error',
-                text: 'Error confirming OTP: ' + xhr.status + ' - ' + error
-            });
-        }
-    });
-
-        return false;
-    }
-    </script>
-  </body>
+// fallback: kalau datang via query string dan controller tidak mengirim variabel
+(function(){
+  const t = document.getElementById('applyJobTitle');
+  const l = document.getElementById('applyJobLoc');
+  const y = document.getElementById('applyJobType');
+  if (t && !t.value) {
+    const p = new URLSearchParams(window.location.search);
+    t.value = p.get('title') || '';
+    l.value = p.get('loc')   || '';
+    y.value = p.get('type')  || '';
+    document.getElementById('applyPreviewTitle').textContent = t.value || '–';
+    document.getElementById('applyPreviewMeta').textContent  =
+      'Type: ' + (y.value || '–') + ' • Location: ' + (l.value || '–');
+  }
+})();
+</script>
+</body>
 </html>

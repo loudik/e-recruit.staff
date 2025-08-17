@@ -20,7 +20,7 @@ class Oauth extends Controller
             'tenant'       => getenv('AZURE_TENANT_ID'),
             'urlAuthorize' => 'https://login.microsoftonline.com/' . getenv('AZURE_TENANT_ID') . '/oauth2/v2.0/authorize',
             'urlAccessToken' => 'https://login.microsoftonline.com/' . getenv('AZURE_TENANT_ID') . '/oauth2/v2.0/token',
-            'scopes'       => ['openid', 'profile', 'email', 'offline_access', 'User.Read', 'User.Read.All'],
+            'scopes'       => ['openid', 'profile', 'email', 'offline_access', 'User.Read', 'User.Read.All','User.ReadBasic.All','Mail.Send' ],
         ]);
 
         $this->provider->defaultEndPointVersion = '2.0';
@@ -37,8 +37,6 @@ class Oauth extends Controller
         $options = [
             'prompt' => 'select_account'
         ];
-
-        // Jika user submit email dari form, tambahkan login_hint
         if ($email) {
             $options['login_hint'] = $email;
         }

@@ -208,123 +208,158 @@ class Md_administrator extends Model
     }
 
 
-    public function getMenusByRole($roleId): array
-    {
-        $user = $this->db->table('tbl_accessright')
-            ->select('menu_ids')
-            ->where('microsoft_id', $roleId)
-            ->where('isdeleted', 0)
-            ->get()
-            ->getFirstRow();
+    public function getMenusByRole(string $roleId): array
+{
+    // ambil menu_ids yang boleh
+    $user = $this->db->table('tbl_accessright')
+        ->select('menu_ids')
+        ->where('microsoft_id', $roleId)
+        ->where('isdeleted', 0)
+        ->get()->getFirstRow();
 
-        $menuIds = [];
-
-        if ($user && !empty($user->menu_ids)) {
-            $menuIds = array_filter(array_map('intval', explode(',', $user->menu_ids)));
-        }
-
-        if (empty($menuIds)) {
-            return [
-                'treemenu' => '<li><a href="' . base_url('/admin/dashboard') . '"><span class="fa fa-home"></span> Dashboard</a></li>',
-                'routes'   => ['admin/dashboard'],
-            ];
-        }
-
-        $menus = $this->db->table('tbl_treemenu')
-            ->where('isdeleted', 0)
-            ->where('isactive', 1)
-            ->whereIn('id', $menuIds)
-            ->orderBy('sort_order', 'asc')
-            ->get()
-            ->getResultArray();
-
-        $menuTree = $this->buildMenuTree($menus);
-        $treemenu = $this->renderMenuTree($menuTree, base_url('/'));
-
-        $routeParts = [];
-        foreach ($menus as $menu) {
-            if (!empty($menu['menuurl'])) {
-                $routeParts[] = strtolower(trim($menu['menuurl']));
-            }
-        }
-
-        $extraRoutes = [
-            'admin/users-json', 'admin/addnewadmin', 'admin/get-menuaccess',
-            'admin/administrator/details', 'admin/administrator/delete',
-            'admin/addnewjobs', 'admin/newjobs', 'admin/getCategoriesByGroup',
-            'admin/candidate', 'admin/candidate/getcandidate', 'admin/candidate/view',
-            'admin/file/viewbyfilename', 'admin/updatestatusadmin', 'admin/report/getreport',
-        ];
-
-        foreach ($extraRoutes as $r) {
-            $r = strtolower($r);
-            if (!in_array($r, $routeParts)) {
-                $routeParts[] = $r;
-            }
-        }
-
-        return [
-            'treemenu' => $treemenu,
-            'routes'   => $routeParts,
-        ];
+    $menuIds = [];
+    if ($user && !empty($user->menu_ids)) {
+        $menuIds = array_filter(array_map('intval', explode(',', $user->menu_ids)));
     }
 
-
-
-    private function buildMenuTree(array $elements, int $parentId = 0): array
-    {
-        $branch = [];
-
-        foreach ($elements as $element) {
-            if ((int)$element['parent_id'] === $parentId) {
-                $children = $this->buildMenuTree($elements, (int)$element['id']);
-                if (!empty($children)) {
-                    $element['children'] = $children;
-                }
-                $branch[] = $element;
-            }
-        }
-
-        return $branch;
+    // kalau kosong, biarkan view handle dashboard sendiri
+    if (empty($menuIds)) {
+        return ['treemenu' => '', 'routes' => ['admin/dashboard']];
     }
 
+    // ambil rows sesuai akses
+    $rows = $this->db->table('tbl_treemenu')
+        ->where('isdeleted', 0)
+        ->where('isactive', 1)
+        ->whereIn('id', $menuIds)
+        ->orderBy('sort_order', 'asc')
+        ->get()->getResultArray();
 
-    private function renderMenuTree(array $menuTree, string $baseUrl): string
-    {
-        $html = '<ul class="list-unstyled">';
+    // build tree berdasarkan parent_id dari DB (sesuai definisi tabel)
+    $tree = $this->buildMenuTree($rows);
 
-        foreach ($menuTree as $menu) {
-            $url  = strtolower(trim($menu['menuurl']));
-            $icon = esc($menu['menuicon'] ?: 'fa fa-circle-o');
-            $name = esc($menu['menuname']);
-            $hasChildren = isset($menu['children']) && count($menu['children']) > 0;
+    // render ke markup template (m-link / ms-link + collapse)
+    $currentPath = trim(service('uri')->getPath(), '/');
+    [$html, $routes] = $this->renderSidebarTemplate($tree, $currentPath);
 
-            $html .= '<li>';
+    // tambahkan route ekstra bila perlu (opsional)
+    $extraRoutes = [
+        'admin/users-json','admin/addnewadmin','admin/get-menuaccess',
+        'admin/administrator/details','admin/administrator/delete',
+        'admin/addnewjobs','admin/newjobs','admin/getCategoriesByGroup',
+        'admin/candidate','admin/candidate/getcandidate','admin/candidate/view',
+        'admin/file/viewbyfilename','admin/updatestatusadmin','admin/report/getreport',  'admin/vacancy',
+        'admin/vacancy/approve','admin/vacancy/reject','admin/vacancy/detail',
+        'admin/vacancyapproval/approve', 
+    ];
+    foreach ($extraRoutes as $r) {
+        $r = strtolower($r);
+        if (!in_array($r, $routes, true)) $routes[] = $r;
+    }
 
-            if ($hasChildren) {
-                $html .= '
-                    <a href="#" class="menu-toggle">
-                        <span class="' . $icon . '"></span>
-                        <span class="menu-label">' . $name . '</span>
-                        <span class="fa fa-chevron-right  toggle-icon"></span>
-                    </a>
-                    <ul class="list-unstyled submenu d-none">
-                        ' . $this->renderMenuTree($menu['children'], $baseUrl) . '
-                    </ul>';
+    return ['treemenu' => $html, 'routes' => $routes];
+}
+
+/** Build tree dari rows flat (pakai parent_id dari DB) */
+private function buildMenuTree(array $rows): array
+{
+    $byId = [];
+    foreach ($rows as $r) {
+        $r['children'] = [];
+        $byId[(int)$r['id']] = $r;
+    }
+    $roots = [];
+    foreach ($byId as $id => &$n) {
+        $pid = (int)($n['parent_id'] ?? 0);
+        if ($pid && isset($byId[$pid])) {
+            $byId[$pid]['children'][] = &$n;
+        } else {
+            $roots[] = &$n;
+        }
+    }
+    return $roots;
+}
+
+/**
+ * Render tree → deretan <li>…</li> sesuai template sidebar Pixelwibes:
+ * - Root tanpa anak: <a class="m-link"><i class="... fs-5"></i> <span>Nama</span></a>
+ * - Root dengan anak: collapse <ul class="sub-menu collapse" id="menu-{id}">
+ * - Anak: <a class="ms-link">Nama</a>
+ */
+private function renderSidebarTemplate(array $nodes, string $currentPath, int $depth = 0): array
+{
+    $html = '';
+    $routes = [];
+
+    foreach ($nodes as $n) {
+        $url   = ltrim(strtolower(trim((string)($n['menuurl'] ?? ''))), '/'); // contoh: admin/reports
+        $name  = esc($n['menuname'] ?? 'Menu', 'html');
+        $icon  = trim((string)($n['menuicon'] ?? '')); // IKUTI DB (fa/icofont/bi), tidak diubah
+        if ($icon === '') $icon = 'icofont-ui-bulleted-list';
+
+        $children = $n['children'] ?? [];
+        $hasKids  = !empty($children);
+
+        $isActiveSelf = $url !== '' && ($currentPath === $url || str_starts_with($currentPath, $url.'/'));
+        if ($url) $routes[] = $url;
+
+        // render anak dulu untuk tahu apakah ada yang aktif (tentukan "show")
+        $childHtml = '';
+        $childActive = false;
+        if ($hasKids) {
+            [$childHtml, $childRoutes, $childActive] = $this->renderSubmenuTemplate($children, $currentPath, $depth + 1);
+            $routes = array_merge($routes, $childRoutes);
+        }
+
+        if ($depth === 0) { // ROOT
+            if ($hasKids) {
+                $collapseId = 'menu-' . (int)$n['id'];
+                $liClass    = ($isActiveSelf || $childActive) ? '' : 'collapsed';
+                $showClass  = ($isActiveSelf || $childActive) ? ' show' : '';
+
+                $html .= '<li class="'.$liClass.'">';
+                $html .=   '<a class="m-link" data-bs-toggle="collapse" data-bs-target="#'.$collapseId.'" href="#">'
+                        .  '<i class="'.$icon.' fs-5"></i> <span>'.$name.'</span>'
+                        .  '<span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span>'
+                        .  '</a>';
+                $html .=   '<ul class="sub-menu collapse'.$showClass.'" id="'.$collapseId.'">'.$childHtml.'</ul>';
+                $html .= '</li>';
             } else {
-                $html .= '
-                    <a href="' . $baseUrl . $url . '" class="menu-link">
-                        <span class="' . $icon . '"></span>
-                        <span class="menu-label">' . $name . '</span>
-                    </a>';
+                $activeCls = $isActiveSelf ? ' active' : '';
+                $html .= '<li><a class="m-link'.$activeCls.'" href="'.site_url($url).'">'
+                      .  '<i class="'.$icon.' fs-5"></i> <span>'.$name.'</span></a></li>';
             }
+        } else { // CHILDREN (depth >= 1)
+            if ($hasKids) {
+                $collapseId = 'menu-' . (int)$n['id'];
+                $liClass    = ($isActiveSelf || $childActive) ? '' : 'collapsed';
+                $showClass  = ($isActiveSelf || $childActive) ? ' show' : '';
 
-            $html .= '</li>';
+                $html .= '<li class="'.$liClass.'">';
+                $html .=   '<a class="ms-link" data-bs-toggle="collapse" data-bs-target="#'.$collapseId.'" href="#">'
+                        .  $name
+                        .  '<span class="arrow icofont-rounded-down ms-auto text-end fs-6"></span>'
+                        .  '</a>';
+                $html .=   '<ul class="sub-menu collapse'.$showClass.'" id="'.$collapseId.'">'.$childHtml.'</ul>';
+                $html .= '</li>';
+            } else {
+                $activeCls = $isActiveSelf ? ' active' : '';
+                $html .= '<li><a class="ms-link'.$activeCls.'" href="'.site_url($url).'">'.$name.'</a></li>';
+            }
         }
-
-        $html .= '</ul>';
-        return $html;
     }
+
+    return [$html, array_values(array_unique($routes))];
+}
+
+/** Render anak + info apakah ada yang aktif (untuk membuka parent) */
+private function renderSubmenuTemplate(array $children, string $currentPath, int $depth): array
+{
+    [$html, $routes] = $this->renderSidebarTemplate($children, $currentPath, $depth);
+    $hasActive = str_contains($html, ' class="ms-link active"') || str_contains($html, ' class="m-link active"');
+    return [$html, $routes, $hasActive];
+}
+
 
 
 

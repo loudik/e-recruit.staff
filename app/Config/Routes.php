@@ -42,6 +42,9 @@ $routes->post('loginpage/register', 'Home::fn_register');
 $routes->post('loginpage/validationlogin', 'Home::fn_validationlogin');
 
 
+// Approve Email
+$routes->get('vacancyapproval/approve', 'Admin::approve', ['as' => 'vacancy-approve']);
+
 // Login
 
 $routes->group('', ['filter' => 'afterlogin'], function ($routes) {
@@ -50,6 +53,9 @@ $routes->get('auth/callback', 'Oauth::callback');
 $routes->get('auth/login', 'Oauth::login');
 $routes->post('auth/login', 'Oauth::fn_loginform');
 });
+
+
+
 
 
 $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
@@ -95,6 +101,12 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');
   $routes->get('get-menuaccess', 'Admin::get_menuaccess');
   $routes->post('updatestatusadmin', 'Admin::fn_updatestatusadmin');
+   $routes->get('vacancy', 'Admin::fn_getvacancy');
+    $routes->post('vacancy/submit', 'Admin::fn_submitvacancyform');
+   
+
+
+
 
 
 

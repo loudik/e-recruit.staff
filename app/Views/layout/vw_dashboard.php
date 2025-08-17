@@ -1,523 +1,568 @@
 <!doctype html>
-<html lang="en" class="pxp-root">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html class="no-js" lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Jobs – Apply</title>
 
-        <!-- <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon"> -->
-         <link rel="icon" href="<?= $logoPath ?>" type="image/png">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
-        <link href="<?= base_url('assets/css/bootstrap.min.css') ?>" rel="stylesheet">
-        <link rel="stylesheet" href="<?= base_url('assets/css/font-awesome.min.css') ?>">
-        <link rel="stylesheet" href="<?= base_url('assets/css/owl.carousel.min.css') ?>">
-        <link rel="stylesheet" href="<?= base_url('assets/css/owl.theme.default.min.css') ?>">
-        <link rel="stylesheet" href="<?= base_url('assets/css/animate.css') ?>">
-        <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+  <link rel="icon" href="<?= $logoPath ?>" type="image/png">
 
-        <title>Home Recruitment</title>
-    </head>
-    <body>
-        <div class="pxp-preloader"><span>Loading...</span></div>
+  <!-- HEAD (CSS & Favicon) -->
+  <link rel="icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
+  <link rel="stylesheet" href="<?= base_url('assets/plugin/nouislider/nouislider.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('assets/css/ebazar.style.min.css') ?>">
+  <style>
+    .job-card .meta{gap:.75rem}
+    .job-card .meta i{opacity:.8}
+    .job-badge{font-size:.75rem}
+    .filter-title .title{display:block;font-weight:700}
 
-        <header class="pxp-header fixed-top">
-            <div class="pxp-container">
-                <div class="pxp-header-container">
-                    <div class="pxp-logo">
-                         <a href="https://www.anp.tl/" target="_blank" class="pxp-animate">
-                            <img src="<?= base_url('anplogo.png') ?>" alt="Logo" style="height: 60px;">
-                        </a>
+     .hero-img{max-height:380px;object-fit:cover;width:100%}
+  </style>
+</head>
+<body>
+<div id="ebazar-layout" class="theme-blue">
 
+  <!-- sidebar -->
+  <div class="sidebar px-4 py-4 py-md-4 me-0">
+    <div class="d-flex flex-column h-100">
+      <a href="<?= base_url() ?>" class="mb-0 brand-icon">
+        <span class="logo-icon"><i class="bi bi-briefcase-fill fs-4"></i></span>
+        <span class="logo-text">Careers</span>
+      </a>
 
-                    </div>
-                    <div class="pxp-nav-trigger navbar d-xl-none flex-fill">
-                        <a role="button" data-bs-toggle="offcanvas" data-bs-target="#pxpMobileNav" aria-controls="pxpMobileNav">
-                            <div class="pxp-line-1"></div>
-                            <div class="pxp-line-2"></div>
-                            <div class="pxp-line-3"></div>
-                        </a>
-                        <div class="offcanvas offcanvas-start pxp-nav-mobile-container" tabindex="-1" id="pxpMobileNav">
-                            <div class="offcanvas-header">
-                                <div class="pxp-logo">
-                                    <a href="index.html" class="pxp-animate"><span style="color: var(--pxpMainColor)">A</span>NP</a>
-                                </div>
-                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <nav class="pxp-nav-mobile">
-                                    <ul class="navbar-nav justify-content-end flex-grow-1">
-                                        <li class="nav-item dropdown">
-                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Home</a>
-                                        </li>
-                                        <li class="nav-item dropdown">
-                                            <a role="button" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#job-1">Find Jobs & Interships</a>
-                                        </li>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="<?= site_url('logout') ?>">Logout</a></li>
-                                        </ul>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                    <nav class="pxp-nav dropdown-hover-all d-none d-xl-block">
-                        <ul>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">Home</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#job-1" class="dropdown-toggle" data-bs-toggle="dropdown">Find Jobs  & Interships</a>
-                            </li>
-                            <?php 
-                            if (session()->get('login_id') != "") {
-                                $logout=site_url('logoutstaff');
-                                echo "<li><a class='dropdown-item' href=$logout>Logout</a></li>";
-                            }
-                            ?>
+      <ul class="menu-list flex-grow-1 mt-3">
+        <li><a class="m-link" href="<?= base_url() ?>"><i class="icofont-home fs-5"></i> <span>Dashboard</span></a></li>
 
-                        </ul>
-                    </nav>
-                    <nav class="pxp-user-nav d-none d-sm-flex">
-                      </nav>
-                </div>
-            </div>
-        </header>
+        <!-- Jobs menu -->
+        <li class="collapsed">
+          <a class="m-link active" data-bs-toggle="collapse" data-bs-target="#menu-jobs" href="#">
+            <i class="icofont-briefcase-2 fs-5"></i> <span>Jobs</span>
+            <span class="arrow icofont-rounded-down ms-auto text-end fs-5"></span>
+          </a>
+          <ul class="sub-menu collapse show" id="menu-jobs">
+            <li><a class="ms-link active" href="#">Open Positions</a></li>
+            <li><a class="ms-link" href="#">My Applications</a></li>
+            <li><a class="ms-link" href="#">FAQ</a></li>
+          </ul>
+        </li>
 
-        <section class="pxp-hero vh-100" style="background-color: var(--pxpMainColorLight);">
-            <div class="pxp-hero-caption">
-                <div class="pxp-container">
-                    <div class="row pxp-pl-80 align-items-center justify-content-between">
-                        <div class="col-12 col-xl-6 col-xxl-5">
-                            <h1>Finds the perfect<br><span style="color: var(--pxpMainColor);">job</span> for you</h1>
-                            <div class="pxp-hero-form pxp-hero-form-round mt-3 mt-lg-4">
-                                <form class="row gx-3 align-items-center" method="get" action="<?= base_url('/') ?>">
-                                    <div class="col-12 col-sm">
-                                        <div class="mb-3 mb-sm-0">
-                                            <input type="text" class="form-control" name="q" placeholder="Job title or keyword">
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-sm-auto">
-                                        <button><span class="fa fa-search"></span></button>
-                                    </div>
-                                </form>
-                            </div>
+        <!-- Keep other menus if needed -->
+        <li><a class="m-link" href="#"><i class="icofont-page fs-5"></i> <span>Other Pages</span></a></li>
+      </ul>
 
-                            <div class="pxp-hero-searches-container">
-                              <div class="pxp-hero-searches-label">Popular Searches</div>
-                                <div class="pxp-hero-searches">
-                                  <div class="pxp-hero-searches-items">
-                                      <?php foreach ($popular_keywords as $keyword): ?>
-                                          <a href="<?= base_url('/') ?>?q=<?= urlencode($keyword) ?>"><?= esc($keyword) ?></a>
-                                      <?php endforeach; ?>
-                                  </div>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="d-none d-xl-block col-xl-5 position-relative">
-                            <div class="pxp-hero-cards-container pxp-animate-cards pxp-mouse-move" data-speed="160">
-                                <div class="pxp-hero-card pxp-cover pxp-cover-top" style="background-image: url('<?= base_url('assets/images/jobs1.jpg'); ?>');"></div>
-                                <div class="pxp-hero-card-dark"></div>
-                                <div class="pxp-hero-card-light"></div>
-                            </div>
+      <button type="button" class="btn btn-link sidebar-mini-btn text-light">
+        <span class="ms-2"><i class="icofont-bubble-right"></i></span>
+      </button>
+    </div>
+  </div>
 
-                            <div class="pxp-hero-card-info-container pxp-mouse-move" data-speed="60">
-                                <div class="pxp-hero-card-info pxp-animate-bounce">
-                                    <?php foreach ($jobCategories as $cat): ?>
-                                        <div class="pxp-hero-card-info-item">
-                                            <div class="pxp-hero-card-info-item-number">
-                                                <?= esc($cat['count']) ?><span>job offers</span>
-                                            </div>
-                                            <div class="pxp-hero-card-info-item-description">
-                                                in <?= esc($cat['category']) ?>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
+  <!-- main body area -->
+  <div class="main px-lg-4 px-md-4">
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pxp-hero-right-bg-card pxp-has-animation"></div>
-        </section>
-        <section class="mt-100">
-            <div class="pxp-container">
-                <div class="row">
-                    <div class="col-lg-5 col-xl-4 col-xxl-3">
-                        <div class="pxp-jobs-list-side-filter">
-                            <div class="pxp-list-side-filter-header d-flex d-lg-none">
-                                <div class="pxp-list-side-filter-header-label">Filter Jobs</div>
-                                <a role="button"><span class="fa fa-sliders"></span></a>
-                            </div>
-                            <div class="mt-4 mt-lg-0 d-lg-block pxp-list-side-filter-panel">
-                                <h3 class="mt-3 mt-lg-4">Category</h3>
-                                  <div class="mt-2 mt-lg-3">
-                                      <div class="input-group">
-                                          <span class="input-group-text"><span class="fa fa-folder-o"></span></span>
-                                          <select class="form-select" name="category">
-                                              <option value="">All categories</option>
-                                              <?php foreach ($categories as $cat): ?>
-                                                  <option value="<?= esc($cat['category']) ?>">
-                                                      <?= esc($cat['category']) ?>
-                                                  </option>
-                                              <?php endforeach; ?>
-                                          </select>
-                                      </div>
-                                  </div>
+    <!-- Header -->
+    <div class="header">
+      <nav class="navbar py-4">
+        <div class="container-xxl">
 
-
-                                <h3 class="mt-3 mt-lg-4">Type of Candidate</h3>
-                                <div class="list-group mt-2 mt-lg-3">
-                                  
-                                   
-                                    <?php if (!empty($jobTypes)): ?>
-                                        <?php foreach ($jobTypes as $job): ?>
-                                            <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3">
-                                            <span class="d-flex">
-                                                <input class="form-check-input me-2" type="checkbox" name="job_types[]" value="<?= esc($job['type']) ?>">
-                                                <?= esc($job['type']) ?>
-                                            </span>
-                                            <span class="badge rounded-pill"><?= esc($job['count']) ?></span>
-                                            </label>
-                                          <?php endforeach; ?>
-                                        <?php else: ?>
-                                        <p>No job types found.</p>
-                                        <?php endif; ?>
-                                </div>
-
-                                <h3 class="mt-3 mt-lg-4">Experience Level</h3>
-                                <div class="list-group mt-2 mt-lg-3">
-                                    <?php foreach ($Levels as $level): ?>
-                                        <?php
-                                            $labelText = esc($level['level']);
-                                            $count = esc($level['count']);
-                                            $isChecked = in_array($labelText, ($_GET['experience'] ?? [])); 
-                                        ?>
-                                        <label class="list-group-item d-flex justify-content-between align-items-center mt-2 mt-lg-3 <?= $isChecked ? 'pxp-checked' : '' ?>">
-                                            <span class="d-flex">
-                                                <input class="form-check-input me-2"
-                                                    type="checkbox"
-                                                    name="experience[]"
-                                                    value="<?= $labelText ?>"
-                                                    <?= $isChecked ? 'checked' : '' ?>>
-                                                <?= $labelText ?>
-                                            </span>
-                                            <span class="badge rounded-pill"><?= $count ?></span>
-                                        </label>
-                                    <?php endforeach; ?>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-xl-8 col-xxl-9">
-                        <div class="pxp-jobs-list-top mt-4 mt-lg-0">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                    <select name="sort" class="form-select" onchange="this.form.submit()">
-                                        <option value="0" <?= $sort == '0' ? 'selected' : '' ?>>Most relevant</option>
-                                        <option value="1" <?= $sort == '1' ? 'selected' : '' ?>>Newest</option>
-                                        <option value="2" <?= $sort == '2' ? 'selected' : '' ?>>Oldest</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                      <div  id="job-1" scrool-behavior="smooth">
-                            
-                        <?php foreach ($jobs as $job): ?>
-                          <div class="pxp-jobs-card-3 pxp-has-border mb-4">
-                              <div class="row align-items-center justify-content-between">
-                                  <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
-                                      <a href="#" class="pxp-jobs-card-3-company-logo" style="background-image: url('<?= base_url('assets/images/customer-1.png'); ?>');"></a>
-                                  </div>
-
-                                  <div class="col-sm-9 col-md-10 col-lg-9 col-xl-10 col-xxl-4">
-                                      <a href="<?= base_url('job/' . esc($job['id'])) ?>" class="pxp-jobs-card-3-title mt-3 mt-sm-0">
-                                          <?= esc($job['jobs']) ?>
-                                      </a>
-                                      <div class="pxp-jobs-card-3-details mt-2">
-                                          <a href="#" class="pxp-jobs-card-3-location">
-                                              <span class="fa fa-globe"></span> <?= esc($job['loc']) ?>
-                                          </a>
-                                          <div class="pxp-jobs-card-3-type"><?= esc($job['type']) ?></div>
-                                      </div>
-                                  </div>
-
-                                  <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
-                                      <a href="#" class="pxp-jobs-card-3-category mb-2">
-                                          <div class="pxp-jobs-card-3-category-label"><?= esc($job['category']) ?></div>
-                                      </a>
-                                  </div>
-
-                                  <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
-                                      <a href="<?= base_url('/getformregistration?id=' . esc($job['idtrx'])) ?>" class="btn rounded-pill pxp-card-btn">Apply</a>
-                                  </div>
-                              </div>
-                          </div>
-                        <?php endforeach; ?>
-                        </div>
-                       <div class="row mt-4 mt-lg-5 justify-content-between align-items-center">
-                        <div class="col-auto">
-                            <nav class="mt-3 mt-sm-0" aria-label="Jobs list pagination">
-                            <ul class="pagination pxp-pagination" id="pagination">
-                            </ul>
-                            </nav>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-
-        <footer class="pxp-main-footer mt-100">
-            <div class="pxp-main-footer-top pt-60 pb-40" style="background-color: var(--pxpMainColorLight);">
-                <div class="pxp-container">
-                    <div class="row">
-                        <div class="col-lg-4 col-xl-4 col-xxl-4 mb-4">
-
-                            <div class="pxp-footer-section mt-3 mt-md-4">
-                                <h3>Call us</h3>
-                                <div class="pxp-footer-phone">+67073099996</div>
-                            </div>
-
-                            <div class="mt-3 mt-md-4 pxp-footer-section">
-                                <div class="pxp-footer-text">
-                                    City 8 Compound, Rua Has Laran<br>
-                                    Aldeia Fomento II,<br>
-                                    Suco Comoro, Dom Aleixo,<br>
-                                    Dili, Timor-Leste<br>
-                                    <a href="mailto:info@anp.tl">info@anp.tl</a>
-                                </div>
-                            </div>
-
-                            <!-- Connect with Us moved here -->
-                            <div class="pxp-footer-section mt-4">
-                                <h3>Connect with Us</h3>
-                                <ul class="list-unstyled d-flex gap-3 justify-content-start mt-3">
-                                    <li>
-                                        <a href="https://m.facebook.com/profile.php?id=100069366932789" target="_blank" rel="noopener">
-                                            <span class="fa fa-facebook fa-lg"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.instagram.com/anp_timorleste/" target="_blank" rel="noopener">
-                                            <span class="fa fa-instagram fa-lg"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.youtube.com/@anptimor-leste4098" target="_blank" rel="noopener">
-                                            <span class="fa fa-youtube fa-lg"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.linkedin.com/company/anp-timorleste/" target="_blank" rel="noopener">
-                                            <span class="fa fa-linkedin fa-lg"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-
-                        <!-- Right Section: Map + Connect With Us -->
-                        <div class="col-lg-8 col-xl-7 col-xxl-8 mt-3 mt-md-4">
-                            <div class="pxp-footer-section mb-4">
-                                <h3>Our Location</h3>
-                                <div style="border-radius: 10px; overflow: hidden;">
-                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.2920892185734!2d125.53680527589647!3d-8.567887586917811!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2d01dda15b85e9a1%3A0xe0b45b7926718d24!2sCity-8!5e0!3m2!1sen!2stl!4v1751528029501!5m2!1sen!2stl" 
-                                         width="100%" 
-                                        height="300" 
-                                        style="border:0; border-radius: 10px;" 
-                                        allowfullscreen="" 
-                                        loading="lazy" 
-                                        referrerpolicy="no-referrer-when-downgrade">
-                                    </iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
+          <div class="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
+            <div class="d-flex">
+              <a class="nav-link text-primary collapsed" href="#" title="Get Help">
+                <i class="icofont-info-square fs-5"></i>
+              </a>
             </div>
 
-            <!-- BOTTOM SECTION -->
-            <div class="pxp-main-footer-bottom" style="background-color: var(--pxpMainColorLight);">
-                <div class="pxp-container">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-lg-auto">
-                            <div class="pxp-footer-copyright pxp-text-light text-center">
-                               All Contents Copyright © ANP Timor-Leste – 2025. All rights Reserved.
-                            </div>
-                        </div>
-                    </div>
+            <div class="dropdown zindex-popover">
+              <a class="nav-link dropdown-toggle pulse" href="#" role="button" data-bs-toggle="dropdown">
+                <img src="<?= base_url('assets/images/flag/GB.png') ?>" alt="">
+              </a>
+              <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-md-end p-0 m-0 mt-3">
+                <div class="card border-0">
+                  <ul class="list-unstyled py-2 px-3">
+                    <li><a href="#"><img src="<?= base_url('assets/images/flag/GB.png') ?>" alt=""> English</a></li>
+                    <li><a href="#"><img src="<?= base_url('assets/images/flag/DE.png') ?>" alt=""> German</a></li>
+                    <li><a href="#"><img src="<?= base_url('assets/images/flag/FR.png') ?>" alt=""> French</a></li>
+                    <li><a href="#"><img src="<?= base_url('assets/images/flag/IT.png') ?>" alt=""> Italian</a></li>
+                    <li><a href="#"><img src="<?= base_url('assets/images/flag/RU.png') ?>" alt=""> Russian</a></li>
+                  </ul>
                 </div>
+              </div>
             </div>
-        </footer>
 
-
-
-        <div class="modal fade pxp-user-modal" id="pxp-signin-modal" aria-hidden="true" aria-labelledby="signinModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="pxp-user-modal-fig text-center">
-                            <img src="<?= base_url('assets/images/signin-fig.png')?>" alt="Sign in">
-                        </div>
-                        <h5 class="modal-title text-center mt-4" id="signinModal">Welcome back!</h5>
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" placeholder="Email address">
-                                <label for="pxp-signin-email">Email address</label>
-                                <span class="fa fa-envelope-o"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" placeholder="Password">
-                                <label for="pxp-signin-password">Password</label>
-                                <span class="fa fa-lock"></span>
-                            </div>
-                              <button type="submit" class="btn rounded-pill pxp-modal-cta w-100" onclick="fn_login()">Login</button>
-                            <div class="mt-4 text-center pxp-modal-small">
-                                <a href="#" class="pxp-modal-link">Forgot password</a>
-                            </div>
-                            <div class="mt-4 text-center pxp-modal-small">
-                                New to Account? <a role="button" class="" data-bs-target="#pxp-signup-modal" data-bs-toggle="modal" data-bs-dismiss="modal">Create an account</a>
-                            </div>
-                    </div>
+            <div class="dropdown user-profile ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
+              <div class="u-info me-2">
+                <p class="mb-0 text-end line-height-sm "><span class="font-weight-bold">Guest</span></p>
+                <small>Candidate</small>
+              </div>
+              <a class="nav-link dropdown-toggle pulse p-0" href="#" role="button" data-bs-toggle="dropdown" data-bs-display="static">
+                <img class="avatar lg rounded-circle img-thumbnail" src="<?= base_url('assets/images/profile_av.svg') ?>" alt="profile">
+              </a>
+              <div class="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0">
+                <div class="card border-0 w280">
+                  <div class="list-group m-2 ">
+                    <a href="#" class="list-group-item list-group-item-action border-0 "><i class="icofont-ui-user fs-5 me-3"></i>Profile</a>
+                    <a href="#" class="list-group-item list-group-item-action border-0 "><i class="icofont-logout fs-5 me-3"></i>Signout</a>
+                  </div>
                 </div>
+              </div>
             </div>
+
+            <div class="setting ms-2">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#Settingmodal"><i class="icofont-gear-alt fs-5"></i></a>
+            </div>
+          </div>
+
+          <!-- menu toggler -->
+          <button class="navbar-toggler p-0 border-0 menu-toggle order-3" type="button" data-bs-toggle="collapse" data-bs-target="#mainHeader">
+            <span class="fa fa-bars"></span>
+          </button>
+
+          <!-- main menu Search-->
+          <div class="order-0 col-lg-4 col-md-4 col-sm-12 col-12 mb-3 mb-md-0 ">
+            <div class="input-group flex-nowrap input-group-lg">
+              <input type="search" class="form-control" id="q" placeholder="Search jobs (title, keywords, department)" aria-label="search">
+              <button type="button" class="input-group-text" id="btnSearch"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+
+        </div>
+      </nav>
+    </div>
+
+
+
+    <div id="jobsHero" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#jobsHero" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#jobsHero" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#jobsHero" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#jobsHero" data-bs-slide-to="3" aria-label="Slide 4"></button>
+  </div>
+
+  <div class="carousel-inner rounded-3 overflow-hidden shadow-sm">
+    <div class="carousel-item active">
+      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Join our team">
+      <div class="carousel-caption text-start d-none d-md-block">
+        <h5 class="fw-bold">We’re Hiring</h5>
+        <p>Grow your career with us.</p>
+        <a href="#jobsGrid" class="btn btn-primary btn-sm">Lihat Lowongan</a>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Engineering">
+      <div class="carousel-caption d-none d-md-block">
+        <h5 class="fw-bold">Engineering & IT</h5>
+        <p>Build products that matter.</p>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <!-- perbaikan syntax slide ke-3 -->
+      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Culture">
+      <div class="carousel-caption text-end d-none d-md-block">
+        <h5 class="fw-bold">Great Culture</h5>
+        <p>Flexible, collaborative, impactful.</p>
+      </div>
+    </div>
+
+    <div class="carousel-item">
+      <!-- PAKAI salah satu src di bawah -->
+      <!-- Jika file sudah dipindah ke public: -->
+      <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote">
+      <!-- Jika masih di writable via route: -->
+      <!-- <img src="<?= site_url('uploads/img1.png') ?>" class="d-block w-100 hero-img" alt="Remote"> -->
+      <div class="carousel-caption d-none d-md-block">
+        <h5 class="fw-bold">Remote Friendly</h5>
+        <p>Bekerja dari mana saja.</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#jobsHero" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#jobsHero" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+    <!-- Body -->
+    <div class="body d-flex py-3">
+      <div class="container-xxl">
+
+        <!-- Title -->
+        <div class="row align-items-center">
+          <div class="border-0 mb-4">
+            <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+              <h3 class="fw-bold mb-0">Open Positions</h3>
+              <div class="text-muted">Find a role and apply in minutes.</div>
+            </div>
+          </div>
         </div>
 
-        <div class="modal fade pxp-user-modal" id="pxp-signup-modal" aria-hidden="true" aria-labelledby="signupModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="pxp-user-modal-fig text-center">
-                            <img src="images/signup-fig.png" alt="Sign up">
-                        </div>
-                        <h5 class="modal-title text-center mt-4" id="signupModal">Create an account</h5>
-                        <form class="mt-4">
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="pxp-signup-email" placeholder="Email address">
-                                <label for="pxp-signup-email">Email address</label>
-                                <span class="fa fa-envelope-o"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="pxp-signup-password" placeholder="Create password">
-                                <label for="pxp-signup-password">Create password</label>
-                                <span class="fa fa-lock"></span>
-                            </div>
-                            <a href="#" class="btn rounded-pill pxp-modal-cta">Continue</a>
-                            <div class="mt-4 text-center pxp-modal-small">
-                                Already have an account? <a role="button" class="" data-bs-target="#pxp-signin-modal" data-bs-toggle="modal">Sign in</a>
-                            </div>
-                        </form>
-                    </div>
+        <div class="row g-3 mb-3">
+          <!-- Filters -->
+          <div class="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
+            <div class="sticky-lg-top">
+              <div class="card mb-3">
+                <div class="reset-block d-flex justify-content-between align-items-center p-3">
+                  <div class="filter-title"><h4 class="title mb-0">Filter</h4></div>
+                  <button class="btn btn-primary" id="btnReset">Reset</button>
                 </div>
+              </div>
+
+              <!-- Department -->
+              <div class="card mb-3">
+                <div class="p-3">
+                  <div class="filter-title"><a class="title" data-bs-toggle="collapse" href="#fDept" aria-expanded="true">Department</a></div>
+                  <div class="collapse show" id="fDept">
+                    <div class="mt-2">
+                      <div class="form-check"><input class="form-check-input f-dept" type="checkbox" value="IT" id="d-it"><label class="form-check-label" for="d-it">IT</label></div>
+                      <div class="form-check"><input class="form-check-input f-dept" type="checkbox" value="Finance" id="d-fin"><label class="form-check-label" for="d-fin">Finance</label></div>
+                      <div class="form-check"><input class="form-check-input f-dept" type="checkbox" value="HR" id="d-hr"><label class="form-check-label" for="d-hr">HR</label></div>
+                      <div class="form-check"><input class="form-check-input f-dept" type="checkbox" value="Procurement" id="d-proc"><label class="form-check-label" for="d-proc">Procurement</label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Job Type -->
+              <div class="card mb-3">
+                <div class="p-3">
+                  <div class="filter-title"><a class="title" data-bs-toggle="collapse" href="#fType" aria-expanded="true">Job Type</a></div>
+                  <div class="collapse show" id="fType">
+                    <div class="mt-2">
+                      <div class="form-check"><input class="form-check-input f-type" type="checkbox" value="Full-time" id="t-ft"><label class="form-check-label" for="t-ft">Full-time</label></div>
+                      <div class="form-check"><input class="form-check-input f-type" type="checkbox" value="Part-time" id="t-pt"><label class="form-check-label" for="t-pt">Part-time</label></div>
+                      <div class="form-check"><input class="form-check-input f-type" type="checkbox" value="Contract" id="t-ct"><label class="form-check-label" for="t-ct">Contract</label></div>
+                      <div class="form-check"><input class="form-check-input f-type" type="checkbox" value="Internship" id="t-int"><label class="form-check-label" for="t-int">Internship</label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="card mb-3">
+                <div class="p-3">
+                  <div class="filter-title"><a class="title" data-bs-toggle="collapse" href="#fLoc" aria-expanded="true">Location</a></div>
+                  <div class="collapse show" id="fLoc">
+                    <div class="mt-2">
+                      <div class="form-check"><input class="form-check-input f-loc" type="checkbox" value="Dili" id="l-dili"><label class="form-check-label" for="l-dili">Dili</label></div>
+                      <div class="form-check"><input class="form-check-input f-loc" type="checkbox" value="Baucau" id="l-baucau"><label class="form-check-label" for="l-baucau">Baucau</label></div>
+                      <div class="form-check"><input class="form-check-input f-loc" type="checkbox" value="Remote" id="l-remote"><label class="form-check-label" for="l-remote">Remote</label></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Experience -->
+              <div class="card mb-3">
+                <div class="p-3">
+                  <div class="filter-title"><a class="title" data-bs-toggle="collapse" href="#fExp" aria-expanded="true">Experience</a></div>
+                  <div class="collapse show" id="fExp">
+                    <div class="mt-2">
+                      <select id="exp" class="form-select">
+                        <option value="">Any</option>
+                        <option>Junior (0–2y)</option>
+                        <option>Mid (2–5y)</option>
+                        <option>Senior (5y+)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Salary Range -->
+              <div class="card mb-3">
+                <div class="p-3">
+                  <div class="filter-title"><a class="title" data-bs-toggle="collapse" href="#fSalary" aria-expanded="true">Salary Range (USD)</a></div>
+                  <div class="collapse show" id="fSalary">
+                    <div class="price-range">
+                      <div class="price-amount d-flex gap-2 flex-wrap">
+                        <div class="flex-fill">
+                          <label class="fw-bold">Min</label>
+                          <input type="text" id="minAmount2" class="form-control">
+                        </div>
+                        <div class="flex-fill">
+                          <label class="fw-bold">Max</label>
+                          <input type="text" id="maxAmount2" class="form-control">
+                        </div>
+                      </div>
+                      <div id="slider-range2" class="slider-range mt-3"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
+          </div>
+
+          <!-- Jobs list -->
+          <div class="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
+            <div id="jobsGrid" class="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
+
+              <!-- Job card -->
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">Full-Stack Developer</h5>
+                      <span class="badge bg-success job-badge">Full-time</span>
+                    </div>
+                    <div class="text-muted mb-2">IT • Dili</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $1,200–$1,800</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 10</span>
+                    </div>
+                    <p class="mb-3 small">Build and maintain web apps (Go/CI4, React). Work with PostgreSQL, Docker, Azure.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="Full-Stack Developer"
+                            data-job-loc="Dili"
+                            data-job-type="Full-time">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">Database Support (GIP)</h5>
+                      <span class="badge bg-success job-badge">Full-time</span>
+                    </div>
+                    <div class="text-muted mb-2">Procurement • Dili</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $900–$1,300</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 05</span>
+                    </div>
+                    <p class="mb-3 small">Manage MySQL/PostgreSQL, troubleshoot user issues, support e-procurement workflows.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="Database Support (GIP)"
+                            data-job-loc="Dili"
+                            data-job-type="Full-time">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">HR Officer (Recruitment)</h5>
+                      <span class="badge bg-warning text-dark job-badge">Contract</span>
+                    </div>
+                    <div class="text-muted mb-2">HR • Remote</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $700–$1,000</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 01</span>
+                    </div>
+                    <p class="mb-3 small">Run job postings, shortlist candidates, coordinate interviews, maintain ATS.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="HR Officer (Recruitment)"
+                            data-job-loc="Remote"
+                            data-job-type="Contract">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">HR Officer (Recruitment)</h5>
+                      <span class="badge bg-warning text-dark job-badge">Contract</span>
+                    </div>
+                    <div class="text-muted mb-2">HR • Remote</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $700–$1,000</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 01</span>
+                    </div>
+                    <p class="mb-3 small">Run job postings, shortlist candidates, coordinate interviews, maintain ATS.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="HR Officer (Recruitment)"
+                            data-job-loc="Remote"
+                            data-job-type="Contract">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">HR Officer (Recruitment)</h5>
+                      <span class="badge bg-warning text-dark job-badge">Contract</span>
+                    </div>
+                    <div class="text-muted mb-2">HR • Remote</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $700–$1,000</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 01</span>
+                    </div>
+                    <p class="mb-3 small">Run job postings, shortlist candidates, coordinate interviews, maintain ATS.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="HR Officer (Recruitment)"
+                            data-job-loc="Remote"
+                            data-job-type="Contract">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card job-card h-100">
+                  <div class="p-3">
+                    <div class="d-flex justify-content-between align-items-start">
+                      <h5 class="mb-1">HR Officer (Recruitment)</h5>
+                      <span class="badge bg-warning text-dark job-badge">Contract</span>
+                    </div>
+                    <div class="text-muted mb-2">HR • Remote</div>
+                    <div class="meta d-flex flex-wrap text-muted mb-2">
+                      <span><i class="icofont-money-bag"></i> $700–$1,000</span>
+                      <span><i class="icofont-ui-calendar"></i> Posted Aug 01</span>
+                    </div>
+                    <p class="mb-3 small">Run job postings, shortlist candidates, coordinate interviews, maintain ATS.</p>
+                    <button class="btn btn-primary btn-sm btn-apply-job"
+                            data-job-title="HR Officer (Recruitment)"
+                            data-job-loc="Remote"
+                            data-job-type="Contract">View &amp; Apply</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pagination (dummy) -->
+            <div class="row g-3 mb-3">
+              <div class="col-md-12">
+                <nav class="justify-content-end d-flex">
+                  <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
         </div>
 
-    <script src="<?= base_url('assets/js/jquery-3.4.1.min.js') ?>"></script>
-      <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
-      <script src="<?= base_url('assets/js/owl.carousel.min.js') ?>"></script>
-      <script src="<?= base_url('assets/js/nav.js') ?>"></script>
-      <script src="<?= base_url('assets/js/main.js') ?>"></script>
+      </div>
+    </div>
 
-      <script>
-
-
-        $('a[href^="#"]').on('click', function (e) {
-          e.preventDefault();
-          $('html, body').animate({
-            scrollTop: $($(this).attr('href')).offset().top
-          }, 500);
-        });
+    
 
 
 
-    let currentPage = 1;
-    const perPage = 3;
 
-    function loadJobs(page = 1) {
-        fetch(`/jobs/pages?page=${page}`)
-            .then(res => res.json())
-            .then(data => {
-                currentPage = page;
 
-                const jobsList = document.getElementById('job-1');
-                jobsList.innerHTML = ''; 
+    
 
-                data.jobs.forEach(job => {
-                    const jobCard = `
-                        <div class="pxp-jobs-card-3 pxp-has-border mb-4">
-                            <div class="row align-items-center justify-content-between">
-                                <div class="col-sm-3 col-md-2 col-lg-3 col-xl-2 col-xxl-auto">
-                                    <a href="#" class="pxp-jobs-card-3-company-logo" style="background-image: url('/assets/images/customer-1.png');"></a>
-                                </div>
-                                <div class="col-sm-9 col-md-10 col-lg-9 col-xl-10 col-xxl-4">
-                                    <a href="/job/${job.idtrx}" class="pxp-jobs-card-3-title mt-3 mt-sm-0">
-                                        ${job.jobs}
-                                    </a>
-                                    <div class="pxp-jobs-card-3-details">
-                                        <a href="#" class="pxp-jobs-card-3-location">
-                                            <span class="fa fa-globe"></span>${job.loc}
-                                        </a>
-                                        <div class="pxp-jobs-card-3-type">${job.type}</div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 col-xl-6 col-xxl-4 mt-3 mt-xxl-0 d-flex flex-column align-items-start align-items-xxl-end">
-                                    <a href="#" class="pxp-jobs-card-3-category mb-2">
-                                        <div class="pxp-jobs-card-3-category-label">${job.category}</div>
-                                    </a>
-                                </div>
-                                <div class="col-sm-4 col-xl-2 col-xxl-auto mt-3 mt-xxl-0 pxp-text-right">
-                                    <a href="/getformregistration?idtrx=${job.idtrx}" class="btn rounded-pill pxp-card-btn">Apply</a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    jobsList.insertAdjacentHTML('beforeend', jobCard);
-                });
+    <!-- Settings Modal (optional, left as-is) -->
+    <div class="modal fade right" id="Settingmodal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog  modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Custom Settings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body custom_setting">
+            <!-- (content omitted for brevity) -->
+            <p class="text-muted small mb-0">Theme settings…</p>
+          </div>
+          <div class="modal-footer justify-content-start">
+            <button type="button" class="btn btn-white border lift" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary lift">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-                updatePagination(currentPage, data.total);
-            });
-    }
+  </div><!-- /main -->
+</div><!-- /layout -->
 
-        function updatePagination(currentPage, total) {
-            console.log('Membuat pagination untuk total:', total); // 👈 debug log
-
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            const perPage = 3;
-            const totalPages = Math.ceil(total / perPage);
-
-            for (let i = 1; i <= totalPages; i++) {
-                const li = document.createElement('li');
-                li.className = 'page-item' + (i === currentPage ? ' active' : '');
-                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-                li.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    loadJobs(i);
-                });
-                pagination.appendChild(li);
-            }
+<!-- JS -->
+<script src="<?= base_url('assets/bundles/libscripts.bundle.js') ?>"></script>
+<script src="<?= base_url('assets/plugin/nouislider/nouislider.min.js') ?>"></script>
+<script src="<?= base_url('assets/js/template.js')?>"></script>
+<script>
+  // Salary slider
+  (function(){
+    var stepsSlider2 = document.getElementById('slider-range2');
+    var inputMin = document.getElementById('minAmount2');
+    var inputMax = document.getElementById('maxAmount2');
+    if(stepsSlider2){
+      noUiSlider.create(stepsSlider2, {
+        start: [600, 2000],
+        connect: true,
+        step: 50,
+        range: {'min': 0, 'max': 5000}
+      });
+      stepsSlider2.noUiSlider.on('update', function (values, handle) {
+        (handle ? inputMax : inputMin).value = Math.round(values[handle]);
+      });
+      // manual input -> slider
+      function setFromInputs(){
+        var min = parseInt(inputMin.value||0,10);
+        var max = parseInt(inputMax.value||0,10);
+        if(!isNaN(min) && !isNaN(max) && min <= max){
+          stepsSlider2.noUiSlider.set([min, max]);
         }
+      }
+      inputMin.addEventListener('change', setFromInputs);
+      inputMax.addEventListener('change', setFromInputs);
+    }
+  })();
 
+  // Reset filters
+  document.getElementById('btnReset').addEventListener('click', function(){
+    document.querySelectorAll('.f-dept,.f-type,.f-loc').forEach(el=>{el.checked=false;});
+    const exp = document.getElementById('exp'); if(exp) exp.value='';
+    const q = document.getElementById('q'); if(q) q.value='';
+    const min = document.getElementById('minAmount2'), max = document.getElementById('maxAmount2');
+    if(min) min.value=600; if(max) max.value=2000;
+    const slider = document.getElementById('slider-range2');
+    if(slider && slider.noUiSlider){ slider.noUiSlider.set([600,2000]); }
+  });
 
-        // Panggil pertama kali
-        document.addEventListener('DOMContentLoaded', () => {
-            loadJobs(1);
-        });
-        
-      </script>
-    </body>
+  // Open Apply modal with job data
+  const applyModalEl = document.getElementById('applyJobModal');
+  const applyModal = new bootstrap.Modal(applyModalEl);
+  document.querySelectorAll('.btn-apply-job').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      const title = this.dataset.jobTitle || 'Job';
+      const loc = this.dataset.jobLoc || '';
+      const type = this.dataset.jobType || '';
+      document.getElementById('applyJobTitle').textContent = title;
+      document.getElementById('applyJobLoc').value = loc;
+      document.getElementById('applyHiddenJobTitle').value = title;
+      document.getElementById('applyHiddenJobType').value = type;
+      applyModal.show();
+    });
+  });
+
+  // Submit application (POST to CI4 endpoint)
+  document.getElementById('applyForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
+    const fd = new FormData(form);
+    try{
+      const res = await fetch("<?= site_url('jobs/apply') ?>", {
+        method: 'POST',
+        body: fd
+      });
+      if(!res.ok) throw new Error('Network error');
+      // Expect JSON {success:true,message:"..."}
+      const data = await res.json().catch(()=>({success:true}));
+      alert(data.message || 'Application submitted. Thank you!');
+      form.reset();
+      applyModal.hide();
+    }catch(err){
+      console.error(err);
+      alert('Failed to submit application. Please try again.');
+    }
+  });
+</script>
+</body>
 </html>
