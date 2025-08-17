@@ -29,3 +29,4 @@ writable/debugbar/*
 !writable/debugbar/.gitkeep
 !writable/debugbar/index.html
 Settigns NGINXnt/
+public/assets/assets
