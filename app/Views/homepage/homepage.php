@@ -51,7 +51,7 @@
     <a href="<?= base_url('loginpage') ?>" class="role-option">
       <i class="fas fa-user-tie"></i> Recruitment Staff
     </a>
-    <a href="#" class="role-option" id="logoutToHome">
+    <a href="<?= esc($gip_url)?>" class="role-option" id="logoutToHomex">
       <i class="fas fa-graduation-cap"></i> Internship
     </a>
 

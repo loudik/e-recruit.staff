@@ -91,8 +91,6 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('report/getreport' , 'Report::fn_getreport');
   $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
   $routes->get('logo-base64', 'Report::logoBase64');
-
-  // $routes->get('administrator', 'Admin::fn_getadministrator');
   $routes->get('administrator', 'Admin::fn_getadministrator'); // form kosong atau default
   $routes->get('administrator/details', 'Admin::fn_detailadministrator');
   $routes->post('administrator/delete', 'Admin::fn_deleteaccess'); // ambil data admin
@@ -101,13 +99,20 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');
   $routes->get('get-menuaccess', 'Admin::get_menuaccess');
   $routes->post('updatestatusadmin', 'Admin::fn_updatestatusadmin');
-   $routes->get('vacancy', 'Admin::fn_getvacancy');
-    $routes->post('vacancy/submit', 'Admin::fn_submitvacancyform');
-   
+  $routes->get('vacancy', 'Admin::fn_getvacancy');
+  $routes->post('vacancy/submit', 'Admin::fn_submitvacancyform');
+  // $routes->get('vacancyapproval/approve', 'Admin::Approve', ['as' => 'vacancy-approve']);
+  $routes->match(['get','post'], 'vacancyapproval/approve', 'Admin::approve', ['as' => 'vacancy-approve']);
+  $routes->get('vacancyverify/signature', 'Admin::signature', ['as' => 'vacancy-signature']);
+  $routes->post('vacancy/do-approve', 'Admin::fn_doapprove', ['as' => 'vacancy-do-approve']);
+
+  $routes->get ('vacancy/receive',         'Admin::receive',       ['as' => 'vacancy-receive']); 
+    // $routes->match(['get','post'], 'vacancyapproval/receive', 'Admin::receive', ['as' => 'vacancy-receive']);
+  $routes->post('vacancy/do-receive',      'Admin::fn_doreceive',  ['as' => 'vacancy-do-receive']);
 
 
-
-
+  // notify HRDS
+  $routes->get('notifyhrds', 'Admin::fn_getnotifyhrds');
 
 
 

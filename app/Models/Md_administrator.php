@@ -249,8 +249,8 @@ class Md_administrator extends Model
         'admin/addnewjobs','admin/newjobs','admin/getCategoriesByGroup',
         'admin/candidate','admin/candidate/getcandidate','admin/candidate/view',
         'admin/file/viewbyfilename','admin/updatestatusadmin','admin/report/getreport',  'admin/vacancy',
-        'admin/vacancy/approve','admin/vacancy/reject','admin/vacancy/detail',
-        'admin/vacancyapproval/approve', 
+        'admin/vacancy/approve','admin/vacancyapproval/approve', 'admin/vacancyverify/signature','admin/vacancy/do-approve','admin/vacancy/receive','admin/vacancy/do-receive','admin/vacancyapproval/receive'
+        
     ];
     foreach ($extraRoutes as $r) {
         $r = strtolower($r);

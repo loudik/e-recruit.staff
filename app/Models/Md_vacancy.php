@@ -17,7 +17,7 @@ class Md_vacancy extends Model
         'apvname','apvposition','apv_ms_id','apv_email',
         'recname','recposition','rec_ms_id','rec_email',
         'status','approval_token','approval_token_exp',
-        'approved_at','qr_text_approved',
+        'approved_at','qr_text_approved','receive_token','receive_token_exp',
         'received_at','qr_text_received',
         'file','remark',
         'idt','iby','udt','uby'

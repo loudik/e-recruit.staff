@@ -83,6 +83,10 @@ class Oauth extends Controller
             ]);
 
             $userGraph = json_decode($graphResponse->getBody(), true);
+            
+
+
+        
             try {
                 $photoResponse = $client->get('https://graph.microsoft.com/v1.0/me/photo/$value', [
                     'headers' => [
@@ -91,8 +95,7 @@ class Oauth extends Controller
                     'stream' => true
                 ]);
 
-                $base64Image = ($photoResponse->getStatusCode() === 200)
-                    ? 'data:image/jpeg;base64,' . base64_encode($photoResponse->getBody())
+                $base64Image = ($photoResponse->getStatusCode() === 200)? 'data:image/jpeg;base64,' . base64_encode($photoResponse->getBody())
                     : $defaultAvatar;
             } catch (\Exception $e) {
                 $base64Image = $defaultAvatar;
@@ -131,8 +134,6 @@ class Oauth extends Controller
         if (!$token) {
             return $this->response->setJSON(['error' => 'Access token not found.']);
         }
-
-
 
         $client = \Config\Services::curlrequest();
         $search = strtolower(trim($this->request->getGet('search') ?? ''));

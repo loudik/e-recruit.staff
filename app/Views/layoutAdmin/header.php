@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title><?= esc($title ?? '::eBazar:: Dashboard') ?></title>
+  <title><?= esc($title ?? 'ANP Dashboard') ?></title>
   <link rel="icon" href="<?= base_url('favicon.ico') ?>" type="image/x-icon">
 
   <!-- plugin css -->

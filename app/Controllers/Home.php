@@ -225,6 +225,7 @@ class Home extends BaseController
     public function fn_gethomepage()
     {
         $this->data['title'] = 'Homepage';
+        $this->data['gip_url'] = getenv('GIP_URL') ?: 'http://localhost:8080/';
         return view('homepage/homepage',$this->data);
     }
 
