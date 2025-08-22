@@ -249,7 +249,8 @@ class Md_administrator extends Model
         'admin/addnewjobs','admin/newjobs','admin/getCategoriesByGroup',
         'admin/candidate','admin/candidate/getcandidate','admin/candidate/view',
         'admin/file/viewbyfilename','admin/updatestatusadmin','admin/report/getreport',  'admin/vacancy',
-        'admin/vacancy/approve','admin/vacancyapproval/approve', 'admin/vacancyverify/signature','admin/vacancy/do-approve','admin/vacancy/receive','admin/vacancy/do-receive','admin/vacancyapproval/receive'
+        'admin/vacancy/approve','admin/vacancyapproval/approve', 'admin/vacancyverify/signature','admin/vacancy/do-approve','admin/vacancy/receive','admin/vacancy/do-receive','admin/vacancyapproval/receive',
+        'admin/notifyhrds','admin/notifyhrds/loadnotify'
         
     ];
     foreach ($extraRoutes as $r) {
@@ -280,12 +281,7 @@ private function buildMenuTree(array $rows): array
     return $roots;
 }
 
-/**
- * Render tree → deretan <li>…</li> sesuai template sidebar Pixelwibes:
- * - Root tanpa anak: <a class="m-link"><i class="... fs-5"></i> <span>Nama</span></a>
- * - Root dengan anak: collapse <ul class="sub-menu collapse" id="menu-{id}">
- * - Anak: <a class="ms-link">Nama</a>
- */
+
 private function renderSidebarTemplate(array $nodes, string $currentPath, int $depth = 0): array
 {
     $html = '';

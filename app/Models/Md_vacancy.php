@@ -18,6 +18,7 @@ class Md_vacancy extends Model
         'recname','recposition','rec_ms_id','rec_email',
         'status','approval_token','approval_token_exp',
         'approved_at','qr_text_approved','receive_token','receive_token_exp',
+        'req_name','req_email','req_jobtitle','req_ms_id',
         'received_at','qr_text_received',
         'file','remark',
         'idt','iby','udt','uby'
@@ -68,6 +69,10 @@ class Md_vacancy extends Model
             'rec_ms_id'   => $rec['ms_id']    ?? null,
             'rec_email'   => $rec['email']    ?: null,
 
+            'req_name'     => $payload['requester']['name']     ?? null,
+            'req_email'    => $payload['requester']['email']    ?? null,
+            'req_jobtitle' => $payload['requester']['jobTitle'] ?? null,
+            'req_ms_id'    => $payload['requester']['ms_id']    ?? null,
 
 
             'status'             => 0, // PENDING
@@ -83,5 +88,20 @@ class Md_vacancy extends Model
         }
 
         return ['id' => $this->getInsertID(), 'token' => $token];
+    }
+
+    public function getNotifyHRDS(): array
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->orderBy('idt', 'DESC');
+
+        $q = $builder->get();
+        $rows = $q->getResultArray();
+        foreach ($rows as &$r) {
+            $r['approved_at'] = $r['approved_at'] ?? null;
+            $r['received_at'] = $r['received_at'] ?? null;
+        }
+        return $rows;
     }
 }

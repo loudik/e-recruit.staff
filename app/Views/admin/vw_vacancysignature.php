@@ -1,7 +1,7 @@
 <?= $this->extend('layoutAdmin/template') ?>
 <?= $this->section('content') ?>
 
-<div id="vacancy-signature" class="theme-blue">
+<!-- <div id="vacancy-signature" class="theme-blue"> -->
 
   <style>
     /* scope biar aman */
@@ -83,63 +83,48 @@
 
   <!-- 3 columns: Approved, Received, Summary -->
   <div class="row g-3 mb-3 row-cols-1 row-cols-lg-3">
-  <!-- Approved -->
-  <div class="col">
-    <div class="card">
-      <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
-        <h6 class="mb-0 fw-bold">Approved by</h6>
-        <span class="badge-soft <?= ($approved_status ?? 'pending') === 'verified' ? 'success' : 'danger' ?>">
-          <?= ($approved_status ?? 'pending') === 'verified' ? 'Verified' : 'Pending' ?>
-        </span>
-      </div>
-      <div class="card-body">
-        <div class="row g-2">
-          <div class="col-12"><label class="form-label col-5">Name:</label><span><strong> <?= esc($approved['name'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Position:</label><span><strong> <?= esc($approved['jobTitle'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Email:</label><span class="mono"><strong> <?= esc($approved['email'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Time:</label><span><strong> <?= esc($approved['time'] ?? '-') ?></strong></span></div>
-        </div>
-        <hr>
-        <div class="d-flex flex-column align-items-center">
-          <div id="qr-approved" class="qr-box">
-            <?php if (($approved_status ?? 'pending') !== 'verified'): ?>
-              <span class="text-muted">Pending verification</span>
-            <?php endif; ?>
-          </div>
-          <small class="text-muted mt-2">Scan to verify approval</small>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
-  <!-- Received -->
-  <div class="col">
-    <div class="card">
-      <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
-        <h6 class="mb-0 fw-bold">Received by</h6>
-        <span class="badge-soft <?= ($received_status ?? 'pending') === 'verified' ? 'success' : 'danger' ?>">
-          <?= ($received_status ?? 'pending') === 'verified' ? 'Verified' : 'Pending' ?>
-        </span>
-      </div>
-      <div class="card-body">
-        <div class="row g-2">
-          <div class="col-12"><label class="form-label col-5">Name:</label><span><strong> <?= esc($received['name'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Position:</label><span><strong> <?= esc($received['jobTitle'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Email:</label><span class="mono"><strong> <?= esc($received['email'] ?? '-') ?></strong></span></div>
-          <div class="col-12"><label class="form-label col-5">Time:</label><span><strong> <?= esc($received['time'] ?? '-') ?></strong></span></div>
+  <!-- Approved -->
+    <div class="col">
+      <div class="card">
+        <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+          <h6 class="mb-0 fw-bold">Approved by</h6>
+          <span class="badge-soft <?= ($approved_status ?? 'pending') === 'verified' ? 'success' : 'danger' ?>">
+            <?= ($approved_status ?? 'pending') === 'verified' ? 'Verified' : 'Pending' ?>
+          </span>
         </div>
-        <hr>
-        <div class="d-flex flex-column align-items-center">
-          <div id="qr-received" class="qr-box">
-            <?php if (($received_status ?? 'pending') !== 'verified'): ?>
-              <span class="text-muted">Pending verification</span>
-            <?php endif; ?>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-12"><label class="form-label col-5">Name:</label><span><strong> <?= esc($approved['name'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Position:</label><span><strong> <?= esc($approved['jobTitle'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Email:</label><span class="mono"><strong> <?= esc($approved['email'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Time:</label><span><strong> <?= esc($approved['time'] ?? '-') ?></strong></span></div>
           </div>
-          <small class="text-muted mt-2">Scan to verify receipt</small>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Received -->
+    <div class="col">
+      <div class="card">
+        <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
+          <h6 class="mb-0 fw-bold">Received by</h6>
+          <span class="badge-soft <?= ($received_status ?? 'pending') === 'verified' ? 'success' : 'danger' ?>">
+            <?= ($received_status ?? 'pending') === 'verified' ? 'Verified' : 'Pending' ?>
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-12"><label class="form-label col-5">Name:</label><span><strong> <?= esc($received['name'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Position:</label><span><strong> <?= esc($received['jobTitle'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Email:</label><span class="mono"><strong> <?= esc($received['email'] ?? '-') ?></strong></span></div>
+            <div class="col-12"><label class="form-label col-5">Time:</label><span><strong> <?= esc($received['time'] ?? '-') ?></strong></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
     <!-- Summary -->
     <div class="col">
@@ -216,29 +201,31 @@
 <?= $this->section('scripts') ?>
   <!-- QRCode generator -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
   <script>
  
 
     (function(){
-  var approvedStatus = "<?= esc($approved_status ?? 'pending') ?>";
-  var receivedStatus = "<?= esc($received_status ?? 'pending') ?>";
+      var approvedStatus = "<?= esc($approved_status ?? 'pending') ?>";
+        var receivedStatus = "<?= esc($received_status ?? 'pending') ?>";
 
-  var qrApproved = (approvedStatus === 'verified')
-      ? "<?= esc($data['qr_text_approved'] ?? ($approved['qr'] ?? ''), 'js') ?>"
-      : "";
-  var qrReceived = (receivedStatus === 'verified')
-      ? "<?= esc($data['qr_text_received'] ?? ($received['qr'] ?? ''), 'js') ?>"
-      : "";
+        var qrApproved = (approvedStatus === 'verified')
+            ? "<?= esc($data['qr_text_approved'] ?? ($approved['qr'] ?? ''), 'js') ?>"
+            : "";
+        var qrReceived = (receivedStatus === 'verified')
+            ? "<?= esc($data['qr_text_received'] ?? ($received['qr'] ?? ''), 'js') ?>"
+            : "";
 
-  function drawQR(id, text){
-    var el = document.getElementById(id);
-    if (!el || !text || typeof QRCode === 'undefined') return;
-    el.innerHTML = '';
-    new QRCode(el, { text: text, width:128, height:128, correctLevel: QRCode.CorrectLevel.M });
-  }
+        function drawQR(id, text){
+          var el = document.getElementById(id);
+          if (!el || !text || typeof QRCode === 'undefined') return;
+          el.innerHTML = '';
+          new QRCode(el, { text: text, width:128, height:128, correctLevel: QRCode.CorrectLevel.M });
+        }
 
-  drawQR('qr-approved', qrApproved);
-  drawQR('qr-received', qrReceived);
-})();
+        drawQR('qr-approved', qrApproved);
+        drawQR('qr-received', qrReceived);
+      })();
   </script>
 <?= $this->endSection() ?>

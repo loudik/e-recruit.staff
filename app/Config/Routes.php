@@ -91,9 +91,9 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('report/getreport' , 'Report::fn_getreport');
   $routes->get('getCategoriesByGroup/(:num)', 'Admin::getCategoriesByGroup/$1');
   $routes->get('logo-base64', 'Report::logoBase64');
-  $routes->get('administrator', 'Admin::fn_getadministrator'); // form kosong atau default
+  $routes->get('administrator', 'Admin::fn_getadministrator'); 
   $routes->get('administrator/details', 'Admin::fn_detailadministrator');
-  $routes->post('administrator/delete', 'Admin::fn_deleteaccess'); // ambil data admin
+  $routes->post('administrator/delete', 'Admin::fn_deleteaccess');
   $routes->get('administrator/(:segment)', 'Admin::fn_getadministrator/$1'); 
   $routes->get('users-json', 'Oauth::fetchAzureUsers');
   $routes->post('addnewadmin', 'Admin::fn_addadministrator');
@@ -107,12 +107,12 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->post('vacancy/do-approve', 'Admin::fn_doapprove', ['as' => 'vacancy-do-approve']);
 
   $routes->get ('vacancy/receive',         'Admin::receive',       ['as' => 'vacancy-receive']); 
-    // $routes->match(['get','post'], 'vacancyapproval/receive', 'Admin::receive', ['as' => 'vacancy-receive']);
   $routes->post('vacancy/do-receive',      'Admin::fn_doreceive',  ['as' => 'vacancy-do-receive']);
 
 
   // notify HRDS
   $routes->get('notifyhrds', 'Admin::fn_getnotifyhrds');
+  $routes->get('notifyhrds/loadnotify', 'Admin::fn_loadnotifyhrds');
 
 
 

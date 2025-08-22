@@ -470,25 +470,6 @@
 
     
 
-    <!-- Settings Modal (optional, left as-is) -->
-    <div class="modal fade right" id="Settingmodal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog  modal-sm">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Custom Settings</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body custom_setting">
-            <!-- (content omitted for brevity) -->
-            <p class="text-muted small mb-0">Theme settings…</p>
-          </div>
-          <div class="modal-footer justify-content-start">
-            <button type="button" class="btn btn-white border lift" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary lift">Save Changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div><!-- /main -->
 </div><!-- /layout -->

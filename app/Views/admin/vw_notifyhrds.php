@@ -19,116 +19,22 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <table id="patient-table" class="table table-hover align-middle mb-0" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>Id</th>
-                                                <th>Item</th>
-                                                <th>Billing Date</th>
-                                                <th>Total Amount</th>
-                                                <th>User Name</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>#Order-78414</strong></td>
-                                                <td><img src="assets/images/product/product-1.jpg" class="avatar lg rounded me-2" alt="profile-image"><span> Oculus VR </span></td>
-                                                <td>May 16, 2021</td>
-                                                <td>$212</td>
-                                                <td>Alexander007</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-58414</strong></td>
-                                                <td><img src="assets/images/product/product-2.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Wall Clock</span></td>
-                                                <td>May 22, 2021</td>
-                                                <td>$612</td>
-                                                <td>Joan123</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-48414</strong></td>
-                                                <td><img src="assets/images/product/product-3.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Note Diaries</span></td>
-                                                <td>May 16, 2021</td>
-                                                <td>$612</td>
-                                                <td>Peterjio</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-38414</strong></td>
-                                                <td><img src="assets/images/product/product-4.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Flower Port</span></td>
-                                                <td>May 23, 2021</td>
-                                                <td>$112</td>
-                                                <td>Zoesmart</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-28414</strong></td>
-                                                <td><img src="assets/images/product/product-5.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Bag</span></td>
-                                                <td>May 18, 2021</td>
-                                                <td>$300</td>
-                                                <td>Grace786</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-18414</strong></td>
-                                                <td><img src="assets/images/product/product-6.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Rado Watch</span></td>
-                                                <td>May 22, 2021</td>
-                                                <td>$330</td>
-                                                <td>Dianalove</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-88414</strong></td>
-                                                <td><img src="assets/images/product/product-7.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Traveling bag</span></td>
-                                                <td>May 16, 2021</td>
-                                                <td>$370</td>
-                                                <td>Sarahone</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>#Order-98414</strong></td>
-                                                <td><img src="assets/images/product/product-8.jpg" class="avatar lg rounded me-2" alt="profile-image"><span>Chair</span></td>
-                                                <td>May 16, 2021</td>
-                                                <td>$170</td>
-                                                <td>Julia42</td>
-                                                <td>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-print fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-download fs-5"></i></a>
-                                                    <a class="btn btn-sm btn-white" href="invoices.html"><i class="icofont-send-mail fs-4"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
+                                    <table id="tblnotify" class="table table-striped w-100">
+                                      <thead>
+                                        <tr>
+                                          <th>Position</th>
+                                          <th>Requester</th>
+                                          <th>Approver</th>
+                                          <th>Receiver</th>
+                                          <th>Approved At</th>
+                                          <th>Received At</th>
+                                          <th>Status</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody></tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>
@@ -144,17 +50,94 @@
     <!-- Jquery Page Js -->
     <script src="<?= base_url('assets/js/template.js') ?>"></script>
     <script>
-        $(document).ready(function() {
-            $('#patient-table')
-            .addClass( 'nowrap' )
-            .dataTable( {
-                responsive: true,
-                columnDefs: [
-                    { targets: [-1, -3], className: 'dt-body-right' }
-                ]
-            });
-        });
+      $(document).ready(function () {
+        // Cek elemen tabel
+        if ($('#tblnotify').length === 0) {
+          console.error('Tabel #tblnotify tidak ditemukan di DOM!');
+          return;
+        }
 
-    </script>
-</body>
-</html> 
+        // Inisialisasi DataTable sekali
+        if (!$.fn.DataTable.isDataTable('#tblnotify')) {
+          $('#tblnotify')
+            .addClass('nowrap')
+            .DataTable({
+              responsive: true,
+              columnDefs: [{ targets: [-1, -3], className: 'dt-body-right' }],
+              order: []
+            });
+        } else {
+          console.warn('DataTable sudah ada, skip init.');
+        }
+
+        fn_loadNotifyHRDS();
+      });
+
+      function fn_loadNotifyHRDS() {
+        $.ajax({
+          url: '<?= base_url('admin/notifyhrds/loadnotify') ?>',  // pastikan route kamu memang /admin/...
+          type: 'GET',
+          dataType: 'json',
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+          },
+          success: function (res) {
+            console.log('AJAX OK:', res);
+
+            if (!res || !res.status) {
+              console.warn('Backend balas status=false:', res);
+              return;
+            }
+
+            // Siapkan rows (8 kolom)
+            const rows = (res.data || []).map(item => {
+              const map = {0:'Pending',1:'Approved',2:'Received',3:'Verified'};
+              const label = map[item.status] ?? item.status;
+              const badge =
+                `<span class="badge bg-${
+                  item.status==0?'warning':item.status==1?'primary':item.status==2?'info':'success'
+                }">${label}</span>`;
+
+              return [
+                item.position ?? '-',
+                item.req_name ?? '-',
+                item.apvname ?? '-',
+                item.recname ?? '-',
+                item.approved_at ?? '-',
+                item.received_at ?? '-',
+                badge,
+                `<a href="<?= base_url('admin/vacancyverify/signature/') ?>${item.id}" class="btn btn-primary btn-sm">View</a>`
+              ];
+            });
+
+            console.log('Rows siap ditambahkan:', rows.length);
+
+            // Render ke DataTables
+            try {
+              const table = $('#tblnotify').DataTable();
+              table.clear();
+              table.rows.add(rows).draw(false);
+
+              console.log('Rows dalam DT setelah draw:', table.rows().count());
+
+              // Fallback: kalau karena suatu alasan DT tidak render, isi <tbody> manual untuk memastikan kelihatan
+              if (table.rows().count() === 0 && rows.length > 0) {
+                console.warn('DataTables tidak menampilkan row, fallback isi <tbody> manual.');
+                const tbody = document.querySelector('#tblnotify tbody');
+                tbody.innerHTML = rows.map(cols => `<tr>${cols.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+              }
+            } catch (e) {
+              console.error('Gagal akses DataTables API, fallback isi <tbody> manual. Error:', e);
+              const tbody = document.querySelector('#tblnotify tbody');
+              tbody.innerHTML = rows.map(cols => `<tr>${cols.map(c => `<td>${c}</td>`).join('')}</tr>`).join('');
+            }
+          },
+          error: function (xhr) {
+            console.error('AJAX ERROR:', xhr.status, xhr.responseText);
+            alert('Error fetching data.');
+          }
+        });
+      }
+  </script>
+
+

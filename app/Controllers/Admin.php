@@ -26,19 +26,55 @@ class Admin extends BaseController
 
     #########################START PD PLAN#########################
 
-    public function fn_getnotifyhrds($microsoftId = null)
+    // app/Controllers/Admin.php (atau sesuai file kamu)
+    public function fn_getnotifyhrds()
     {
         $microsoftId = session()->get('microsoft_id');
         $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
         if (!$access) {
-            echo "Data tidak ditemukan untuk Microsoft ID: $microsoftId"; 
-            exit;
+            return $this->response->setStatusCode(403)->setBody("Data tidak ditemukan untuk Microsoft ID: {$microsoftId}");
+        }
+
+        // aman saat menu_ids kosong
+        $menuIdsRaw    = (string)($access['menu_ids'] ?? '');
+        $selectedMenus = $menuIdsRaw === '' ? [] : array_map('intval', explode(',', $menuIdsRaw));
+
+        $this->data['menus']         = $this->Md_administrator->getAllMenus();
+        $this->data['selectedMenus'] = $selectedMenus;
+        $this->data['access']        = $access;
+        $this->data['users']         = [];
+
+        $this->data['title']         = 'Notify HRDS'; // jangan set 2x
+
+        return view('admin/vw_notifyhrds', $this->data);
+    }
+
+    public function fn_loadnotifyhrds()
+    {
+
+        $microsoftId = session()->get('microsoft_id');
+        $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
+        if (!$access) {
+            return $this->response->setJSON(['status' => false, 'message' => 'Access not found']);
         }
 
 
-        $this->data['title'] = 'PD Plan';
-        return view('admin/vw_notifyhrds', $this->data);
+        $menuIdsRaw    = (string)($access['menu_ids'] ?? '');
+        $selectedMenus = $menuIdsRaw === '' ? [] : array_map('intval', explode(',', $menuIdsRaw));
+
+        $this->data['menus']         = $this->Md_administrator->getAllMenus();
+        $this->data['selectedMenus'] = $selectedMenus;
+        $this->data['access']        = $access;
+        $this->data['users']         = [];
+        $data = $this->Md_vacancy->getNotifyHRDS();
+
+        return $this->response->setJSON([
+            'status'  => !empty($data),
+            'data'    => $data ?? [],
+            'message' => empty($data) ? 'No data found' : null,
+        ]);
     }
+
 
     //================================== START VACANCY==============================
 
@@ -100,6 +136,17 @@ class Admin extends BaseController
             ]);
         }
 
+        $reqName  = (string) (session('name')       ?: '');
+        $reqMail  = (string) (session('email')      ?: '');
+        $reqTitle = (string) (session('jobtitle')   ?: '');
+        $reqMsId  = (string) (session('microsoft_id') ?: '');
+        // (opsional: validasi minimal)
+        if ($reqName === '' || $reqMail === '') {
+            return $this->response->setStatusCode(401)->setJSON([
+                'ok'=>false,'message'=>'Session requester tidak valid. Silakan login ulang.'
+            ]);
+        }
+
         try {
             $result = $this->Md_vacancy->createSubmission([
                 'position' => $position,
@@ -116,6 +163,12 @@ class Admin extends BaseController
                     'jobTitle' => $rec['jobTitle'] ?? null,
                     'ms_id'    => $rec['ms_id']    ?? null,
                     'email'    => $rec['email']    ?: null,
+                ],
+                'requester' => [
+                    'name'     => $reqName,
+                    'email'    => $reqMail,
+                    'jobTitle' => $reqTitle,
+                    'ms_id'    => $reqMsId,
                 ],
                 'submitter_upn' => (string) (session('microsoft_upn') ?: session('microsoft_id')),
             ]);
@@ -495,15 +548,15 @@ class Admin extends BaseController
 
        // sukses -> siapkan data untuk view
         $approved = [
-            'name'     => $row['apv_name'] ?? null,
-            'jobTitle' => $row['apv_jobtitle'] ?? null,
+            'name'     => $row['apvname'] ?? null,
+            'jobTitle' => $row['apvposition'] ?? null,
             'email'    => $row['apv_email'] ?? null,
             'time'     => $row['approved_at'] ?? null,
-            'qr'       => $row['apv_qr'] ?? null,
+            'qr'       => $row['qr_text_approved'] ?? null,
         ];
         $received = [
-            'name'     => $row['rec_name'] ?? null,
-            'jobTitle' => $row['rec_jobtitle'] ?? null,
+            'name'     => $row['recname'] ?? null,
+            'jobTitle' => $row['recposition'] ?? null,
             'email'    => $row['rec_email'] ?? null,
             'time'     => $row['received_at'] ?? null,
             'qr'       => $row['rec_qr'] ?? null,
@@ -525,18 +578,25 @@ class Admin extends BaseController
             'uid'      => $uid,
             'role'     => $role,                    // 'approved' | 'received'
             'position' => $row['position'] ?? '',
-            'qr_text_approved' => $row['apv_qr'] ?? '',
-            'qr_text_received' => $row['rec_qr'] ?? '',
+            // 'qr_text_approved' => $row['apv_qr'] ?? '',
+            // 'qr_text_received' => $row['rec_qr'] ?? '',
         ];
 
-        // ===== Status logic =====
-        // Jika sudah ada timestamp di DB -> Verified.
-        // Jika belum ada timestamp, tapi link yang sedang diverifikasi sesuai role -> Verified.
-        // Selain itu -> Pending.
-       
 
-        $approved_status = (!empty($row['approved_at']) || $role === 'approved') ? 'verified' : 'pending';
-        $received_status = (!empty($row['received_at']) || $role === 'received') ? 'verified' : 'pending';
+       if ($role === 'approved') {
+            $approved_status = 'verified';
+            $received_status = !empty($row['received_at']) ? 'verified' : 'pending';
+        } elseif ($role === 'received') {
+            $approved_status = 'verified';
+            $received_status = 'verified';
+        } else {
+            // fallback ke kondisi DB (kalau perlu)
+            $approved_status = !empty($row['approved_at']) ? 'verified' : 'pending';
+            $received_status = !empty($row['received_at']) ? 'verified' : 'pending';
+        }
+
+        // $approved_status = (!empty($row['approved_at']) || $role === 'approved') ? 'verified' : 'pending';
+        // $received_status = (!empty($row['received_at']) || $role === 'received') ? 'verified' : 'pending';
 
 
         return $this->showSigResult(true, null, $data, $approved, $received, $answers, $approved_status, $received_status);
@@ -591,7 +651,7 @@ class Admin extends BaseController
             'status'             => 1,
             'approved_at'        => Time::now()->toDateTimeString(),
             'qr_text_approved'   => $qrApproved,
-            'approval_token'     => null, // matikan token approver
+            'approval_token'     => null,
             'udt'                => Time::now()->toDateTimeString(),
             'uby'                => (string) (session('microsoft_upn') ?: session('microsoft_id')),
         ]);
