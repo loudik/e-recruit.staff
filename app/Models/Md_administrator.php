@@ -250,7 +250,7 @@ class Md_administrator extends Model
         'admin/candidate','admin/candidate/getcandidate','admin/candidate/view',
         'admin/file/viewbyfilename','admin/updatestatusadmin','admin/report/getreport',  'admin/vacancy',
         'admin/vacancy/approve','admin/vacancyapproval/approve', 'admin/vacancyverify/signature','admin/vacancy/do-approve','admin/vacancy/receive','admin/vacancy/do-receive','admin/vacancyapproval/receive',
-        'admin/notifyhrds','admin/notifyhrds/loadnotify'
+        'admin/notifyhrds','admin/notifyhrds/loadnotify','admin/loadnotify/notifyhrds/view','admin/notifyhrds/view/(:num)',
         
     ];
     foreach ($extraRoutes as $r) {

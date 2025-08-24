@@ -113,6 +113,9 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   // notify HRDS
   $routes->get('notifyhrds', 'Admin::fn_getnotifyhrds');
   $routes->get('notifyhrds/loadnotify', 'Admin::fn_loadnotifyhrds');
+  $routes->get('admin/notifyhrds/loadnotify/view', 'Admin::fn_viewnotifyhrds');
+  $routes->get('notifyhrds/loadnotify/view/(:num)', 'Admin::fn_viewnotifyhrds/$1');
+
 
 
 

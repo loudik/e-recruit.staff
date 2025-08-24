@@ -75,6 +75,83 @@ class Admin extends BaseController
         ]);
     }
 
+    public function fn_viewnotifyhrds($id = null)
+    {
+        $microsoftId = session()->get('microsoft_id');
+        $access = $this->Md_administrator->getAccessByMicrosoftId($microsoftId);
+        if (!$access) return $this->response->setStatusCode(403)->setBody('Access denied');
+
+        if ($id === null) $id = $this->request->getGet('id');
+        $id = (int) $id;
+        if ($id <= 0) return $this->response->setStatusCode(400)->setBody('Bad request: missing id');
+
+        $row = $this->Md_vacancy->fn_viewnotifyhrds($id);
+        if (!$row) return $this->response->setStatusCode(404)->setBody('Not found');
+
+        // Mapkan field2 DB -> struktur yang dipakai di view
+        $approved = [
+            'name'     => $row['apvname']      ?? '-',
+            'jobTitle' => $row['apvjobtitle']  ?? '-',
+            'email'    => $row['apvemail']     ?? '-',
+            'time'     => $row['approved_at']  ?? '-',
+            'qr'       => $row['qr_approved']  ?? '',  
+        ];
+        $received = [
+            'name'     => $row['recname']      ?? '-',
+            'jobTitle' => $row['recjobtitle']  ?? '-',
+            'email'    => $row['recemail']     ?? '-',
+            'time'     => $row['received_at']  ?? '-',
+            'qr'       => $row['qr_received']  ?? '',  
+        ];
+
+        // Status sederhana: terverifikasi kalau ada timestamp
+        $approved_status = !empty($row['approved_at']) ? 'verified' : 'pending';
+        $received_status = !empty($row['received_at']) ? 'verified' : 'pending';
+        $ok = ($approved_status === 'verified' && $received_status === 'verified');
+
+        // Jawaban Q&A – ambil per kolom atau dari JSON
+        $answers = [
+            'answer1' => $row['answer1'] ?? '',
+            'answer2' => $row['answer2'] ?? '',
+            'answer3' => $row['answer3'] ?? '',
+            'answer4' => $row['answer4'] ?? '',
+            'answer5' => $row['answer5'] ?? '',
+            'answer6' => $row['answer6'] ?? '',
+            'answer7' => $row['answer7'] ?? '',
+            'answer8' => $row['answer8'] ?? '',
+        ];
+        // jika ada kolom 'answers_json' di DB:
+        if (!empty($row['answers_json'])) {
+            $j = json_decode($row['answers_json'], true);
+            if (is_array($j)) $answers = array_merge($answers, $j);
+        }
+
+        // Data umum dokumen
+        $data = [
+            'uid'       => $row['uid']       ?? ($row['trxidit'] ?? ''),
+            'doc'       => $row['doc']       ?? 'Decision to Fill Vacancy',
+            'role'      => $row['role']      ?? '-',
+            'position'  => $row['position']  ?? '-',
+            // teks QR (opsional)
+            'qr_text_approved' => $row['qr_text_approved'] ?? '',
+            'qr_text_received' => $row['qr_text_received'] ?? '',
+        ];
+
+        return view('admin/vw_detailnotify', [
+            'title'            => 'Notify HRDS Detail',
+            'data'             => $data,
+            'approved'         => $approved,
+            'received'         => $received,
+            'approved_status'  => $approved_status,
+            'received_status'  => $received_status,
+            'ok'               => $ok,
+            'answers'          => $answers,
+            'err'              => '', // kalau perlu pesan error
+        ]);
+    }
+
+
+
 
     //================================== START VACANCY==============================
 

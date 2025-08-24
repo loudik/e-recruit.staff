@@ -93,15 +93,28 @@ class Md_vacancy extends Model
     public function getNotifyHRDS(): array
     {
         $builder = $this->db->table($this->table);
-        $builder->select('*');
-        $builder->orderBy('idt', 'DESC');
+        // ambil kolom yang memang dipakai di view
+        $builder->select('id, position, req_name, apvname, recname, approved_at, received_at, status, date');
+        $builder->orderBy('id', 'DESC'); // <- tadinya 'idt', ubah ke kolom yang ada
 
-        $q = $builder->get();
-        $rows = $q->getResultArray();
+        $rows = $builder->get()->getResultArray();
+
+        // null-safe untuk tanggal
         foreach ($rows as &$r) {
             $r['approved_at'] = $r['approved_at'] ?? null;
             $r['received_at'] = $r['received_at'] ?? null;
         }
         return $rows;
     }
+
+    public function fn_viewnotifyhrds($id)
+    {
+        return $this->db->table($this->table)
+            ->select('*')
+            ->where('id', $id)
+            ->get()
+            ->getRowArray();
+    }
+
+
 }
