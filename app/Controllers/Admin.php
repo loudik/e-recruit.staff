@@ -88,6 +88,10 @@ class Admin extends BaseController
         $row = $this->Md_vacancy->fn_viewnotifyhrds($id);
         if (!$row) return $this->response->setStatusCode(404)->setBody('Not found');
 
+        $docId = (int) ($row['id'] ?? 0);
+
+        log_message('debug', 'Viewing notifyhrds id={id}: {row}', ['id'=>$id, 'row'=>json_encode($row)]);
+
         // Mapkan field2 DB -> struktur yang dipakai di view
         $approved = [
             'name'     => $row['apvname']      ?? '-',
@@ -128,6 +132,7 @@ class Admin extends BaseController
 
         // Data umum dokumen
         $data = [
+            'id'        => $docId,
             'uid'       => $row['uid']       ?? ($row['trxidit'] ?? ''),
             'doc'       => $row['doc']       ?? 'Decision to Fill Vacancy',
             'role'      => $row['role']      ?? '-',
@@ -135,6 +140,16 @@ class Admin extends BaseController
             // teks QR (opsional)
             'qr_text_approved' => $row['qr_text_approved'] ?? '',
             'qr_text_received' => $row['qr_text_received'] ?? '',
+        ];
+
+        log_message('debug', 'Mapped view data: {data}', ['data'=>json_encode($data)]);
+
+        $requested = [
+            'name'     => $row['req_name']      ?? '-',
+            'jobTitle' => $row['req_jobtitle']  ?? '-',
+            'email'    => $row['req_email']     ?? '-',
+            'ms_id'    => $row['req_ms_id']     ?? '-',
+            'id'     => $row['id']        ?? '-',
         ];
 
         return view('admin/vw_detailnotify', [
@@ -148,6 +163,7 @@ class Admin extends BaseController
             'answers'          => $answers,
             'err'              => '', // kalau perlu pesan error
         ]);
+
     }
 
 
@@ -575,6 +591,259 @@ class Admin extends BaseController
         ]);
     }
 
+    // Notify Requested
+
+
+
+    public function submitcomment()
+    {
+        $segId = (int) ($this->request->getUri()->getSegment(5) ?? 0);
+        $id = (int) ($this->request->getPost('doc') ?? $this->request->getGet('doc') ?? $segId ?? 0);
+
+
+        $payload = $this->request->getPost();
+        if (empty($payload) && $this->request->isJSON()) {
+            $payload = $this->request->getJSON(true) ?? [];
+        }
+        $comment = trim((string)($payload['comment'] ?? ''));
+
+        if ($id <= 0 || $comment === '') {
+            return $this->response->setStatusCode(422)->setJSON(['ok'=>false,'message'=>'Bad payload']);
+        }
+        // FIX #1: pastikan model ada
+        $vacM = $this->Md_vacancy ?? new \App\Models\Md_vacancy();
+        $vac  = $vacM->find($id);
+        if (!$vac) {
+            return $this->response->setStatusCode(404)->setJSON(['ok'=>false,'message'=>'Document not found']);
+        }
+
+        // 1) SAVE remark (+ audit)
+        $vacM->update($id, [
+            'remark' => $comment,
+            'udt'    => date('Y-m-d H:i:s'),
+            'uby'    => (string)(session('email') ?? session('name') ?? 'system'),
+        ]);
+
+        $token = (string)($vac['identify_token'] ?? '');
+            if ($token === '') {
+            $token = bin2hex(random_bytes(16));
+            $vacM->update($id, ['identify_token' => $token]);   // allowedFields kamu sudah ada 'identify_token'
+            $vac['identify_token'] = $token;
+        }
+
+        // 2) Resolve recipient
+        $to = trim((string)($vac['req_email'] ?? ''));
+        if ($to === '' && !empty($vac['req_ms_id'])) $to = (string)($this->resolveUserEmailByIdSafe($vac['req_ms_id']) ?: '');
+        if ($to === '' && !empty($vac['rec_email'])) $to = trim((string)$vac['rec_email']);
+        if ($to === '' && !empty($vac['rec_ms_id'])) $to = (string)($this->resolveUserEmailByIdSafe($vac['rec_ms_id']) ?: '');
+        if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+            return $this->response->setStatusCode(422)->setJSON(['ok'=>false,'message'=>'Requested email not found']);
+        }
+
+        // 3) Build identify URL + token (kolom: identify_token)
+        $token = (string)($vac['identify_token'] ?? '');
+        if ($token === '') {
+            $token = bin2hex(random_bytes(16));
+            $vacM->update($id, ['identify_token' => $token]);
+            $vac['identify_token'] = $token;
+        }
+        $q = http_build_query(['doc'=>$id,'identify_token'=>$token], '', '&', PHP_QUERY_RFC3986);
+        $identifyUrl = site_url('vacancy/identify').'?'.$q;
+
+        // 4) Context email (FIX #2: lengkapi field)
+        $ctx = [
+            'position'        => $vac['position']   ?? '',
+            'unit_name'       => $vac['unit_name']  ?? '',
+            // 'doc_no'          => $vac['doc_no']     ?? '',
+            'doc_no'    => (string)($vac['doc_no'] ?? $vac['id'] ?? ''), 
+            'doc_date'        => $vac['doc_date']   ?? ($vac['date'] ?? ''),
+            'req_name'        => (string)(session('req_name')  ?? session('name')  ?? ''),
+            'req_email'       => (string)(session('req_email') ?? session('email') ?? ''),
+            'remark'          => $comment,
+            'answers'         => method_exists($vacM, 'getAnswers') ? $vacM->getAnswers($id) : [],
+        ];
+
+        log_message('info', 'Notify Requested: doc={doc} to={to} url={url} ctx={ctx}', [
+            'doc' => $id, 'to' => $to, 'url' => $identifyUrl, 'ctx' => json_encode($ctx)
+        ]);
+
+        // 5) Kirim email (DELEGATED)
+        try {
+            $mailOk = $this->sendIdentifyMail($identifyUrl, $to, $ctx);
+        } catch (\Throwable $e) {
+            log_message('error', 'sendIdentifyMail error: '.$e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON([
+                'ok'=>false,'message'=>'Email send failed','error'=>'Mailer exception: '.$e->getMessage()
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'ok'          => true,
+            'mailSent'    => (bool)$mailOk,
+            'identifyUrl' => $identifyUrl,
+            'to'          => $to,
+            'message'     => $mailOk
+                ? 'Remark saved & notify sent to Requested'
+                : 'Email send failed',
+            'error'       => $mailOk ? null : $this->lastMailError,  // kirim array apa adanya
+        ]);
+
+    }
+
+
+  
+
+    private function sendIdentifyMail(string $identifyUrl, string $toUPN, array $ctx): bool
+    {
+        try {
+            if (!$toUPN) {
+                $this->lastMailError = 'Missing recipient';
+                log_message('error', 'sendIdentifyMail: missing recipient');
+                return false;
+            }
+
+            $token = (string) session('microsoft_token');
+            if (!$token) {
+                $this->lastMailError = 'No delegated token';
+                log_message('error', 'sendIdentifyMail: no microsoft_token in session');
+                return false;
+            }
+
+            // Normalisasi ctx biar fleksibel dengan key lama
+            $ctx['description']     = $ctx['description']     ?? ($ctx['remark'] ?? '');
+            $ctx['requester_email'] = $ctx['requester_email'] ?? ($ctx['req_email'] ?? null);
+            $ctx['unit']            = $ctx['unit']            ?? ($ctx['unit_name'] ?? '');
+            $ctx['doc_no']          = $ctx['doc_no']          ?? ($ctx['docno'] ?? '');
+            $ctx['doc_date']        = $ctx['doc_date']        ?? ($ctx['date'] ?? '');
+
+            // Sanitize
+            $safeUrl = filter_var($identifyUrl, FILTER_SANITIZE_URL);
+            $pos     = htmlspecialchars((string)($ctx['position'] ?? '-'), ENT_QUOTES, 'UTF-8');
+            $unit    = htmlspecialchars((string)($ctx['unit']     ?? '-'), ENT_QUOTES, 'UTF-8');
+            $docNo   = htmlspecialchars((string)($ctx['doc_no']   ?? '-'), ENT_QUOTES, 'UTF-8');
+            $docDate = htmlspecialchars((string)($ctx['doc_date'] ?? '-'), ENT_QUOTES, 'UTF-8');
+            $desc    = nl2br(htmlspecialchars((string)$ctx['description'], ENT_QUOTES, 'UTF-8'));
+            $ccUPN   = $ctx['requester_email'] ?: null;
+
+            // (opsional) render Q&A
+            $answersHtml = '';
+            if (!empty($ctx['answers']) && is_array($ctx['answers'])) {
+                $answersHtml .= '<table style="width:100%;border-collapse:collapse" border="1" cellpadding="6">';
+                $answersHtml .= '<thead><tr><th align="left" style="width:45%">Question</th><th align="left">Answer</th></tr></thead><tbody>';
+                foreach ($ctx['answers'] as $k => $v) {
+                    $q = htmlspecialchars(is_string($k) ? $k : ('Q'.(string)$k), ENT_QUOTES, 'UTF-8');
+                    $a = nl2br(htmlspecialchars(is_string($v) ? $v : json_encode($v), ENT_QUOTES, 'UTF-8'));
+                    $answersHtml .= "<tr><td>{$q}</td><td>{$a}</td></tr>";
+                }
+                $answersHtml .= '</tbody></table>';
+            }
+
+            $subject = 'Request Identify Vacancy: '.$pos;
+
+            $fmt = fn($addr) => ['emailAddress' => ['address' => $addr]];
+            $message = [
+                'subject' => $subject,
+                'body'    => [
+                    'contentType' => 'HTML',
+                    'content'     =>
+                        '<div style="font-family:Arial,sans-serif">
+                            <p>Mohon melakukan <b>Identify Vacancy</b> untuk posisi berikut:</p>
+                            <ul style="margin-top:0">
+                            <li><b>Position:</b> '.$pos.'</li>
+                            <li><b>Unit:</b> '.$unit.'</li>
+                            <li><b>Document No:</b> '.$docNo.'</li>
+                            <li><b>Document Date:</b> '.$docDate.'</li>
+                            </ul>
+                            <p><b>Description:</b><br>'.$desc.'</p>'.
+                            (!empty($answersHtml) ? ('<p><b>Decision Q&amp;A:</b></p>'.$answersHtml) : '').
+                            '<p>Silakan lanjutkan pada tautan berikut:</p>
+                            <p><a href="'.$safeUrl.'" target="_blank" rel="noopener">'.$safeUrl.'</a></p>
+                        </div>'
+                ],
+                'toRecipients' => [$fmt($toUPN)],
+            ];
+            if ($ccUPN) $message['ccRecipients'] = [$fmt($ccUPN)];
+
+            $payload = ['message' => $message, 'saveToSentItems' => true];
+
+            $client = \Config\Services::curlrequest();
+            $res    = $client->post('https://graph.microsoft.com/v1.0/me/sendMail', [
+                'headers'     => ['Authorization' => 'Bearer '.$token, 'Content-Type' => 'application/json'],
+                'json'        => $payload,
+                'http_errors' => false,
+                'timeout'     => 20,
+            ]);
+
+            $status = $res->getStatusCode();
+            $body   = (string)$res->getBody();
+            log_message('debug', 'sendIdentifyMail delegated: {status} {body}', ['status'=>$status,'body'=>$body]);
+
+            if ($status !== 202) {
+                $this->lastMailError = "HTTP $status: $body";
+                log_message('error', 'sendIdentifyMail delegated failed: {err}', ['err'=>$this->lastMailError]);
+                return false;
+            }
+
+            $this->lastMailError = [];
+            return true;
+
+        } catch (\Throwable $e) {
+            $this->lastMailError = ['exception' => $e->getMessage()];
+            log_message('error', 'sendIdentifyMail delegated exception: '.$e->getMessage());
+            return false;
+        }
+
+    }
+
+      public function resolveUserEmailByIdSafe(string $msId): ?string
+{
+    if (!$msId) return null;
+    if (filter_var($msId, FILTER_VALIDATE_EMAIL)) return $msId;
+
+    $token = (string) session('microsoft_token');
+    if (!$token) return null;
+
+    try {
+        $client = \Config\Services::curlrequest();
+        $url = 'https://graph.microsoft.com/v1.0/users/'.rawurlencode($msId)
+             .'?$select=mail,userPrincipalName,otherMails';
+        $res = $client->get($url, [
+            'headers' => [
+                'Authorization' => 'Bearer '.$token,
+                'Accept'        => 'application/json',
+            ],
+            'http_errors' => false,
+            'timeout'     => 10,
+        ]);
+        $status = $res->getStatusCode();
+        if ($status !== 200) {
+            log_message('error', 'resolveUserEmailByIdSafe {status}: {body}', [
+                'status'=>$status, 'body'=>(string)$res->getBody()
+            ]);
+            return null;
+        }
+        $json = json_decode((string)$res->getBody(), true) ?: [];
+        $candidate = $json['mail']
+                  ?? $json['userPrincipalName']
+                  ?? ($json['otherMails'][0] ?? null);
+
+        return $candidate && filter_var($candidate, FILTER_VALIDATE_EMAIL) ? $candidate : null;
+    } catch (\Throwable $e) {
+        log_message('error', 'resolveUserEmailByIdSafe exception: '.$e->getMessage());
+        return null;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
     private function sign(string $data, string $key): string
     {
@@ -689,7 +958,8 @@ class Admin extends BaseController
         array $answers = [],
         string $approved_status = 'pending',
         string $received_status = 'pending'
-    ) {
+) 
+    {
         return view('admin/vw_vacancysignature', [
             'ok'               => $ok,
             'err'              => $error,

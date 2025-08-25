@@ -19,7 +19,7 @@ class Md_vacancy extends Model
         'status','approval_token','approval_token_exp',
         'approved_at','qr_text_approved','receive_token','receive_token_exp',
         'req_name','req_email','req_jobtitle','req_ms_id',
-        'received_at','qr_text_received',
+        'received_at','qr_text_received','identify_token',
         'file','remark',
         'idt','iby','udt','uby'
     ];

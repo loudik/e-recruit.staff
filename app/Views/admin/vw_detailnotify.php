@@ -196,42 +196,28 @@
 
   <div class="g-3 mb-3 mt-3">
       <div class="card mb-3">
-          <!-- <div class="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
-              <h6 class="mb-0 fw-bold ">Description</h6>
-          </div> -->
           <div class="card-body">
-              <form>
-                  <div class="row g-3 align-items-center">
-                      <!-- <div class="col-md-12">
-                          <label  class="form-label">Order ID</label>
-                          <input type="text" class="form-control" value="78414">
-                      </div>
-                      <div class="col-md-12">
-                          <label  class="form-label">Order Status</label>
-                          <select class="form-select" aria-label="Default select example">
-                              <option  value="1">Progress</option>
-                              <option value="2">Completed</option>
-                              <option selected value="3">Pending</option>
-                          </select>
-                      </div>
-                      <div class="col-md-12">
-                          <label class="form-label">Quantity</label>
-                          <input type="text" class="form-control" value="4">
-                      </div> -->
-                      <!-- <div class="col-md-12">
-                          <label  class="form-label">Order Transection</label>
-                          <select class="form-select" aria-label="Transection">
-                              <option  value="1">Completed</option>
-                              <option value="2">Fail</option>
-                          </select>
-                      </div> -->
-                      <div class="col-md-12">
-                          <label for="comment" class="form-label">Description</label>
-                          <textarea  class="form-control" id="comment" rows="4"></textarea>
-                      </div>
-                  </div>
-                  <button type="button" class="btn btn-primary mt-4 text-uppercase" onclick="fn_submit()">Submit</button>
+              <form id="frm-identify">
+                <?= csrf_field() ?>
+
+                <!-- Hidden context (kalau mau override dari FE, opsional) -->
+                <input type="hidden" id="docId" value="<?= (int)($data['id'] ?? 0) ?>">
+                
+                <input type="hidden" id="token"   value="<?= esc($data['token'] ?? '') ?>">
+                <input type="hidden" id="reqMail" value="<?= esc($data['req_email'] ?? ($requested['email'] ?? '')) ?>">
+                <input type="hidden" id="reqMsId" value="<?= esc($requested['req_ms_id'] ?? '') ?>">
+
+                <label for="comment" class="form-label">Description</label>
+                <textarea class="form-control" id="comment" rows="4" placeholder="Tambahkan deskripsi untuk Requested"></textarea>
+
+                <div class="form-text">
+                  Email akan dikirim ke Requested:
+                  <span class="mono"><?= esc($data['req_email'] ?? ($requested['email'] ?? '-')) ?></span>
+                </div>
+
+                <button type="button" class="btn btn-primary mt-3" onclick="fn_submit()">Submit</button>
               </form>
+
           </div>
       </div>
   </div>
@@ -270,10 +256,42 @@
         drawQR('qr-received', qrReceived);
       })();
 
-    function fn_submit(){
-      alert('This is a demo only. No actual submission will be made.'); 
-      return; 
-    }
+      
+      function fn_submit(){
+        const id = document.getElementById('docId')?.value || '0';
+        const c  = document.getElementById('comment');
+        const v  = (c?.value || '').trim();
+
+        console.log('Submit comment for docId=', id, 'comment=', v);
+
+        if (id === '0') { alert('Invalid document id'); return; }
+        if (!v) { alert('Please enter remark'); c?.focus(); return; }
+
+        $.ajax({
+
+          url: '<?= site_url('admin/notifyhrds/loadnotify/submitcomment') ?>/' + id,
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            comment: v,
+            '<?= csrf_token() ?>': '<?= csrf_hash() ?>'
+          },
+          success: function(res){
+            console.log('Response:', res);
+            if (res && res.ok) {
+              alert('Remark saved & notify sent to: ' + (res.to || 'Requested'));
+              c.value = '';
+            } else {
+              alert('Error: ' + (res?.message || 'Unknown'));
+            }
+          },
+          error: function(xhr){
+            alert('AJAX error: ' + (xhr.responseText || xhr.statusText));
+          }
+        });
+      }
+
+
 
   </script>
 <?= $this->endSection() ?>

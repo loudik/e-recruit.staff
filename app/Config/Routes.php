@@ -116,6 +116,9 @@ $routes->group('/admin', ['filter' => 'beforelogin'], function ($routes) {
   $routes->get('admin/notifyhrds/loadnotify/view', 'Admin::fn_viewnotifyhrds');
   $routes->get('notifyhrds/loadnotify/view/(:num)', 'Admin::fn_viewnotifyhrds/$1');
 
+  $routes->post('notifyhrds/loadnotify/submitcomment/(:num)', 'Admin::submitcomment/$1');
+
+
 
 
 
