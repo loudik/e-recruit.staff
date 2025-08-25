@@ -80,7 +80,7 @@ $(document).ready(function () {
 });
 
 function fn_loadNotifyHRDS(dt) {
-  const apiUrl = '<?= base_url('admin/notifyhrds/loadnotify') ?>'; // pastikan route ini hidup
+  const apiUrl = '<?= base_url('admin/notifyhrds/loadnotify') ?>';
 
   $.ajax({
     url: apiUrl,
@@ -107,6 +107,11 @@ function fn_loadNotifyHRDS(dt) {
 
       const viewUrl = baseView + '/' + encodeURIComponent(item.id);
 
+      // kalau status = 3 (Verified) maka kosongkan tombol
+      const actionBtn = (item.status == 3) 
+          ? '' 
+          : `<a href="${viewUrl}" class="btn btn-primary btn-sm">View</a>`;
+
       return [
         item.position ?? '-',
         item.req_name ?? '-',
@@ -115,9 +120,10 @@ function fn_loadNotifyHRDS(dt) {
         item.approved_at ?? '-',
         item.received_at ?? '-',
         badge,
-        `<a href="${viewUrl}" class="btn btn-primary btn-sm">View</a>`
+        actionBtn
       ];
-          });
+    });
+
 
       console.log('Rows siap:', rows.length);
       dt.clear();

@@ -211,7 +211,7 @@
                 <textarea class="form-control" id="comment" rows="4" placeholder="Tambahkan deskripsi untuk Requested"></textarea>
 
                 <div class="form-text">
-                  Email akan dikirim ke Requested:
+                  Email Will be sent to Requester at: <br>
                   <span class="mono"><?= esc($data['req_email'] ?? ($requested['email'] ?? '-')) ?></span>
                 </div>
 

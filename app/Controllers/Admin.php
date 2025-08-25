@@ -593,8 +593,6 @@ class Admin extends BaseController
 
     // Notify Requested
 
-
-
     public function submitcomment()
     {
         $segId = (int) ($this->request->getUri()->getSegment(5) ?? 0);
@@ -621,7 +619,7 @@ class Admin extends BaseController
         $vacM->update($id, [
             'remark' => $comment,
             'udt'    => date('Y-m-d H:i:s'),
-            'uby'    => (string)(session('email') ?? session('name') ?? 'system'),
+            'uby'    => (string)(session('email') ?? session('name') ?? 'system')
         ]);
 
         $token = (string)($vac['identify_token'] ?? '');
@@ -655,7 +653,7 @@ class Admin extends BaseController
             'position'        => $vac['position']   ?? '',
             'unit_name'       => $vac['unit_name']  ?? '',
             // 'doc_no'          => $vac['doc_no']     ?? '',
-            'doc_no'    => (string)($vac['doc_no'] ?? $vac['id'] ?? ''), 
+            'doc_no'          => (string)($vac['doc_no'] ?? $vac['id'] ?? ''), 
             'doc_date'        => $vac['doc_date']   ?? ($vac['date'] ?? ''),
             'req_name'        => (string)(session('req_name')  ?? session('name')  ?? ''),
             'req_email'       => (string)(session('req_email') ?? session('email') ?? ''),
@@ -670,6 +668,20 @@ class Admin extends BaseController
         // 5) Kirim email (DELEGATED)
         try {
             $mailOk = $this->sendIdentifyMail($identifyUrl, $to, $ctx);
+
+        if($mailOk){
+            $cur = (int)($vac['status'] ?? 0);
+            $new = $cur < 3 ? 3 : $cur; // pastikan naik level (3 = Notified Requested)]
+            if($new !== $cur){
+                $vacM->update($id, [
+                    'status' => $new,
+                    'udt'    => date('Y-m-d H:i:s'),
+                    'uby'    => (string)(session('email') ?? session('name') ?? 'system')
+                ]);
+            }
+           
+        }
+        
         } catch (\Throwable $e) {
             log_message('error', 'sendIdentifyMail error: '.$e->getMessage());
             return $this->response->setStatusCode(500)->setJSON([
@@ -690,8 +702,6 @@ class Admin extends BaseController
 
     }
 
-
-  
 
     private function sendIdentifyMail(string $identifyUrl, string $toUPN, array $ctx): bool
     {
@@ -796,43 +806,43 @@ class Admin extends BaseController
     }
 
       public function resolveUserEmailByIdSafe(string $msId): ?string
-{
-    if (!$msId) return null;
-    if (filter_var($msId, FILTER_VALIDATE_EMAIL)) return $msId;
+    {
+        if (!$msId) return null;
+        if (filter_var($msId, FILTER_VALIDATE_EMAIL)) return $msId;
 
-    $token = (string) session('microsoft_token');
-    if (!$token) return null;
+        $token = (string) session('microsoft_token');
+        if (!$token) return null;
 
-    try {
-        $client = \Config\Services::curlrequest();
-        $url = 'https://graph.microsoft.com/v1.0/users/'.rawurlencode($msId)
-             .'?$select=mail,userPrincipalName,otherMails';
-        $res = $client->get($url, [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-                'Accept'        => 'application/json',
-            ],
-            'http_errors' => false,
-            'timeout'     => 10,
-        ]);
-        $status = $res->getStatusCode();
-        if ($status !== 200) {
-            log_message('error', 'resolveUserEmailByIdSafe {status}: {body}', [
-                'status'=>$status, 'body'=>(string)$res->getBody()
+        try {
+            $client = \Config\Services::curlrequest();
+            $url = 'https://graph.microsoft.com/v1.0/users/'.rawurlencode($msId)
+                .'?$select=mail,userPrincipalName,otherMails';
+            $res = $client->get($url, [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$token,
+                    'Accept'        => 'application/json',
+                ],
+                'http_errors' => false,
+                'timeout'     => 10,
             ]);
+            $status = $res->getStatusCode();
+            if ($status !== 200) {
+                log_message('error', 'resolveUserEmailByIdSafe {status}: {body}', [
+                    'status'=>$status, 'body'=>(string)$res->getBody()
+                ]);
+                return null;
+            }
+            $json = json_decode((string)$res->getBody(), true) ?: [];
+            $candidate = $json['mail']
+                    ?? $json['userPrincipalName']
+                    ?? ($json['otherMails'][0] ?? null);
+
+            return $candidate && filter_var($candidate, FILTER_VALIDATE_EMAIL) ? $candidate : null;
+        } catch (\Throwable $e) {
+            log_message('error', 'resolveUserEmailByIdSafe exception: '.$e->getMessage());
             return null;
         }
-        $json = json_decode((string)$res->getBody(), true) ?: [];
-        $candidate = $json['mail']
-                  ?? $json['userPrincipalName']
-                  ?? ($json['otherMails'][0] ?? null);
-
-        return $candidate && filter_var($candidate, FILTER_VALIDATE_EMAIL) ? $candidate : null;
-    } catch (\Throwable $e) {
-        log_message('error', 'resolveUserEmailByIdSafe exception: '.$e->getMessage());
-        return null;
     }
-}
 
 
 
